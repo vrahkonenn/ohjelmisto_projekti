@@ -9,27 +9,27 @@ Grafiikat priorisointi järjestys:
 6. Pelihahmon aseen panos
 
 Vaatimus ideoita
+
 UI Vaatimuksia
-    - Peli
-    - Menu
-    - Pause
-    - Asetukset
-    - Molemmat hiiri ja näppäimistö toimivat
-    - Kauppa
-    - Selkeät siirtymiset
-    -
+- Peli
+- Menu
+- Pause
+- Asetukset
+- Molemmat hiiri ja näppäimistö toimivat
+- Kauppa
+- Selkeät siirtymiset
 
 Logiikka vaatimuksia
-    - Kasvava haaste
-    - Korkeus
-    - Raha
-    - Reilu peli / ei mahdoton
-    - Hyppiminen selkeää
-    - Ulkoreunat
-    -
+- Kasvava haaste
+- Korkeus
+- Raha
+- Reilu peli / ei mahdoton
+- Hyppiminen selkeää
+- Ulkoreunat
+
 
 Asetuksia
-    - Ääni
-    - Musiikki
-    - Kontrollit
-    -
+- Ääni
+- Musiikki
+- Kontrollit
+-

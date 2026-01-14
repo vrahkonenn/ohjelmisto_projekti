@@ -8,3 +8,28 @@ Grafiikat priorisointi järjestys:
 5. Hirviöt
 6. Pelihahmon aseen panos
 
+Vaatimus ideoita
+UI Vaatimuksia
+    - Peli
+    - Menu
+    - Pause
+    - Asetukset
+    - Molemmat hiiri ja näppäimistö toimivat
+    - Kauppa
+    - Selkeät siirtymiset
+    -
+
+Logiikka vaatimuksia
+    - Kasvava haaste
+    - Korkeus
+    - Raha
+    - Reilu peli / ei mahdoton
+    - Hyppiminen selkeää
+    - Ulkoreunat
+    -
+
+Asetuksia
+    - Ääni
+    - Musiikki
+    - Kontrollit
+    -

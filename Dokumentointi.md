@@ -13,8 +13,6 @@ Vaatimus ideoita
 UI Vaatimuksia
 - Peli
 - Menu
-- Pause
-- Asetukset
 - Molemmat hiiri ja näppäimistö toimivat
 - Kauppa
 - Selkeät siirtymiset
@@ -27,9 +25,20 @@ Logiikka vaatimuksia
 - Hyppiminen selkeää
 - Ulkoreunat
 
+Toiminnallisia vaatimuksia:
+- Peli pitää voida laittaa pauselle
+- Voi avata asetusmenun, jossa säätää asetuksia
+    Asetuksia:
+    - Ääni
+    - Musiikki
+    - Kontrollit
+- Hahmoa voi liikuttaa vasemmalle ja oikealle näppäimillä (a & d / nuolivasen & nuoli oikea)
+- Hahmo ampuu välilyönti näppäimella
+- Pelin voi aloittaa "Aloita peli" painikkeesta
 
-Asetuksia
-- Ääni
-- Musiikki
-- Kontrollit
--
+Ei toiminnallisia vaatimuksia:
+- Peli toimii samalla lailla eri laitteilla (esim. hidas ja nopea tietokone)
+- Peli englanniksi
+- Ennätykset tietokannassa, tietokantaa ei pidä päästä muuttamaan itse
+- Peliohjeet
+

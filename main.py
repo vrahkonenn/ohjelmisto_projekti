@@ -25,7 +25,7 @@ player_x = WIDTH/2 - (player_scale/2)
 player_y = 400
 player_spd = 3
 
-platforms = [[175, 480, 70, 10]]
+platforms = [[175, 480, 70, 10], [85, 370, 70, 10], [265, 370, 70,10]]
 jump = False
 y_change = 0
 x_change = 0
@@ -47,7 +47,7 @@ def check_collisions(rect_list, j):
     global player_y
     global y_change
     for i in range(len(rect_list)):
-        if rect_list[i].colliderect([player_x, player_y + 60, 90, 5]) and jump == False and y_change > 0:
+        if rect_list[i].colliderect([player_x + 20, player_y + 60, 35, 5]) and jump == False and y_change > 0:
             j = True
     return j
 

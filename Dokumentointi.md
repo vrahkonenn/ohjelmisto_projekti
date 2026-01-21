@@ -12,15 +12,15 @@ Vaatimus ideoita
 
 UI Vaatimuksia
 - Peli
-- Menu
-- Molemmat hiiri ja näppäimistö toimivat
-- Kauppa
+- Menu, Pelissä voi päästä menuun painamalla yhtä nappia.
+- Molemmat hiiri ja näppäimistö toimivat, eli ukkelilla voi liikkua nuolinäppäimillä ja 
+- Kauppa, josta voi ostaa pelissä kerätyllä rahalla esim kehitysominaisuuksia, liikkuu nopeampaa jne. 
 - Selkeät siirtymiset
 
 Logiikka vaatimuksia
-- Kasvava haaste.
+- Kasvava haaste, eli peli vaikeutuu mitä korkeammalle mennään, esiintyy esimerkiksi enemmän hirviöitä ja rikkoutuvia alustoja taikka alustoja on harvemmin ja vähemmän.
 - Korkeus
-- Raha
+- Rahaa spawnaa ikkunaan, sitä voi kerätä ja oman rahan näkee ylänurkasta että paljonko sitä on.
 - Reilu peli / ei mahdoton
 - Hyppiminen selkeää
 - Ulkoreunat

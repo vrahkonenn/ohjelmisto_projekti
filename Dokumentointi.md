@@ -2,13 +2,11 @@ Dokumentointi:
 
 Grafiikat priorisointi järjestys:
 1. Pelihahmo
-2. Alustat (perusalusta, yhden pompun kestävä, liikkuva,    "ansa-aslusta")
+2. Alustat (perusalusta, yhden pompun kestävä, liikkuva,"ansa-alusta")
 3. Tausta
-4. "Musta-aukko" tmv. eli ilmassa paikallaan oleva kohta josta hahmo kuolee, ei voi tuhota-
-5. Hirviöt
+5. Hirviöt (Esim. 3 erilaista, pieni, leveä, pitkä)
 6. Pelihahmon aseen panos
-
-Vaatimus ideoita
+7. Boostit
 
 UI Vaatimuksia
 - Peli

@@ -25,7 +25,13 @@ player_x = WIDTH/2 - (player_scale/2)
 player_y = 400
 player_spd = 3
 
-platforms = [[175, 480, 70, 10], [85, 370, 70, 10], [265, 370, 70,10]]
+platforms = [[175, 480, 70 , 10],
+             [85 , 370, 70 , 10],
+             [265, 370, 70 , 10],
+             [175, 260, 70 , 10],
+             [85 , 150, 70 , 10],
+             [265, 150, 70 , 10],
+             [175, 40 , 70 , 10]]
 jump = False
 y_change = 0
 x_change = 0
@@ -34,7 +40,7 @@ def update_player(y_pos):
     global jump
     global y_change
     gravity = .4
-    jump_height = 12
+    jump_height = 10
     if jump:
         y_change = -jump_height
         jump = False

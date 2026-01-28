@@ -1,4 +1,5 @@
 import pygame
+import random
 
 pygame.init()
 
@@ -57,6 +58,18 @@ def check_collisions(rect_list, j):
             j = True
     return j
 
+def updatePlatforms(my_list, y_pos, y_change):
+    if y_pos < 250 and y_change < 0:
+        for i in range(len(my_list)):
+            my_list[i][1] -= y_change
+    else:
+        pass
+    for item in range(len(my_list)):
+        if my_list[item][1] > 500:
+            my_list[item] = [random.randint(10, 300), random.randint(-50, -10), 70, 10]
+    return my_list
+
+
 running = True
 while running == True:
     timer.tick(FPS)
@@ -85,6 +98,8 @@ while running == True:
     player_x += x_change
     player_y = update_player(player_y)
     jump = check_collisions(blocks, jump)
+
+    platforms = updatePlatforms(platforms, player_y, y_change)
 
     pygame.display.flip()
 pygame.quit()

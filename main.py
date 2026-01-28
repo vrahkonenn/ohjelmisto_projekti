@@ -102,4 +102,6 @@ while running == True:
     platforms = updatePlatforms(platforms, player_y, y_change)
 
     pygame.display.flip()
+    if player_y > HEIGHT + 50:
+        running = False
 pygame.quit()

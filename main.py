@@ -36,7 +36,7 @@ platforms = [[175, 480, 70 , 10],
 jump = False
 y_change = 0
 x_change = 0
-
+score = 0
 def update_player(y_pos):
     global jump
     global y_change
@@ -59,9 +59,11 @@ def check_collisions(rect_list, j):
     return j
 
 def updatePlatforms(my_list, y_pos, y_change):
+    global score
     if y_pos < 250 and y_change < 0:
         for i in range(len(my_list)):
             my_list[i][1] -= y_change
+            score += 0.05
     else:
         pass
     for item in range(len(my_list)):
@@ -100,7 +102,7 @@ while running == True:
     jump = check_collisions(blocks, jump)
 
     platforms = updatePlatforms(platforms, player_y, y_change)
-
+    print(score) #score testi
     pygame.display.flip()
     if player_y > HEIGHT + 50:
         running = False

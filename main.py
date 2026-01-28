@@ -65,7 +65,7 @@ def updatePlatforms(my_list, y_pos, y_change):
     else:
         pass
     for item in range(len(my_list)):
-        if my_list[item][1] > 500:
+        if my_list[item][1] > 530:
             my_list[item] = [random.randint(10, 300), random.randint(-50, -10), 70, 10]
     return my_list
 

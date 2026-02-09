@@ -98,6 +98,10 @@ while running == True:
                 x_change = 0
 
     player_x += x_change
+    if player_x > 400 and x_change>0:
+        player_x = -25
+    if player_x < 0 and x_change<0:
+        player_x = 375
     player_y = update_player(player_y)
     jump = check_collisions(blocks, jump)
 

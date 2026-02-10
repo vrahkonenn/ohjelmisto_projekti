@@ -44,13 +44,14 @@ player_x = WIDTH/2 - (player_scale/2)
 player_y = 400
 player_spd = 3
 
-platforms = [[175, 480, 70 , 10],
-             [85 , 370, 70 , 10],
-             [265, 370, 70 , 10],
-             [175, 260, 70 , 10],
-             [85 , 150, 70 , 10],
-             [265, 150, 70 , 10],
-             [175, 40 , 70 , 10]]
+# Platform [x, y, width, height, type]
+platforms = [[175, 480, 70 , 10, 0],
+             [85 , 370, 70 , 10, 1],
+             [265, 370, 70 , 10, 0],
+             [175, 260, 70 , 10, 0],
+             [85 , 150, 70 , 10, 1],
+             [265, 150, 70 , 10, 0],
+             [175, 40 , 70 , 10, 0]]
 jump = False
 y_change = 0
 x_change = 0
@@ -67,16 +68,33 @@ def update_player(y_pos):
     y_change += gravity
     return y_pos
 
-def check_collisions(rect_list, j):
+def check_collisions(rect_list):
     global player_x
     global player_y
     global y_change
+    global platforms 
+    
     for i in range(len(rect_list)):
-        if rect_list[i].colliderect([player_x + 20, player_y + 60, 35, 5]) and jump == False and y_change > 0:
-            j = True
-    return j
+        if rect_list[i].colliderect([player_x + 20, player_y + 60, 35, 5]) and y_change > 0:
+            
+            # Normaali alusta
+            if platforms[i][4] == 0:
+                return True
+            
+            # Hajoava
+            if platforms[i][4] == 1:
+                platforms[i][4] = 2
+                return True
+            
+            if platforms[i][4] == 3:
+                return False
+    return False
 
 def updatePlatforms(my_list, y_pos, y_change):
+    for i in range(len(my_list)):
+        if my_list[i][4] == 2:  # jos rikki
+            my_list[i][1] += 8  # putoamisnopeus
+
     global score
     if y_pos < 250 and y_change < 0:
         for i in range(len(my_list)):
@@ -86,7 +104,9 @@ def updatePlatforms(my_list, y_pos, y_change):
         pass
     for item in range(len(my_list)):
         if my_list[item][1] > 510:
-            my_list[item] = [random.randint(10, 300), random.randint(-50, -10), 70, 10]
+            # Alustojen spawnaus mahdollisuus (0 = normaali, 1 = hajoava, 3 = ansa)
+            platform_type = random.choices([0,1,3], weights=[75,20,5])[0]
+            my_list[item] = [random.randint(10, 300), random.randint(-50, -10), 70, 10, platform_type]
     return my_list
 
 
@@ -110,8 +130,19 @@ while running == True:
                 animating = False  # pysähdy viimeiseen frameen
     ##
 
+    # Alustojen värit (musta normaali, harmaa rikki menevä, ansa violetti)
     for i in range(len(platforms)):
-        block = pygame.draw.rect(screen, black, platforms[i], 0, 3)
+        rect_data = platforms[i][:4]
+        if platforms[i][4] == 0:
+            color = black
+        elif platforms[i][4] == 1:
+            color = gray
+        elif platforms[i][4] == 2:
+            color = (200, 50, 50)  # rikki
+        elif platforms[i][4] == 3:
+            color = (255, 0, 255)  # ansa (violetti)
+        block = pygame.draw.rect(screen, color, rect_data, 0, 3)
+
         blocks.append(block)
 
     for event in pygame.event.get():
@@ -134,7 +165,7 @@ while running == True:
     if player_x < 0 and x_change<0:
         player_x = 375
     player_y = update_player(player_y)
-    jump = check_collisions(blocks, jump)
+    jump = check_collisions(blocks)
 
     ##sprite
     if jump and not animating:

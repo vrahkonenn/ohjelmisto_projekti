@@ -17,6 +17,14 @@ timer = pygame.time.Clock()
 
 background = white
 
+# Alustojen min ja max väli
+MIN_PLATFORM_GAP = 60
+MAX_PLATFORM_GAP = 100
+#Min korkeusväli alustojen välillä
+MIN_PLATFORM_SEPARATION = 40
+# sivusuuntainen raja, että pelaaja ylettää
+HORIZ_REACH = 120
+
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 pygame.display.set_caption("TEMP_Hyppypeli_TEMP")
 
@@ -105,12 +113,45 @@ def updatePlatforms(my_list, y_pos, y_change):
     for item in range(len(my_list)):
         if my_list[item][1] > 510:
             # Alustojen spawnaus mahdollisuus (0 = normaali, 1 = hajoava, 3 = ansa)
+            # Spawnaa uusi alusta oikealle välille (ei liian lähellä tai kaukana muista alustoista)
+            highest_y = min(p[1] for p in my_list)
             spawn_x = random.randint(10, 300)
-            spawn_y = random.randint(-50, -10)
+            gap = random.randint(MIN_PLATFORM_GAP, MAX_PLATFORM_GAP)
+            spawn_y = highest_y - gap
+            # varmista ettei uusi alusta ole liian lähellä olemassa olevaa alustaa
+            tries = 0
+            placed = False
+            spawn_y = highest_y - random.randint(MIN_PLATFORM_GAP, MAX_PLATFORM_GAP)
+            while tries < 10 and not placed:
+                spawn_y = highest_y - random.randint(MIN_PLATFORM_GAP, MAX_PLATFORM_GAP)
+                if not any(abs(spawn_y - p[1]) < MIN_PLATFORM_SEPARATION for p in my_list):
+                    placed = True
+                    break
+                tries += 1
+            if not placed:
+                # fallback: max sallittu väli (pitää hypyt mahdollisina)
+                spawn_y = highest_y - MAX_PLATFORM_GAP
             platform_type = random.choices([0,1,3], weights=[75,20,5])[0]
             # Älä spawnaa ansa-alustaa liian lähelle pelaajan nykyistä pystysuuntaista sijaintia
             if platform_type == 3 and abs(y_pos - spawn_y) < 120:
                 # fallback normaaliin tai hajoavaan alustaan
+                platform_type = random.choices([0,1], weights=[80,20])[0]
+            # Varmista että väh. 1 ei ansa alusta on mahdollista saavuttaa
+            # varsinkin kun pelaaja on ruudun alalaidassa (ei "boostia
+            # alaspäin liikkuvista alustoista")
+            reachable_top = y_pos - 200
+            reachable_bottom = y_pos + 100
+            player_center = player_x + (player_scale / 2)
+            def horiz_dist(a, b):
+                d = abs(a - b)
+                return min(d, WIDTH - d)
+            has_non_trap = any(
+                p[4] != 3
+                and reachable_top <= p[1] <= reachable_bottom
+                and horiz_dist(p[0] + (p[2] / 2), player_center) <= HORIZ_REACH
+                for p in my_list
+            )
+            if not has_non_trap and platform_type == 3:
                 platform_type = random.choices([0,1], weights=[80,20])[0]
             my_list[item] = [spawn_x, spawn_y, 70, 10, platform_type]
     return my_list

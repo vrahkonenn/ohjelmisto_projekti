@@ -156,6 +156,13 @@ def updatePlatforms(my_list, y_pos, y_change):
             my_list[item] = [spawn_x, spawn_y, 70, 10, platform_type]
     return my_list
 
+#platform grafiikat
+platform_images = {
+    0: pygame.image.load("Imgs/normal.png").convert_alpha(),
+    1: pygame.image.load("Imgs/breakable.png").convert_alpha(),
+    2: pygame.image.load("Imgs/broken.png").convert_alpha(),
+    3: pygame.image.load("Imgs/trap.png").convert_alpha()
+}
 
 running = True
 while running == True:
@@ -177,19 +184,14 @@ while running == True:
                 animating = False  # pysähdy viimeiseen frameen
     ##
 
-    # Alustojen värit (musta normaali, harmaa rikki menevä, ansa violetti)
+    # Alustojen grafiikat (normaali, harmaa rikki menevä, ansa)
     for i in range(len(platforms)):
-        rect_data = platforms[i][:4]
-        if platforms[i][4] == 0:
-            color = black
-        elif platforms[i][4] == 1:
-            color = gray
-        elif platforms[i][4] == 2:
-            color = (200, 50, 50)  # rikki
-        elif platforms[i][4] == 3:
-            color = (255, 0, 255)  # ansa (violetti)
-        block = pygame.draw.rect(screen, color, rect_data, 0, 3)
+        platform_type = platforms[i][4]
+        image = platform_images[platform_type]
 
+        screen.blit(image, (platforms[i][0], platforms[i][1]))
+
+        block = pygame.Rect(platforms[i][0], platforms[i][1], platforms[i][2], platforms[i][3])
         blocks.append(block)
 
     for event in pygame.event.get():

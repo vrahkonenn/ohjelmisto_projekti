@@ -1,5 +1,6 @@
 import pygame
 import random
+import spritesheet
 
 pygame.init()
 
@@ -20,7 +21,24 @@ screen = pygame.display.set_mode([WIDTH, HEIGHT])
 pygame.display.set_caption("TEMP_Hyppypeli_TEMP")
 
 player_scale= 90
-player = pygame.transform.scale(pygame.image.load("Imgs\player.png"), (player_scale, player_scale))
+player = pygame.image.load("Imgs/frame1 (9).png").convert_alpha()
+
+###sprite
+sprite_sheet = spritesheet.SpriteSheet(player)
+
+animation_list = []
+animating = False
+animation_steps = 6
+animation_cooldown = 75
+last_update = pygame.time.get_ticks()
+frame = 0
+
+for x in range(animation_steps):
+    animation_list.append(
+        sprite_sheet.get_image(x, 80, 80, 1, (0,0,0))
+    )
+###
+
 #pygame.transform.scale(, (90, 70))
 player_x = WIDTH/2 - (player_scale/2)
 player_y = 400
@@ -36,7 +54,7 @@ platforms = [[175, 480, 70 , 10],
 jump = False
 y_change = 0
 x_change = 0
-
+score = 0
 def update_player(y_pos):
     global jump
     global y_change
@@ -59,13 +77,15 @@ def check_collisions(rect_list, j):
     return j
 
 def updatePlatforms(my_list, y_pos, y_change):
+    global score
     if y_pos < 250 and y_change < 0:
         for i in range(len(my_list)):
             my_list[i][1] -= y_change
+            score += 0.05
     else:
         pass
     for item in range(len(my_list)):
-        if my_list[item][1] > 500:
+        if my_list[item][1] > 510:
             my_list[item] = [random.randint(10, 300), random.randint(-50, -10), 70, 10]
     return my_list
 
@@ -74,8 +94,21 @@ running = True
 while running == True:
     timer.tick(FPS)
     screen.fill(background)
-    screen.blit(player, (player_x, player_y))
+    screen.blit(animation_list[frame], (player_x, player_y))
     blocks = []
+
+    ##sprite
+    current_time = pygame.time.get_ticks()
+    if animating:
+        current_time = pygame.time.get_ticks()
+        if current_time - last_update >= animation_cooldown:
+            frame += 1
+            last_update = current_time
+
+            if frame >= len(animation_list):
+                frame = len(animation_list) - 1
+                animating = False  # pysähdy viimeiseen frameen
+    ##
 
     for i in range(len(platforms)):
         block = pygame.draw.rect(screen, black, platforms[i], 0, 3)
@@ -96,10 +129,23 @@ while running == True:
                 x_change = 0
 
     player_x += x_change
+    if player_x > 400 and x_change>0:
+        player_x = -25
+    if player_x < 0 and x_change<0:
+        player_x = 375
     player_y = update_player(player_y)
     jump = check_collisions(blocks, jump)
 
-    platforms = updatePlatforms(platforms, player_y, y_change)
+    ##sprite
+    if jump and not animating:
+        animating = True
+        frame = 0
+        last_update = pygame.time.get_ticks()
+    ##
 
+    platforms = updatePlatforms(platforms, player_y, y_change)
+    print(score) #score testi
     pygame.display.flip()
+    #if player_y > HEIGHT + 50:
+    #    running = False
 pygame.quit()

@@ -71,3 +71,47 @@ Ei toiminnallisia vaatimuksia:
 - Pelissä saavutetut ennätykset tallennetaan tietokantaan. Tietokantaan tallennetaan top 5 ennätystä, mikäli pelissä saavuttaa suuremman arvon kuin jo olemassa oleva top5, uusi ennätys ylikirjoitetaan oikeaan kohtaan. 
 
 - Tietokantaa ei pidä päästä muuttamaan itse. Kun peli on ohi, peli tarkastaa onko saavutettu maksimikorkeus suurempi kuin tietokannassa olevat ennätykset, mikäli on, pelaaja voi antaa nimimerkin ja tieto ylikirjoitetaan tietokantaan HTTP POST pyynnöllä.
+
+---
+
+# Backlog tehtävälista
+
+- Normaali alusta
+- Yhden hypyn kestävä alusta
+- Ansa-alusta (ei kestä)
+- Liikkuva alusta
+- Superhyppy boost
+- Hyppykengät boost
+- Rakettireppu boost
+- Sateenvarjo boost
+- Paikallaan oleva hirviö
+- Sivuttain liikkuva hirviö
+- Hirviöihin kestävyys ominaisuus
+- Hahmo ampuu panoksia
+- Panoksien vaikutus hirviöön
+- Hahmo grafiikka
+- Alustojen grafiikka
+- Taustan grafiikka
+- Hirviöiden grafiikka
+- Ammuksien grafiikka
+- Boostien grafiikka
+- Randomisti generoituvat kolikot
+- Kolikkojen tallentuminen- ja haku tietokannasta
+- Ennätysten tallentaminen- ja haku tietokannasta
+- Kolikkokauppa
+- Pelin vaikeutuminen
+- Pelialueen rajat
+- Pelin päävalikko
+- Pelatessa pause-nappi ja valikko
+- Game over -näkymä
+- Ääniasetuksien säätö
+- Pelin häviäminen pudotessa, tai hirviöön osuessa
+- Korkeuden tallennus hahmon mukana
+- Hypyn ohjattavuus
+- Alustojen generointi
+- Kamera seuraa pelaajaa
+
+## Done tehtävälista
+- Hahmo hyppii jatkuvasti
+- Hahmoa voi liikuttaa sivusuunnassa
+- Painovoima (hahmo putoaa)

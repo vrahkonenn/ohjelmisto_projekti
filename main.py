@@ -105,8 +105,14 @@ def updatePlatforms(my_list, y_pos, y_change):
     for item in range(len(my_list)):
         if my_list[item][1] > 510:
             # Alustojen spawnaus mahdollisuus (0 = normaali, 1 = hajoava, 3 = ansa)
+            spawn_x = random.randint(10, 300)
+            spawn_y = random.randint(-50, -10)
             platform_type = random.choices([0,1,3], weights=[75,20,5])[0]
-            my_list[item] = [random.randint(10, 300), random.randint(-50, -10), 70, 10, platform_type]
+            # Älä spawnaa ansa-alustaa liian lähelle pelaajan nykyistä pystysuuntaista sijaintia
+            if platform_type == 3 and abs(y_pos - spawn_y) < 120:
+                # fallback normaaliin tai hajoavaan alustaan
+                platform_type = random.choices([0,1], weights=[80,20])[0]
+            my_list[item] = [spawn_x, spawn_y, 70, 10, platform_type]
     return my_list
 
 

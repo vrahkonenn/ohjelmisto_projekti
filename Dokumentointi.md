@@ -76,9 +76,6 @@ Ei toiminnallisia vaatimuksia:
 
 # Backlog tehtävälista
 
-- Normaali alusta
-- Yhden hypyn kestävä alusta
-- Ansa-alusta (ei kestä)
 - Liikkuva alusta
 - Superhyppy boost
 - Hyppykengät boost
@@ -89,8 +86,7 @@ Ei toiminnallisia vaatimuksia:
 - Hirviöihin kestävyys ominaisuus
 - Hahmo ampuu panoksia
 - Panoksien vaikutus hirviöön
-- Hahmo grafiikka
-- Alustojen grafiikka
+- Pelin häviäminen hirviöön osuessa
 - Taustan grafiikka
 - Hirviöiden grafiikka
 - Ammuksien grafiikka
@@ -100,18 +96,28 @@ Ei toiminnallisia vaatimuksia:
 - Ennätysten tallentaminen- ja haku tietokannasta
 - Kolikkokauppa
 - Pelin vaikeutuminen
-- Pelialueen rajat
 - Pelin päävalikko
 - Pelatessa pause-nappi ja valikko
-- Game over -näkymä
 - Ääniasetuksien säätö
-- Pelin häviäminen pudotessa, tai hirviöön osuessa
-- Korkeuden tallennus hahmon mukana
-- Hypyn ohjattavuus
-- Alustojen generointi
+- Korkeuden tallennus ja peliin näkyviin
+
+## Sprintissä
+- Pelin häviäminen pudotessa ja uudelleenkäynnistys
 - Kamera seuraa pelaajaa
+- Hypyn ohjattavuus
+- Koodin modulaarisuus
 
 ## Done tehtävälista
 - Hahmo hyppii jatkuvasti
 - Hahmoa voi liikuttaa sivusuunnassa
 - Painovoima (hahmo putoaa)
+
+
+Sprint 1 viikko 6:
+- Pelialueen rajat
+- Hahmo grafiikka
+- Normaali alusta
+- Yhden hypyn kestävä alusta
+- Ansa alusta (ei kestä)
+- Alustojen generointi
+- Alustojen grafiikat

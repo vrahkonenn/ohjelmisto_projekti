@@ -86,8 +86,6 @@ Ei toiminnallisia vaatimuksia:
 - Hirviöihin kestävyys ominaisuus
 - Hahmo ampuu panoksia
 - Panoksien vaikutus hirviöön
-- Hahmo grafiikka
-- Alustojen grafiikka
 - Taustan grafiikka
 - Hirviöiden grafiikka
 - Ammuksien grafiikka
@@ -97,22 +95,22 @@ Ei toiminnallisia vaatimuksia:
 - Ennätysten tallentaminen- ja haku tietokannasta
 - Kolikkokauppa
 - Pelin vaikeutuminen
-- Pelialueen rajat
 - Pelin päävalikko
 - Pelatessa pause-nappi ja valikko
-- Game over -näkymä
 - Ääniasetuksien säätö
-- Pelin häviäminen pudotessa, tai hirviöön osuessa
 - Korkeuden tallennus hahmon mukana
-- Hypyn ohjattavuus
-- Alustojen generointi
+
+## Sprintissä
 - Kamera seuraa pelaajaa
+- Hypyn ohjattavuus
+- Pelin häviäminen pudotessa, tai hirviöön osuessa
+- Game over -näkymä
 
 ## Done tehtävälista
 - Hahmo hyppii jatkuvasti
 - Hahmoa voi liikuttaa sivusuunnassa
 - Painovoima (hahmo putoaa)
-- Pelialueen rajat
+
 
 Sprint 1 viikko 6:
 - Hahmo grafiikka
@@ -124,3 +122,4 @@ Sprint 1 viikko 6:
 - Yhden hypyn kestävä alusta
 - Ansa-alusta (ei kestä)
 - Normaali alusta
+- Pelialueen rajat

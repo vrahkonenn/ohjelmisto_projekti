@@ -73,7 +73,7 @@ def move_to_side():
         x_change = player_spd
     return x_change    
 
-#Näppäimen pohjassa pito check
+#Näppäimen pohjassa pito
 def key_check():
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] == True:

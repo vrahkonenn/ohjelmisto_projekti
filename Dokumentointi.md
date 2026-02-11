@@ -76,9 +76,6 @@ Ei toiminnallisia vaatimuksia:
 
 # Backlog tehtävälista
 
-- Normaali alusta
-- Yhden hypyn kestävä alusta
-- Ansa-alusta (ei kestä)
 - Liikkuva alusta
 - Superhyppy boost
 - Hyppykengät boost
@@ -124,3 +121,6 @@ Sprint 1 viikko 6:
 - Ansa alusta (ei kestä)
 - Alustojen generointi
 - Alustojen grafiikat
+- Yhden hypyn kestävä alusta
+- Ansa-alusta (ei kestä)
+- Normaali alusta

@@ -64,6 +64,26 @@ jump = False
 y_change = 0
 x_change = 0
 score = 0
+
+#Liikkumis koodi
+def move_to_side():
+    if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+        x_change = -player_spd
+    if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+        x_change = player_spd
+    return x_change    
+
+#Näppäimen pohjassa pito check
+def key_check():
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT] == True:
+        x_change = -player_spd
+    if keys[pygame.K_RIGHT] == True:
+        x_change = player_spd
+    if sum(keys) == 0:
+        x_change = 0
+    return x_change
+
 def update_player(y_pos):
     global jump
     global y_change
@@ -194,21 +214,17 @@ while running == True:
         block = pygame.Rect(platforms[i][0], platforms[i][1], platforms[i][2], platforms[i][3])
         blocks.append(block)
 
+    # Nappi tapahtumat
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                x_change = -player_spd
-            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                x_change = player_spd
+            x_change = move_to_side()
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                x_change = 0
-            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                x_change = 0
+            x_change = key_check()         
 
     player_x += x_change
+    #Rajat
     if player_x > 400 and x_change>0:
         player_x = -25
     if player_x < 0 and x_change<0:

@@ -115,3 +115,12 @@ Ei toiminnallisia vaatimuksia:
 - Hahmo hyppii jatkuvasti
 - Hahmoa voi liikuttaa sivusuunnassa
 - Painovoima (hahmo putoaa)
+- Pelialueen rajat
+
+Sprint 1 viikko 6:
+- Hahmo grafiikka
+- Normaali alusta
+- Yhden hypyn kestävä alusta
+- Ansa alusta (ei kestä)
+- Alustojen generointi
+- Alustojen grafiikat

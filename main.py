@@ -13,6 +13,10 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 gray = (128, 128, 128)
 
+#fontti
+font_small = pygame.font.SysFont('Lucida Sans', 20)
+font_big = pygame.font.SysFont('Lucida Sans', 24)
+
 timer = pygame.time.Clock()
 
 background = white
@@ -24,6 +28,8 @@ MAX_PLATFORM_GAP = 100
 MIN_PLATFORM_SEPARATION = 40
 # sivusuuntainen raja, että pelaaja ylettää
 HORIZ_REACH = 120
+#game over
+game_over = False
 
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 pygame.display.set_caption("TEMP_Hyppypeli_TEMP")
@@ -53,13 +59,14 @@ player_y = 400
 player_spd = 3
 
 # Platform [x, y, width, height, type]
-platforms = [[175, 480, 70 , 10, 0],
+initial_platforms = [[175, 480, 70 , 10, 0],
              [85 , 370, 70 , 10, 1],
              [265, 370, 70 , 10, 0],
              [175, 260, 70 , 10, 0],
              [85 , 150, 70 , 10, 1],
              [265, 150, 70 , 10, 0],
              [175, 40 , 70 , 10, 0]]
+platforms = initial_platforms.copy()
 jump = False
 y_change = 0
 x_change = 0
@@ -67,6 +74,7 @@ score = 0
 
 #Liikkumis koodi
 def move_to_side():
+    global x_change
     if event.key == pygame.K_a or event.key == pygame.K_LEFT:
         x_change = -player_spd
     if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
@@ -75,6 +83,7 @@ def move_to_side():
 
 #Näppäimen pohjassa pito
 def key_check():
+    global x_change
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] == True:
         x_change = -player_spd
@@ -176,6 +185,10 @@ def updatePlatforms(my_list, y_pos, y_change):
             my_list[item] = [spawn_x, spawn_y, 70, 10, platform_type]
     return my_list
 
+def draw_text(text, font, text_col, x, y):
+    img = font.render(text, True, text_col)
+    screen.blit(img, (x, y))
+
 #platform grafiikat
 platform_images = {
     0: pygame.image.load("Imgs/normal.png").convert_alpha(),
@@ -187,32 +200,75 @@ platform_images = {
 running = True
 while running == True:
     timer.tick(FPS)
-    screen.fill(background)
-    screen.blit(animation_list[frame], (player_x, player_y))
-    blocks = []
 
-    ##sprite
-    current_time = pygame.time.get_ticks()
-    if animating:
+    if game_over == False:
+        screen.fill(background)
+        screen.blit(animation_list[frame], (player_x, player_y))
+        blocks = []
+
+        ##sprite
         current_time = pygame.time.get_ticks()
-        if current_time - last_update >= animation_cooldown:
-            frame += 1
-            last_update = current_time
+        if animating:
+            current_time = pygame.time.get_ticks()
+            if current_time - last_update >= animation_cooldown:
+                frame += 1
+                last_update = current_time
 
-            if frame >= len(animation_list):
-                frame = len(animation_list) - 1
-                animating = False  # pysähdy viimeiseen frameen
-    ##
+                if frame >= len(animation_list):
+                    frame = len(animation_list) - 1
+                    animating = False  # pysähdy viimeiseen frameen
+        ##
 
-    # Alustojen grafiikat (normaali, harmaa rikki menevä, ansa)
-    for i in range(len(platforms)):
-        platform_type = platforms[i][4]
-        image = platform_images[platform_type]
+        # Alustojen grafiikat (normaali, harmaa rikki menevä, ansa)
+        for i in range(len(platforms)):
+            platform_type = platforms[i][4]
+            image = platform_images[platform_type]
 
-        screen.blit(image, (platforms[i][0], platforms[i][1]))
+            screen.blit(image, (platforms[i][0], platforms[i][1]))
 
-        block = pygame.Rect(platforms[i][0], platforms[i][1], platforms[i][2], platforms[i][3])
-        blocks.append(block)
+            block = pygame.Rect(platforms[i][0], platforms[i][1], platforms[i][2], platforms[i][3])
+            blocks.append(block)
+        
+        player_x += x_change
+        #Rajat
+        if player_x > 400 and x_change>0:
+            player_x = -25
+        if player_x < 0 and x_change<0:
+            player_x = 375
+        player_y = update_player(player_y)
+        jump = check_collisions(blocks)
+
+        ##sprite
+        if jump and not animating:
+            animating = True
+            frame = 0
+            last_update = pygame.time.get_ticks()
+        ##
+
+        platforms = updatePlatforms(platforms, player_y, y_change)
+        print(score) #score testi
+
+        #check game over
+        if player_y > HEIGHT:
+            game_over = True
+    else:
+        print("GAMEOVER")
+        draw_text('GAME OVER!', font_big, black, 130, 200)
+        draw_text('SCORE: ' + str(score), font_big, black, 130, 250)
+        draw_text('PRESS SPACE TO PLAY AGAIN', font_big, black, 40, 300)
+        key = pygame.key.get_pressed()
+        if key[pygame.K_SPACE]:
+            game_over = False
+            score = 0
+            #repostition player
+            player_x = WIDTH/2 - (player_scale/2)
+            player_y = 400
+            y_change = 0
+            x_change = 0
+            jump = True
+            #reset platforms
+            platforms = initial_platforms.copy()
+
 
     # Nappi tapahtumat
     for event in pygame.event.get():
@@ -223,24 +279,6 @@ while running == True:
         if event.type == pygame.KEYUP:
             x_change = key_check()         
 
-    player_x += x_change
-    #Rajat
-    if player_x > 400 and x_change>0:
-        player_x = -25
-    if player_x < 0 and x_change<0:
-        player_x = 375
-    player_y = update_player(player_y)
-    jump = check_collisions(blocks)
-
-    ##sprite
-    if jump and not animating:
-        animating = True
-        frame = 0
-        last_update = pygame.time.get_ticks()
-    ##
-
-    platforms = updatePlatforms(platforms, player_y, y_change)
-    print(score) #score testi
     pygame.display.flip()
     #if player_y > HEIGHT + 50:
     #    running = False

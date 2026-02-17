@@ -87,9 +87,9 @@ def move_to_side():
 def key_check():
     global x_change
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] == True:
+    if keys[pygame.K_LEFT] == True or keys[pygame.K_a] == True:
         x_change = -player_spd
-    if keys[pygame.K_RIGHT] == True:
+    if keys[pygame.K_RIGHT] == True or keys[pygame.K_d] == True:
         x_change = player_spd
     if sum(keys) == 0:
         x_change = 0
@@ -255,6 +255,9 @@ while running == True:
 
         platforms = updatePlatforms(platforms, player_y, y_change)
         print(score) #score testi
+        #Korkeus = score toistaiseki
+        #Tuleva Score voi olla korkeus + pisteet monstereista
+        draw_text(f'Korkeus: {score:.2f}', font_small, black, 0, 0)
 
         #check game over
         if player_y > HEIGHT:

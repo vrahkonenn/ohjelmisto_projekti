@@ -25,11 +25,13 @@ background = white
 MIN_PLATFORM_GAP = 60
 MAX_PLATFORM_GAP = 100
 #Min korkeusväli alustojen välillä
-MIN_PLATFORM_SEPARATION = 40
+MIN_PLATFORM_SEPARATION = 60
 # sivusuuntainen raja, että pelaaja ylettää
 HORIZ_REACH = 120
 #game over
 game_over = False
+# Pelaajan maksimikorkeus
+MAX_PLAYER_HEIGHT = 150
 
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 pygame.display.set_caption("TEMP_Hyppypeli_TEMP")
@@ -97,7 +99,7 @@ def update_player(y_pos):
     global jump
     global y_change
     gravity = .4
-    jump_height = 10
+    jump_height = 13
     if jump:
         y_change = -jump_height
         jump = False
@@ -133,12 +135,12 @@ def updatePlatforms(my_list, y_pos, y_change):
             my_list[i][1] += 8  # putoamisnopeus
 
     global score
-    if y_pos < 250 and y_change < 0:
-        for i in range(len(my_list)):
-            my_list[i][1] -= y_change
-            score += 0.05
-    else:
-        pass
+    #if y_pos < 250 and y_change < 0:
+    #    for i in range(len(my_list)):
+    #        my_list[i][1] -= y_change
+    #        score += 0.05
+    #else:
+    #    pass
     for item in range(len(my_list)):
         if my_list[item][1] > 510:
             # Alustojen spawnaus mahdollisuus (0 = normaali, 1 = hajoava, 3 = ansa)
@@ -236,6 +238,12 @@ while running == True:
         if player_x < 0 and x_change<0:
             player_x = 375
         player_y = update_player(player_y)
+        # Camera lock (player max height)
+        if player_y <= 200 and y_change < 0:
+            player_y = 200
+            for p in platforms:
+                p[1] -= y_change   # move platforms instead
+            score += abs(y_change) * 0.05
         jump = check_collisions(blocks)
 
         ##sprite

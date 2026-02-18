@@ -92,25 +92,33 @@ Ei toiminnallisia vaatimuksia:
 - Ammuksien grafiikka
 - Boostien grafiikka
 - Randomisti generoituvat kolikot
-- Kolikkojen tallentuminen- ja haku tietokannasta
-- Ennätysten tallentaminen- ja haku tietokannasta
+- Kolikkojen tallentuminen- ja haku jsonista
+- Ennätysten tallentaminen- ja haku jsonista
 - Kolikkokauppa
 - Pelin vaikeutuminen
 - Pelin päävalikko
+- Pelin Game Over valikko
 - Pelatessa pause-nappi ja valikko
 - Ääniasetuksien säätö
 - Korkeuden tallennus ja peliin näkyviin
 
 ## Sprintissä
-- Pelin häviäminen pudotessa ja uudelleenkäynnistys
-- Kamera seuraa pelaajaa
-- Hypyn ohjattavuus
-- Koodin modulaarisuus
+- Liikkuva alusta
+- Pelin päävalikko
+- Pelin Game Over valikko
+- Kolikkojen tallentuminen ja haku jsonista
 
 ## Done tehtävälista
 - Hahmo hyppii jatkuvasti
 - Hahmoa voi liikuttaa sivusuunnassa
 - Painovoima (hahmo putoaa)
+- Pelialueen rajat
+- Hahmo grafiikka
+- Normaali alusta
+- Yhden hypyn kestävä alusta
+- Ansa alusta (ei kestä)
+- Alustojen generointi
+- Alustojen grafiikat
 
 
 Sprint 1 viikko 6:
@@ -121,3 +129,10 @@ Sprint 1 viikko 6:
 - Ansa alusta (ei kestä)
 - Alustojen generointi
 - Alustojen grafiikat
+
+Sprint 2 viikko 7
+- Pelin häviäminen pudotessa ja uudelleenkäynnistys
+- Kamera seuraa pelaajaa
+- Hypyn ohjattavuus
+- Koodin modulaarisuus
+- Korkeuden tallennus ja peliin näkyviin

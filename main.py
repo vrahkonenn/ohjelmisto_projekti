@@ -1,6 +1,8 @@
-import pygame
+import pygame 
 import random
 import spritesheet
+from pygame import font
+from button import Button
 
 pygame.init()
 
@@ -73,6 +75,9 @@ jump = False
 y_change = 0
 x_change = 0
 score = 0
+
+#restart nappi
+restart_button = Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50, "RESTART", font_big, gray, black)
 
 #Liikkumis koodi
 def move_to_side():
@@ -191,6 +196,26 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
 
+def draw_game_over():
+    screen.fill(white)
+    draw_text("GAME OVER", font_big, black, WIDTH//2 - 80, HEIGHT//2 - 60)
+    draw_text(f"SCORE: {score:.2f}", font_big, black, WIDTH//2 - 80, HEIGHT//2 - 20)
+    restart_button.draw(screen)
+
+#reset game funktio
+def reset_game():
+    global game_over, score, player_x, player_y, x_change, y_change, jump, platforms
+    game_over = False
+    score = 0
+    player_x = WIDTH/2 - (player_scale/2)
+    player_y = 400
+    x_change = 0
+    y_change = 0
+    jump = True
+    platforms = initial_platforms.copy()
+    
+
+
 #platform grafiikat
 platform_images = {
     0: pygame.image.load("Imgs/normal.png").convert_alpha(),
@@ -263,22 +288,7 @@ while running == True:
         if player_y > HEIGHT:
             game_over = True
     else:
-        print("GAMEOVER")
-        draw_text('GAME OVER!', font_big, black, 130, 200)
-        draw_text('SCORE: ' + str(score), font_big, black, 130, 250)
-        draw_text('PRESS SPACE TO PLAY AGAIN', font_big, black, 40, 300)
-        key = pygame.key.get_pressed()
-        if key[pygame.K_SPACE]:
-            game_over = False
-            score = 0
-            #repostition player
-            player_x = WIDTH/2 - (player_scale/2)
-            player_y = 400
-            y_change = 0
-            x_change = 0
-            jump = True
-            #reset platforms
-            platforms = initial_platforms.copy()
+        draw_game_over()
 
 
     # Nappi tapahtumat
@@ -288,7 +298,15 @@ while running == True:
         if event.type == pygame.KEYDOWN:
             x_change = move_to_side()
         if event.type == pygame.KEYUP:
-            x_change = key_check()         
+            x_change = key_check()  
+        #nappi hiirellä klikkaus
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if game_over and restart_button.is_clicked(event.pos) or pygame.key.get_pressed() == pygame.K_SPACE:
+                reset_game()  
+        #space näppäin
+        if event.type == pygame.KEYDOWN:
+            if game_over and event.key == pygame.K_SPACE:
+                reset_game()  
 
     pygame.display.flip()
     #if player_y > HEIGHT + 50:

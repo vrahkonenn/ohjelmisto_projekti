@@ -61,6 +61,8 @@ class PlatformManager:
             (175, 40 , "normal", False)
         ]
 
+        self.last_spawn_type = "normal"
+
         self.platforms = []
         self.create_initial_platforms()
 
@@ -124,6 +126,10 @@ class PlatformManager:
                     # Weights = % mahdollisuus alustalle
                     weights=[70, 20, 10]
                 )[0]
+
+                if self.last_spawn_type == "trap" and platform_type == "trap":
+                    platform_type = "normal"
+                self.last_spawn_type = platform_type
 
                 # 30% mahdollisuus olla liikkuva
                 moving = random.random() < 0.3

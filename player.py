@@ -8,7 +8,7 @@ class Player:
         self.scale = 90
         self.x = WIDTH/2 - (self.scale/2)
         self.y = 400
-        self.spd = 3
+        self.spd = 4
 
         self.jump = False
         self.y_change = 0

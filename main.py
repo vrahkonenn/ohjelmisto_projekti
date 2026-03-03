@@ -1,3 +1,4 @@
+# main.py
 import pygame
 from settings import *
 from player import Player
@@ -33,13 +34,12 @@ while running:
 
         score += platforms.update(player)
 
-        blocks = platforms.draw(screen)
-
         player.jump = platforms.check_collisions(player)
 
         if player.jump:
             player.start_animation()
 
+        platforms.draw(screen)
         player.draw(screen)
 
         draw_text(screen, f"Korkeus: {score:.2f}",
@@ -47,6 +47,7 @@ while running:
 
         if player.y > HEIGHT:
             game_over = True
+
     else:
         screen.fill(WHITE)
         draw_text(screen, "GAME OVER", font_big, BLACK,
@@ -61,6 +62,7 @@ while running:
 
         if event.type == pygame.KEYDOWN:
             player.move_to_side(event.key)
+
             if game_over and event.key == pygame.K_SPACE:
                 player.reset()
                 platforms.reset()

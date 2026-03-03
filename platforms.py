@@ -3,72 +3,141 @@ import pygame
 import random
 from settings import *
 
+class Platform:
+    def __init__(self, x, y, width=70, height=10, platform_type="normal", moving=False):
+
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.type = platform_type
+
+        self.moving = moving
+        self.direction = random.choice([-1, 1])
+        self.speed = random.uniform(1.0, 3.0)
+
+    def get_rect(self):
+        return pygame.Rect(self.x, self.y, self.width, self.height)
+
+    def draw(self, screen, images):
+        screen.blit(images[self.type], (self.x, self.y))
+
+    def update(self):
+        # Broken putoaa
+        if self.type == "broken":
+            self.y += 8
+
+        # Liikkuva alusta
+        if self.moving:
+            self.x += self.speed * self.direction
+
+            # Reunat
+            if self.x <= 0:
+                self.x = 0
+                self.direction = 1
+
+            if self.x + self.width >= WIDTH:
+                self.x = WIDTH - self.width
+                self.direction = -1
+
+
 class PlatformManager:
     def __init__(self):
-        self.initial_platforms = [
-            [175, 480, 70 , 10, 0],
-            [85 , 370, 70 , 10, 1],
-            [265, 370, 70 , 10, 0],
-            [175, 260, 70 , 10, 0],
-            [85 , 150, 70 , 10, 1],
-            [265, 150, 70 , 10, 0],
-            [175, 40 , 70 , 10, 0]
-        ]
-        self.platforms = self.initial_platforms.copy()
 
         self.images = {
-            0: pygame.image.load("Imgs/normal.png").convert_alpha(),
-            1: pygame.image.load("Imgs/breakable.png").convert_alpha(),
-            2: pygame.image.load("Imgs/broken.png").convert_alpha(),
-            3: pygame.image.load("Imgs/trap.png").convert_alpha()
+            "normal": pygame.image.load("Imgs/normal.png").convert_alpha(),
+            "breakable": pygame.image.load("Imgs/breakable.png").convert_alpha(),
+            "broken": pygame.image.load("Imgs/broken.png").convert_alpha(),
+            "trap": pygame.image.load("Imgs/trap.png").convert_alpha()
         }
 
+        self.initial_data = [
+            (175, 480, "normal", False),
+            (85 , 370, "breakable", False),
+            (265, 370, "normal", False),   
+            (175, 260, "normal", False),
+            (85 , 150, "breakable", False),
+            (265, 150, "normal", False),
+            (175, 40 , "normal", False)
+        ]
+
+        self.platforms = []
+        self.create_initial_platforms()
+
+    def create_initial_platforms(self):
+        self.platforms.clear()
+        for x, y, p_type, moving in self.initial_data:
+            self.platforms.append(
+                Platform(x, y, 70, 10, p_type, moving)
+            )
+
     def draw(self, screen):
-        blocks = []
-        for p in self.platforms:
-            screen.blit(self.images[p[4]], (p[0], p[1]))
-            blocks.append(pygame.Rect(p[0], p[1], p[2], p[3]))
-        return blocks
+        for platform in self.platforms:
+            platform.draw(screen, self.images)
 
     def check_collisions(self, player):
-        for i in range(len(self.platforms)):
-            if pygame.Rect(self.platforms[i][0], self.platforms[i][1],
-                           self.platforms[i][2], self.platforms[i][3]).colliderect(
-                           player.get_collision_rect()) and player.y_change > 0:
+        for platform in self.platforms:
+            if platform.get_rect().colliderect(
+                player.get_collision_rect()
+            ) and player.y_change > 0:
 
-                if self.platforms[i][4] == 0:
+                if platform.type == "normal":
                     return True
 
-                if self.platforms[i][4] == 1:
-                    self.platforms[i][4] = 2
+                if platform.type == "breakable":
+                    platform.type = "broken"
                     return True
 
-                if self.platforms[i][4] == 3:
+                if platform.type == "trap":
                     return False
+
         return False
 
     def update(self, player):
         score_add = 0
 
+        # Kamera lock
         if player.y <= 200 and player.y_change < 0:
             player.y = 200
             for p in self.platforms:
-                p[1] -= player.y_change
+                p.y -= player.y_change
             score_add = abs(player.y_change) * 0.05
 
+        # Päivitä kaikki alustat
         for p in self.platforms:
-            if p[4] == 2:
-                p[1] += 8
+            p.update()
 
-        for i in range(len(self.platforms)):
-            if self.platforms[i][1] > 510:
-                highest_y = min(p[1] for p in self.platforms)
+        # Respawn
+        for i, p in enumerate(self.platforms):
+            if p.y > 510:
+
+                highest_y = min(platform.y for platform in self.platforms)
+
                 spawn_x = random.randint(10, 300)
-                spawn_y = highest_y - random.randint(MIN_PLATFORM_GAP, MAX_PLATFORM_GAP)
-                platform_type = random.choices([0,1,3], weights=[75,20,5])[0]
-                self.platforms[i] = [spawn_x, spawn_y, 70, 10, platform_type]
+                spawn_y = highest_y - random.randint(
+                    MIN_PLATFORM_GAP,
+                    MAX_PLATFORM_GAP
+                )
+
+                platform_type = random.choices(
+                    ["normal", "breakable", "trap"],
+                    # Weights = % mahdollisuus alustalle
+                    weights=[70, 20, 10]
+                )[0]
+
+                # 30% mahdollisuus olla liikkuva
+                moving = random.random() < 0.3
+
+                self.platforms[i] = Platform(
+                    spawn_x,
+                    spawn_y,
+                    70,
+                    10,
+                    platform_type,
+                    moving
+                )
 
         return score_add
 
     def reset(self):
-        self.platforms = self.initial_platforms.copy()
+        self.create_initial_platforms()

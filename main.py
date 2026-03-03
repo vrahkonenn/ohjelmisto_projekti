@@ -1,5 +1,6 @@
 # main.py
 import pygame
+from saves import *
 from settings import *
 from player import Player
 from platforms import PlatformManager
@@ -22,6 +23,10 @@ restart_button = Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
 score = 0
 game_over = False
 running = True
+coins = 0
+data = get_data()
+highscore = data["highscore"]
+total_coins = data["currency"]  
 
 while running:
     clock.tick(FPS)
@@ -55,6 +60,9 @@ while running:
         draw_text(screen, f"SCORE: {score:.2f}",
                   font_big, BLACK, WIDTH//2 - 80, HEIGHT//2 - 20)
         restart_button.draw(screen)
+        if score > highscore:
+            data["highscore"] = score
+        save(data, total_coins, coins)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

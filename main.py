@@ -16,17 +16,47 @@ clock = pygame.time.Clock()
 player = Player()
 platforms = PlatformManager()
 
-restart_button = Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
+menu_player = Player()
+menu_player.y = 250
+menu_player.jump = True
+
+restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
                         "RESTART", font_big, GRAY, BLACK)
+start_button =      Button(WIDTH//2 - 100, 70, 200, 50,
+                        "START", font_big, GRAY, BLACK)
+
 
 score = 0
-game_over = False
+
+# game states
+GAME_MENU="menu"
+GAME_PLAYING="playing"
+GAME_OVER="game_over"
+
+game_state=GAME_MENU
 running = True
 
 while running:
     clock.tick(FPS)
 
-    if not game_over:
+    # Päävalikko
+    if game_state == GAME_MENU:
+        screen.fill(WHITE)
+        menu_player.update()
+        menu_player.animate()
+
+        if menu_player.y > 300:
+            menu_player.jump = True
+
+        menu_player.draw(screen)
+
+        draw_text(screen, "HYPPYPELI", font_big, BLACK,
+                  WIDTH//2 - 120, 20)
+        
+        start_button.draw(screen)
+
+    # Peli käynnissä
+    if game_state == GAME_PLAYING:
         screen.fill(WHITE)
 
         player.update()
@@ -46,9 +76,10 @@ while running:
                   font_small, BLACK, 0, 0)
 
         if player.y > HEIGHT:
-            game_over = True
+            game_state = GAME_OVER
 
-    else:
+    # game over
+    elif game_state == GAME_OVER:
         screen.fill(WHITE)
         draw_text(screen, "GAME OVER", font_big, BLACK,
                   WIDTH//2 - 80, HEIGHT//2 - 60)
@@ -61,23 +92,31 @@ while running:
             running = False
 
         if event.type == pygame.KEYDOWN:
-            player.move_to_side(event.key)
+            if game_state == GAME_PLAYING:
+                player.move_to_side(event.key)
 
-            if game_over and event.key == pygame.K_SPACE:
+            if game_state == GAME_OVER and event.key == pygame.K_SPACE:
                 player.reset()
                 platforms.reset()
                 score = 0
-                game_over = False
+                game_state = GAME_PLAYING
 
         if event.type == pygame.KEYUP:
-            player.key_check()
+            if game_state == GAME_PLAYING:
+                player.key_check()
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if game_over and restart_button.is_clicked(event.pos):
+            if game_state == GAME_MENU and start_button.is_clicked(event.pos):
                 player.reset()
                 platforms.reset()
                 score = 0
-                game_over = False
+                game_state = GAME_PLAYING
+
+            if game_state == GAME_OVER and restart_button.is_clicked(event.pos):
+                player.reset()
+                platforms.reset()
+                score = 0
+                game_state = GAME_PLAYING
 
     pygame.display.flip()
 

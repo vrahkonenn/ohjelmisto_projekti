@@ -75,32 +75,31 @@ Ei toiminnallisia vaatimuksia:
 ---
 
 # Backlog tehtävälista
-
-- Liikkuva alusta
 - Superhyppy boost
 - Hyppykengät boost
 - Rakettireppu boost
 - Sateenvarjo boost
+
 - Paikallaan oleva hirviö
 - Sivuttain liikkuva hirviö
-- Hirviöihin kestävyys ominaisuus
-- Hahmo ampuu panoksia
 - Panoksien vaikutus hirviöön
+- Hirviöihin kestävyys ominaisuus
 - Pelin häviäminen hirviöön osuessa
+
 - Taustan grafiikka
 - Hirviöiden grafiikka
 - Ammuksien grafiikka
 - Boostien grafiikka
+- Pelin päävalikon grafiikat
+- Pelin Game Over valikon grafiikat
+
+- Hahmo ampuu panoksia
 - Randomisti generoituvat kolikot
-- Kolikkojen tallentuminen- ja haku jsonista
 - Ennätysten tallentaminen- ja haku jsonista
 - Kolikkokauppa
 - Pelin vaikeutuminen
-- Pelin päävalikko
-- Pelin Game Over valikko
 - Pelatessa pause-nappi ja valikko
 - Ääniasetuksien säätö
-- Korkeuden tallennus ja peliin näkyviin
 
 ## Sprintissä
 - Liikkuva alusta
@@ -119,6 +118,7 @@ Ei toiminnallisia vaatimuksia:
 - Ansa alusta (ei kestä)
 - Alustojen generointi
 - Alustojen grafiikat
+- Korkeuden tallennus ja peliin näkyviin
 
 
 Sprint 1 viikko 6:

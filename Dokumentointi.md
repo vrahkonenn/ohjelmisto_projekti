@@ -75,37 +75,43 @@ Ei toiminnallisia vaatimuksia:
 ---
 
 # Backlog tehtävälista
+
+- Liikkuva alusta
 - Superhyppy boost
 - Hyppykengät boost
 - Rakettireppu boost
 - Sateenvarjo boost
-
 - Paikallaan oleva hirviö
 - Sivuttain liikkuva hirviö
-- Panoksien vaikutus hirviöön
 - Hirviöihin kestävyys ominaisuus
+- Hahmo ampuu panoksia
+- Panoksien vaikutus hirviöön
 - Pelin häviäminen hirviöön osuessa
-
 - Taustan grafiikka
 - Hirviöiden grafiikka
 - Ammuksien grafiikka
 - Boostien grafiikka
-- Pelin päävalikon grafiikat
-- Pelin Game Over valikon grafiikat
-
-- Hahmo ampuu panoksia
 - Randomisti generoituvat kolikot
+- Kolikkojen tallentuminen- ja haku jsonista
 - Ennätysten tallentaminen- ja haku jsonista
 - Kolikkokauppa
 - Pelin vaikeutuminen
-- Pelatessa pause-nappi ja valikko
-- Ääniasetuksien säätö
-
-## Sprintissä
-- Liikkuva alusta
 - Pelin päävalikko
 - Pelin Game Over valikko
-- Kolikkojen tallentuminen ja haku jsonista
+- Pelatessa pause-nappi ja valikko
+- Ääniasetuksien säätö
+- Korkeuden tallennus ja peliin näkyviin
+- Päävalikon grafiikka
+- Game over menun grafiikka
+
+## Sprintissä
+- Ennätysten tallentaminen- ja haku jsonista
+- Taustan grafiikka
+- Päävalikon grafiikka
+- Game over menun grafiikka
+- Boostien grafiikka
+- Hahmon grafiikka
+- Hahmo ampuu panoksia
 
 ## Done tehtävälista
 - Hahmo hyppii jatkuvasti
@@ -118,7 +124,15 @@ Ei toiminnallisia vaatimuksia:
 - Ansa alusta (ei kestä)
 - Alustojen generointi
 - Alustojen grafiikat
+- Pelin häviäminen pudotessa ja uudelleenkäynnistys
+- Kamera seuraa pelaajaa
+- Hypyn ohjattavuus
 - Korkeuden tallennus ja peliin näkyviin
+- Liikkuva alusta
+- Pelin päävalikko
+- Pelin Game Over valikko
+- Kolikkojen tallentuminen ja haku jsonista
+- Koodin modulaarisuus
 
 
 Sprint 1 viikko 6:
@@ -136,3 +150,10 @@ Sprint 2 viikko 7
 - Hypyn ohjattavuus
 - Koodin modulaarisuus
 - Korkeuden tallennus ja peliin näkyviin
+
+Sprint 3 viikko 8
+- Liikkuva alusta
+- Pelin päävalikko
+- Pelin Game Over valikko
+- Kolikkojen tallentuminen ja haku jsonista
+- Koodin modulaarisuus

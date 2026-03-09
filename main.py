@@ -6,6 +6,7 @@ from player import Player
 from platforms import PlatformManager
 from ui import draw_text
 from button import Button
+from bullet import BulletManager
 
 pygame.init()
 
@@ -16,7 +17,7 @@ clock = pygame.time.Clock()
 
 player = Player()
 platforms = PlatformManager()
-
+bullets = BulletManager()
 menu_player = Player()
 menu_player.y = 250
 menu_player.jump = True
@@ -63,7 +64,6 @@ while running:
     # Peli käynnissä
     if game_state == GAME_PLAYING:
         screen.fill(WHITE)
-
         player.update()
         player.animate()
 
@@ -76,6 +76,8 @@ while running:
 
         platforms.draw(screen)
         player.draw(screen)
+        bullets.update()
+        bullets.draw(screen)
 
         draw_text(screen, f"Korkeus: {score:.2f}",
                   font_small, BLACK, 0, 0)
@@ -102,6 +104,10 @@ while running:
         if event.type == pygame.KEYDOWN:
             if game_state == GAME_PLAYING:
                 player.move_to_side(event.key)
+
+            if event.key == pygame.K_SPACE and game_state == GAME_PLAYING:
+                bullets.shoot(player)
+                player.shoot_animation()
 
             if game_state == GAME_OVER and event.key == pygame.K_SPACE:
                 player.reset()

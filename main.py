@@ -7,6 +7,8 @@ from platforms import PlatformManager
 from ui import draw_text
 from button import Button
 from bullet import BulletManager
+from camera import Camera
+from background import Background
 
 pygame.init()
 
@@ -18,6 +20,8 @@ clock = pygame.time.Clock()
 player = Player()
 platforms = PlatformManager()
 bullets = BulletManager()
+camera = Camera()
+background = Background()
 menu_player = Player()
 menu_player.y = 250
 menu_player.jump = True
@@ -65,6 +69,10 @@ while running:
     if game_state == GAME_PLAYING:
         screen.fill(WHITE)
         player.update()
+
+        camera.update(player)
+        background.draw(screen, camera.scroll)
+
         player.animate()
 
         score += platforms.update(player)
@@ -112,6 +120,7 @@ while running:
             if game_state == GAME_OVER and event.key == pygame.K_SPACE:
                 player.reset()
                 platforms.reset()
+                camera.reset()
                 score = 0
                 game_state = GAME_PLAYING
 

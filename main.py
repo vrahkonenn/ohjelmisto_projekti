@@ -87,8 +87,10 @@ while running:
         bullets.update()
         bullets.draw(screen)
 
+        korkeusvari=BLACK if score < 900 else WHITE
+
         draw_text(screen, f"Korkeus: {score:.2f}",
-                  font_small, BLACK, 0, 0)
+                  font_small, korkeusvari, 0, 0)
 
         if player.y > HEIGHT:
             game_state = GAME_OVER
@@ -118,7 +120,7 @@ while running:
                 bullets.shoot(player)
                 player.shoot_animation()
 
-            if game_state == GAME_OVER and event.key == pygame.K_SPACE:
+            if game_state == GAME_OVER and event.key == pygame.K_SPACE  or game_state == GAME_MENU and event.key == pygame.K_SPACE:
                 player.reset()
                 platforms.reset()
                 camera.reset()

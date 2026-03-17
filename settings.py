@@ -19,3 +19,4 @@ MAX_PLAYER_HEIGHT = 150
 
 font_small = pygame.font.SysFont('Lucida Sans', 20)
 font_big = pygame.font.SysFont('Lucida Sans', 24)
+font_large = pygame.font.SysFont('Fonts/PressStart2P.ttf', 44)

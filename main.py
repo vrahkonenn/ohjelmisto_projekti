@@ -13,7 +13,10 @@ from background import Background
 pygame.init()
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("TEMP_Hyppypeli_TEMP")
+pygame.display.set_caption("Rise of The Bubblegum")
+
+menu_bg = pygame.image.load("Imgs/mMenu_bg.png").convert()
+gameover_bg_norm = pygame.image.load("Imgs/gameover_norm.png").convert()
 
 clock = pygame.time.Clock()
 
@@ -28,7 +31,7 @@ menu_player.jump = True
 
 restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
                         "RESTART", font_big, GRAY, BLACK)
-start_button =      Button(WIDTH//2 - 100, 70, 200, 50,
+start_button =      Button(WIDTH//2 - 175, 250, 200, 50,
                         "START", font_big, GRAY, BLACK)
 
 
@@ -51,7 +54,7 @@ while running:
 
     # Päävalikko
     if game_state == GAME_MENU:
-        screen.fill(WHITE)
+        screen.blit(menu_bg, (0, 0))
         menu_player.update()
         menu_player.animate()
 
@@ -59,9 +62,6 @@ while running:
             menu_player.jump = True
 
         menu_player.draw(screen)
-
-        draw_text(screen, "HYPPYPELI", font_big, BLACK,
-                  WIDTH//2 - 120, 20)
         
         start_button.draw(screen)
 
@@ -95,9 +95,10 @@ while running:
 
     # game over
     elif game_state == GAME_OVER:
-        screen.fill(WHITE)
-        draw_text(screen, "GAME OVER", font_big, BLACK,
-                  WIDTH//2 - 80, HEIGHT//2 - 60)
+        screen.blit(gameover_bg_norm, (0, 0))
+        text_surf = font_large.render(f"{highscore:.2f}", True, BLACK)
+        text_rect = text_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 60))
+        screen.blit(text_surf, text_rect)
         draw_text(screen, f"SCORE: {score:.2f}",
                   font_big, BLACK, WIDTH//2 - 80, HEIGHT//2 - 20)
         restart_button.draw(screen)

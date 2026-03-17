@@ -9,6 +9,7 @@ from button import Button
 from bullet import BulletManager
 from camera import Camera
 from background import Background
+from coin import Coin
 
 pygame.init()
 icon = pygame.image.load("Imgs/player.png")
@@ -22,6 +23,7 @@ gameover_bg_norm = pygame.image.load("Imgs/gameover_norm.png").convert()
 
 clock = pygame.time.Clock()
 
+coin = Coin(80, 200)
 player = Player()
 platforms = PlatformManager()
 bullets = BulletManager()
@@ -71,11 +73,12 @@ while running:
     if game_state == GAME_PLAYING:
         screen.fill(WHITE)
         player.update()
-
+        coin.start_animation()
         camera.update(player)
         background.draw(screen, camera.scroll)
 
         player.animate()
+        coin.animate()
 
         score += platforms.update(player)
 
@@ -86,6 +89,7 @@ while running:
 
         platforms.draw(screen)
         player.draw(screen)
+        coin.draw(screen)
         bullets.update()
         bullets.draw(screen)
 

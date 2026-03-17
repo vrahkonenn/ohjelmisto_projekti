@@ -11,6 +11,8 @@ from camera import Camera
 from background import Background
 
 pygame.init()
+icon = pygame.image.load("Imgs/player.png")
+pygame.display.set_icon(icon)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Rise of The Bubblegum")

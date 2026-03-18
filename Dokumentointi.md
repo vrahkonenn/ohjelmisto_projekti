@@ -75,10 +75,6 @@ Ei toiminnallisia vaatimuksia:
 ---
 
 # Backlog tehtävälista
-- Superhyppy boost
-- Hyppykengät boost
-- Rakettireppu boost
-- Sateenvarjo boost
 - Paikallaan oleva hirviö
 - Sivuttain liikkuva hirviö
 - Hirviöihin kestävyys ominaisuus
@@ -87,14 +83,15 @@ Ei toiminnallisia vaatimuksia:
 - Hirviöiden grafiikka
 - Kolikkokauppa
 - Pelin vaikeutuminen
-- Pelatessa pause-nappi ja valikko
 - Ääniasetuksien säätö
-- Musiikki (päävalikko, game over valikko, peli käynnissä)
 - Kuolemis animaatio (tippuu ja läsähtää maahan)
 - Ääniefektit (kuoleminen, hyppää, kerää kolikon, ampuu panoksen)
 
 ## Sprintissä
 - Kolikkojen generointi ja tallennus json
+- Musiikki (päävalikko, game over valikko, peli käynnissä)
+- Boostien spawnaus
+- Pelatessa pause-nappi ja valikko
 
 ## Done tehtävälista
 - Hahmo hyppii jatkuvasti

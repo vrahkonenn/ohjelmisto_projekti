@@ -141,12 +141,14 @@ while running:
             if game_state == GAME_MENU and start_button.is_clicked(event.pos):
                 player.reset()
                 platforms.reset()
+                camera.reset()
                 score = 0
                 game_state = GAME_PLAYING
 
             if game_state == GAME_OVER and restart_button.is_clicked(event.pos):
                 player.reset()
                 platforms.reset()
+                camera.reset()
                 score = 0
                 game_state = GAME_PLAYING
 

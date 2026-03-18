@@ -75,8 +75,6 @@ Ei toiminnallisia vaatimuksia:
 ---
 
 # Backlog tehtävälista
-
-- Liikkuva alusta
 - Superhyppy boost
 - Hyppykengät boost
 - Rakettireppu boost
@@ -84,34 +82,16 @@ Ei toiminnallisia vaatimuksia:
 - Paikallaan oleva hirviö
 - Sivuttain liikkuva hirviö
 - Hirviöihin kestävyys ominaisuus
-- Hahmo ampuu panoksia
 - Panoksien vaikutus hirviöön
 - Pelin häviäminen hirviöön osuessa
-- Taustan grafiikka
 - Hirviöiden grafiikka
-- Ammuksien grafiikka
-- Boostien grafiikka
-- Randomisti generoituvat kolikot
-- Kolikkojen tallentuminen- ja haku jsonista
-- Ennätysten tallentaminen- ja haku jsonista
 - Kolikkokauppa
 - Pelin vaikeutuminen
-- Pelin päävalikko
-- Pelin Game Over valikko
 - Pelatessa pause-nappi ja valikko
 - Ääniasetuksien säätö
-- Korkeuden tallennus ja peliin näkyviin
-- Päävalikon grafiikka
-- Game over menun grafiikka
 
 ## Sprintissä
-- Ennätysten tallentaminen- ja haku jsonista
-- Taustan grafiikka
-- Päävalikon grafiikka
-- Game over menun grafiikka
-- Boostien grafiikka
-- Hahmon grafiikka
-- Hahmo ampuu panoksia
+- Kolikkojen generointi ja tallennus json
 
 ## Done tehtävälista
 - Hahmo hyppii jatkuvasti
@@ -157,3 +137,13 @@ Sprint 3 viikko 8
 - Pelin Game Over valikko
 - Kolikkojen tallentuminen ja haku jsonista
 - Koodin modulaarisuus
+
+Sprint 4 
+- Ennätysten tallentaminen- ja haku jsonista
+- Taustan grafiikka
+- Päävalikon grafiikka
+- Game over menun grafiikka
+- Boostien grafiikka
+- Hahmon grafiikka
+- Ammuksien grafiikka
+- Hahmo ampuu panoksia

@@ -68,7 +68,7 @@ class Player:
             self.jump = False
 
         self.y += self.y_change
-        self.y_change += gravity
+        #self.y_change += gravity
 
         self.x += self.x_change
 

@@ -89,6 +89,9 @@ Ei toiminnallisia vaatimuksia:
 - Pelin vaikeutuminen
 - Pelatessa pause-nappi ja valikko
 - Ääniasetuksien säätö
+- Musiikki (päävalikko, game over valikko, peli käynnissä)
+- Kuolemis animaatio (tippuu ja läsähtää maahan)
+- Ääniefektit (kuoleminen, hyppää, kerää kolikon, ampuu panoksen)
 
 ## Sprintissä
 - Kolikkojen generointi ja tallennus json
@@ -138,7 +141,7 @@ Sprint 3 viikko 8
 - Kolikkojen tallentuminen ja haku jsonista
 - Koodin modulaarisuus
 
-Sprint 4 
+Sprint 4 viikko 10
 - Ennätysten tallentaminen- ja haku jsonista
 - Taustan grafiikka
 - Päävalikon grafiikka
@@ -147,3 +150,6 @@ Sprint 4
 - Hahmon grafiikka
 - Ammuksien grafiikka
 - Hahmo ampuu panoksia
+
+Sprint 5 viikko 12
+- 

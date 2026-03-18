@@ -4,13 +4,14 @@ from spritesheet import SpriteSheet
 from settings import WIDTH
 
 class Player:
-    def __init__(self):
+    def __init__(self, jump_height):
         self.scale = 90
         self.x = WIDTH/2 - (self.scale/2)
         self.y = 400
         self.spd = 4
 
         self.jump = False
+        self.jump_height = jump_height
         self.y_change = 0
         self.x_change = 0
 
@@ -61,10 +62,9 @@ class Player:
 
     def update(self):
         gravity = 0.4
-        jump_height = 13
 
         if self.jump:
-            self.y_change = -jump_height
+            self.y_change = -self.jump_height
             self.jump = False
 
         self.y += self.y_change

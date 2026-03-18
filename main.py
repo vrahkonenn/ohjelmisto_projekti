@@ -24,13 +24,13 @@ gameover_bg_norm = pygame.image.load("Imgs/gameover_norm.png").convert()
 clock = pygame.time.Clock()
 
 coin = Coin(80, 200)
-player = Player()
+player = Player(13)
 platforms = PlatformManager()
 bullets = BulletManager()
 camera = Camera()
 background = Background()
-menu_player = Player()
-menu_player.y = 250
+menu_player = Player(9)
+menu_player.y = 320
 menu_player.jump = True
 
 restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
@@ -61,9 +61,11 @@ while running:
         screen.blit(menu_bg, (0, 0))
         menu_player.update()
         menu_player.animate()
+        menu_player.x = 270
 
-        if menu_player.y > 300:
+        if menu_player.y > 370:
             menu_player.jump = True
+            menu_player.start_animation()
 
         menu_player.draw(screen)
         

@@ -11,13 +11,6 @@ class Background:
         self.backgrounds = [
             self.bg_ground,
             self.bg_sky,
-            self.bg_sky,
-            self.bg_sky,
-            self.bg_sky,
-            self.bg_sky,
-            self.bg_sky,
-            self.bg_sky,
-            self.bg_sky,
             self.bg_transition
         ]
 

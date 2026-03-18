@@ -50,12 +50,12 @@ game_state=GAME_MENU
 running = True
 coins = 0
 data = get_data()
-highscore = data["highscore"]
-total_coins = data["currency"]  
+
 
 while running:
     clock.tick(FPS)
-
+    highscore = data["highscore"]
+    total_coins = data["currency"]  
     # Päävalikko
     if game_state == GAME_MENU:
         screen.blit(menu_bg, (0, 0))
@@ -141,14 +141,12 @@ while running:
             if game_state == GAME_MENU and start_button.is_clicked(event.pos):
                 player.reset()
                 platforms.reset()
-                camera.reset()
                 score = 0
                 game_state = GAME_PLAYING
 
             if game_state == GAME_OVER and restart_button.is_clicked(event.pos):
                 player.reset()
                 platforms.reset()
-                camera.reset()
                 score = 0
                 game_state = GAME_PLAYING
 

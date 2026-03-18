@@ -50,12 +50,12 @@ game_state=GAME_MENU
 running = True
 coins = 0
 data = get_data()
-highscore = data["highscore"]
-total_coins = data["currency"]  
+
 
 while running:
     clock.tick(FPS)
-
+    highscore = data["highscore"]
+    total_coins = data["currency"]  
     # Päävalikko
     if game_state == GAME_MENU:
         screen.blit(menu_bg, (0, 0))

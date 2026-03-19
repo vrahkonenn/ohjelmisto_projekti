@@ -10,10 +10,13 @@ from bullet import BulletManager
 from camera import Camera
 from background import Background
 from coin import Coin
+from pause import PauseScreen
 
 pygame.init()
 icon = pygame.image.load("Imgs/player.png")
 pygame.display.set_icon(icon)
+
+pause_screen = PauseScreen()
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Rise of The Bubblegum")
@@ -45,6 +48,8 @@ score = 0
 GAME_MENU="menu"
 GAME_PLAYING="playing"
 GAME_OVER="game_over"
+GAME_PAUSED="paused"
+GAME_RESUME="resume"
 
 game_state=GAME_MENU
 running = True
@@ -103,6 +108,33 @@ while running:
         if player.y > HEIGHT:
             game_state = GAME_OVER
 
+    # peli pausella
+    elif game_state == GAME_PAUSED:
+        background.draw(screen, camera.scroll)
+        platforms.draw(screen)
+        player.draw(screen)
+        bullets.draw(screen)
+        coin.draw(screen)
+
+        pause_screen.draw(screen)
+
+    # peli jatkuu
+    elif game_state == GAME_RESUME:
+        current_time = pygame.time.get_ticks()
+        elapsed = current_time - resume_timer
+        remaining = max(0, (resume_wait - elapsed) // 1000 + 1)
+
+        background.draw(screen, camera.scroll)
+        platforms.draw(screen)
+        player.draw(screen)
+        bullets.draw(screen)
+        coin.draw(screen)
+
+        pause_screen.draw_countdown(screen, remaining)
+
+        if elapsed >= resume_wait:
+            game_state = GAME_PLAYING
+
     # game over
     elif game_state == GAME_OVER:
         screen.blit(gameover_bg_norm, (0, 0))
@@ -127,6 +159,14 @@ while running:
             if event.key == pygame.K_SPACE and game_state == GAME_PLAYING:
                 bullets.shoot(player)
                 player.shoot_animation()
+
+            if event.key == pygame.K_ESCAPE:
+                if game_state == GAME_PLAYING:
+                    game_state = GAME_PAUSED
+
+                elif game_state == GAME_PAUSED:
+                    game_state = GAME_RESUME
+                    resume_timer = pygame.time.get_ticks()
 
             if game_state == GAME_OVER and event.key == pygame.K_SPACE  or game_state == GAME_MENU and event.key == pygame.K_SPACE:
                 player.reset()

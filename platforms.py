@@ -2,6 +2,7 @@
 import pygame
 import random
 from settings import *
+from coin import Coin
 
 class Platform:
     def __init__(self, x, y, width=70, height=10, platform_type="normal", moving=False):
@@ -44,7 +45,7 @@ class Platform:
 
 class PlatformManager:
     def __init__(self):
-
+        self.coin = None
         self.images = {
             "normal": pygame.image.load("Imgs/normal.png").convert_alpha(),
             "breakable": pygame.image.load("Imgs/breakable.png").convert_alpha(),
@@ -104,6 +105,8 @@ class PlatformManager:
             player.y = 200
             for p in self.platforms:
                 p.y -= player.y_change
+                if self.coin:
+                    self.coin.y = self.coin.platform.y - 50
             score_add = abs(player.y_change) * 0.05
 
         # Päivitä kaikki alustat
@@ -114,6 +117,8 @@ class PlatformManager:
         for i, p in enumerate(self.platforms):
             if p.y > 510:
 
+                if self.coin and self.coin.y > 430:
+                    self.coin = None
                 highest_y = min(platform.y for platform in self.platforms)
 
                 spawn_x = random.randint(10, 300)
@@ -143,8 +148,15 @@ class PlatformManager:
                     platform_type,
                     moving
                 )
+                if platform_type == "normal" and random.random()<0.1 and not self.coin:
+                    coin_x = spawn_x + (p.width // 2) - (80 // 2)
+                    coin_y = spawn_y
+                    self.coin = Coin(coin_x, coin_y)
+                    self.coin.platform = self.platforms[i]
+
 
         return score_add
 
     def reset(self):
         self.create_initial_platforms()
+        self.coin = None

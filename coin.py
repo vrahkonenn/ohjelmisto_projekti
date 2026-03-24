@@ -31,14 +31,6 @@ class Coin:
                 sprite_sheet.get_image(x, 80, 80, 1, (0,0,0))
             )
 
-    def update(self):
-        gravity = 0.4
-
-        self.y += self.y_change
-        self.y_change += gravity
-
-
-
     def animate(self):
         if self.animating:
             current_time = pygame.time.get_ticks()
@@ -59,4 +51,5 @@ class Coin:
         screen.blit(self.animation_list[self.frame], (self.x, self.y))
 
     def get_collision_rect(self):
-        return pygame.Rect(self.x + 5, self.y + 15, 8.75, 1.25)
+        return pygame.Rect(self.x, self.y, 80, 80)
+

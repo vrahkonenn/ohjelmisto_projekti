@@ -11,6 +11,7 @@ from camera import Camera
 from background import Background
 from coin import Coin
 from pause import PauseScreen
+from powerups import PowerUpManager
 import sound
 
 pygame.init()
@@ -36,6 +37,7 @@ background = Background()
 menu_player = Player(9)
 menu_player.y = 320
 menu_player.jump = True
+powerups = PowerUpManager()
 
 restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
                         "RESTART", font_big, GRAY, BLACK)
@@ -93,16 +95,40 @@ while running:
 
         score += platforms.update(player)
 
+        # spawnataan powerupeja platformeille
+        for p in platforms.platforms:
+            if hasattr(p, "has_powerup") is False:
+                powerups.spawn_on_platform(p)
+                p.has_powerup = True
+
         player.jump = platforms.check_collisions(player)
 
         if player.jump:
             player.start_animation()
+
+        power = powerups.check_collision(player)
+
+        if power == "jumpboost":
+            player.y_change = -20
+
+        if power == "jetpack":
+            player.jetpack_active = True
+            player.jetpack_timer = pygame.time.get_ticks()
+
+        if power == "shoes":
+            player.shoes_charges = 5
+
+        if power == "umbrella":
+            player.umbrella_active = True
+            player.umbrella_timer = pygame.time.get_ticks()
 
         platforms.draw(screen)
         player.draw(screen)
         coin.draw(screen)
         bullets.update()
         bullets.draw(screen)
+        powerups.update()
+        powerups.draw(screen)
 
         korkeusvari=BLACK if score < 900 else WHITE
 
@@ -180,6 +206,7 @@ while running:
                 player.reset()
                 platforms.reset()
                 camera.reset()
+                powerups.reset()
                 score = 0
                 game_state = GAME_PLAYING
 
@@ -192,6 +219,7 @@ while running:
                 player.reset()
                 platforms.reset()
                 camera.reset()
+                powerups.reset()
                 score = 0
                 game_state = GAME_PLAYING
 
@@ -199,6 +227,7 @@ while running:
                 player.reset()
                 platforms.reset()
                 camera.reset()
+                powerups.reset()
                 score = 0
                 game_state = GAME_PLAYING
 

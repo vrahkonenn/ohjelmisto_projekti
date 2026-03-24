@@ -19,6 +19,16 @@ class Player:
         self.shoot_time = 0
         self.shoot_duration = 150
 
+        self.shoes_charges = 0
+
+        self.jetpack_active = False
+        self.jetpack_timer = 0
+        self.jetpack_duration = 3000  # ms
+
+        self.umbrella_active = False
+        self.umbrella_timer = 0
+        self.umbrella_duration = 3000  # 3 sekuntia (ms)
+
         sprite_image = pygame.image.load("Imgs/frame1 (9).png").convert_alpha()
         sprite_sheet = SpriteSheet(sprite_image)
 
@@ -61,15 +71,34 @@ class Player:
             self.x_change = 0
 
     def update(self):
+        current_time = pygame.time.get_ticks()
+
+        if self.jetpack_active:
+            self.y_change = -10  # jatkuva nousu
+
+            if current_time - self.jetpack_timer > self.jetpack_duration:
+                self.jetpack_active = False
+
+        if self.umbrella_active:
+            if current_time - self.umbrella_timer > self.umbrella_duration:
+                    self.umbrella_active = False
+
         gravity = 0.4
 
         if self.jump:
-            self.y_change = -self.jump_height
+            if self.shoes_charges > 0:
+                self.y_change = -self.jump_height * 1.5
+                self.shoes_charges -= 1
+            else:
+                self.y_change = -self.jump_height
             self.jump = False
 
         self.y += self.y_change
-        self.y_change += gravity
-
+        if not self.jetpack_active:
+            if self.umbrella_active and self.y_change > 0:
+                self.y_change += gravity * 0.2
+            else:
+                self.y_change += gravity
         self.x += self.x_change
 
         if self.x > 400 and self.x_change > 0:
@@ -115,3 +144,11 @@ class Player:
         self.x_change = 0
         self.y_change = 0
         self.jump = True
+
+        self.jetpack_active = False
+        self.jetpack_timer = 0
+    
+        self.umbrella_active = False
+        self.umbrella_timer = 0
+    
+        self.shoes_charges = 0

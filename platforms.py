@@ -11,6 +11,7 @@ class Platform:
         self.width = width
         self.height = height
         self.type = platform_type
+        self.visual_offset_x = 8
 
         self.moving = moving
         self.direction = random.choice([-1, 1])

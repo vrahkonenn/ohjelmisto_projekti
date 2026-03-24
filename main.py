@@ -9,7 +9,6 @@ from button import Button
 from bullet import BulletManager
 from camera import Camera
 from background import Background
-from coin import Coin
 from pause import PauseScreen
 import sound
 
@@ -27,7 +26,6 @@ gameover_bg_norm = pygame.image.load("Imgs/gameover_norm.png").convert()
 
 clock = pygame.time.Clock()
 
-coin = Coin(80, 200)
 player = Player(13)
 platforms = PlatformManager()
 bullets = BulletManager()
@@ -84,12 +82,17 @@ while running:
     if game_state == GAME_PLAYING:
         screen.fill(WHITE)
         player.update()
-        coin.start_animation()
         camera.update(player)
         background.draw(screen, camera.scroll)
 
         player.animate()
-        coin.animate()
+        if platforms.coin is not None:
+            platforms.coin.start_animation()
+            platforms.coin.animate()
+            platforms.coin.draw(screen)
+            if player.get_collision_rect().colliderect(platforms.coin.get_collision_rect()):
+                coins += 1
+                platforms.coin = None
 
         score += platforms.update(player)
 
@@ -100,7 +103,6 @@ while running:
 
         platforms.draw(screen)
         player.draw(screen)
-        coin.draw(screen)
         bullets.update()
         bullets.draw(screen)
 
@@ -118,7 +120,6 @@ while running:
         platforms.draw(screen)
         player.draw(screen)
         bullets.draw(screen)
-        coin.draw(screen)
 
         pause_screen.draw(screen)
 
@@ -132,7 +133,6 @@ while running:
         platforms.draw(screen)
         player.draw(screen)
         bullets.draw(screen)
-        coin.draw(screen)
 
         pause_screen.draw_countdown(screen, remaining)
 
@@ -151,6 +151,7 @@ while running:
         if score > highscore:
             data["highscore"] = score
         save(data, total_coins, coins)
+        coins = 0
     
     if game_state != previous_state:
         sound.play_music(game_state)
@@ -159,6 +160,8 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            save(data, total_coins, coins)
+            coins = 0
 
         if event.type == pygame.KEYDOWN:
             if game_state == GAME_PLAYING:

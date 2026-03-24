@@ -11,6 +11,7 @@ from camera import Camera
 from background import Background
 from coin import Coin
 from pause import PauseScreen
+import sound
 
 pygame.init()
 icon = pygame.image.load("Imgs/player.png")
@@ -52,9 +53,12 @@ GAME_PAUSED="paused"
 GAME_RESUME="resume"
 
 game_state=GAME_MENU
+previous_state = None
 running = True
 coins = 0
 data = get_data()
+
+sound.play_music(game_state)
 
 
 while running:
@@ -147,6 +151,10 @@ while running:
         if score > highscore:
             data["highscore"] = score
         save(data, total_coins, coins)
+    
+    if game_state != previous_state:
+        sound.play_music(game_state)
+        previous_state = game_state
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

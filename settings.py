@@ -17,6 +17,9 @@ MIN_PLATFORM_SEPARATION = 60
 HORIZ_REACH = 120
 MAX_PLAYER_HEIGHT = 150
 
+resume_timer = 0
+resume_wait = 3000 # 3 sekuntia
+
 font_small = pygame.font.SysFont('Lucida Sans', 20)
 font_big = pygame.font.SysFont('Lucida Sans', 24)
 font_large = pygame.font.SysFont('Fonts/PressStart2P.ttf', 44)

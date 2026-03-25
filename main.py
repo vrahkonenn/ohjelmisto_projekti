@@ -180,7 +180,8 @@ while running:
         coins = 0
     
     if game_state != previous_state:
-        sound.play_music(game_state)
+        if game_state not in (GAME_PAUSED, GAME_RESUME):
+            sound.play_music(game_state)
         previous_state = game_state
 
     for event in pygame.event.get():
@@ -200,10 +201,12 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 if game_state == GAME_PLAYING:
                     game_state = GAME_PAUSED
+                    sound.pause_music(game_state)
 
                 elif game_state == GAME_PAUSED:
                     game_state = GAME_RESUME
                     resume_timer = pygame.time.get_ticks()
+                    sound.unpause_music(game_state)
 
             if game_state == GAME_OVER and event.key == pygame.K_SPACE  or game_state == GAME_MENU and event.key == pygame.K_SPACE:
                 player.reset()

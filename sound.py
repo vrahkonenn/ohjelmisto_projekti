@@ -23,4 +23,4 @@ def pause_music(state):
 
 def unpause_music(state):
     if state == GAME_RESUME:
-        pygame.mixer.music.unpause()
+        pygame.mixer.music.unpause

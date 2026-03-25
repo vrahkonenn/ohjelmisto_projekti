@@ -75,23 +75,24 @@ Ei toiminnallisia vaatimuksia:
 ---
 
 # Backlog tehtävälista
-- Paikallaan oleva hirviö
-- Sivuttain liikkuva hirviö
+
 - Hirviöihin kestävyys ominaisuus
 - Panoksien vaikutus hirviöön
 - Pelin häviäminen hirviöön osuessa
-- Hirviöiden grafiikka
-- Kolikkokauppa
 - Pelin vaikeutuminen
-- Ääniasetuksien säätö
 - Kuolemis animaatio (tippuu ja läsähtää maahan)
-- Ääniefektit (kuoleminen, hyppää, kerää kolikon, ampuu panoksen)
 
-## Sprintissä
-- Kolikkojen generointi ja tallennus json
-- Musiikki (päävalikko, game over valikko, peli käynnissä)
+# Sprintissä
+- Ääniasetuksien säätö
+- Ääniefektit (kuoleminen, hyppää, kerää kolikon, ampuu panoksen)
+- Kolikkokauppa
+- Hirviöiden grafiikka
+- Paikallaan oleva hirviö
+- Sivuttain liikkuva hirviö
+- Kolikot näkyviin näytölle
 - Boostien spawnaus
-- Pelatessa pause-nappi ja valikko
+
+
 
 ## Done tehtävälista
 - Hahmo hyppii jatkuvasti
@@ -149,4 +150,6 @@ Sprint 4 viikko 10
 - Hahmo ampuu panoksia
 
 Sprint 5 viikko 12
-- 
+- Kolikkojen generointi ja tallennus json
+- Musiikki (päävalikko, game over valikko, peli käynnissä)
+- Pelatessa pause-nappi ja valikko

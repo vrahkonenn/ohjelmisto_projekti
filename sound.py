@@ -17,6 +17,8 @@ def play_music(state):
     
     pygame.mixer.music.play(-1, 0.0)
 
+
+
 def pause_music(state):
     if state == GAME_PAUSED:
         pygame.mixer.music.pause()

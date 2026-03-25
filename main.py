@@ -136,6 +136,8 @@ while running:
 
         draw_text(screen, f"Korkeus: {score:.2f}",
                   font_small, korkeusvari, 0, 0)
+        draw_text(screen, f"Kolikot: {total_coins+coins}",
+                font_small, korkeusvari, WIDTH-120, 0)
 
         if player.y > HEIGHT:
             game_state = GAME_OVER

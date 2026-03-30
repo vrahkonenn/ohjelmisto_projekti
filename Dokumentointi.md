@@ -150,3 +150,13 @@ Sprint 5 viikko 12
 - Kolikkojen generointi ja tallennus json
 - Musiikki (päävalikko, game over valikko, peli käynnissä)
 - Pelatessa pause-nappi ja valikko
+
+Sprint 6 viikko 13
+- Ääniasetuksien säätö
+- Ääniefektit (kuoleminen, hyppää, kerää kolikon, ampuu panoksen)
+- Kolikkokauppa
+- Hirviöiden grafiikka
+- Paikallaan oleva hirviö
+- Sivuttain liikkuva hirviö
+- Kolikot näkyviin näytölle
+- Boostien spawnaus

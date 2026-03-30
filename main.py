@@ -168,11 +168,12 @@ while running:
     # game over
     elif game_state == GAME_OVER:
         screen.blit(gameover_bg_norm, (0, 0))
-        text_surf = font_large.render(f"{highscore:.2f}", True, BLACK)
+        text_surf = font_large.render(f"{highscore:.2f}", True, RED)
         text_rect = text_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 60))
         screen.blit(text_surf, text_rect)
-        draw_text(screen, f"SCORE: {score:.2f}",
-                  font_big, BLACK, WIDTH//2 - 80, HEIGHT//2 - 20)
+        draw_text_with_outline(screen, font_big, f"SCORE: {score:.2f}", (WIDTH//2 - 80, HEIGHT//2 - 20), RED, ORANGE)
+        #draw_text(screen, f"SCORE: {score:.2f}",
+        #          font_big, BLACK, WIDTH//2 - 80, HEIGHT//2 - 20)
         restart_button.draw(screen)
         if score > highscore:
             data["highscore"] = score

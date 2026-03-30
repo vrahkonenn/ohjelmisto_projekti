@@ -29,7 +29,6 @@ class PowerUp:
         self.active = False
 
     def update(self):
-        # poista jos menee ruudun ulkopuolelle
         if self.platform.y > 510:
             self.active = False
 

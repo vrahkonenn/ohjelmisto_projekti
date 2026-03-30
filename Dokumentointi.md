@@ -75,7 +75,6 @@ Ei toiminnallisia vaatimuksia:
 ---
 
 # Backlog tehtävälista
-
 - Hirviöihin kestävyys ominaisuus
 - Panoksien vaikutus hirviöön
 - Pelin häviäminen hirviöön osuessa
@@ -91,8 +90,6 @@ Ei toiminnallisia vaatimuksia:
 - Sivuttain liikkuva hirviö
 - Kolikot näkyviin näytölle
 - Boostien spawnaus
-
-
 
 ## Done tehtävälista
 - Hahmo hyppii jatkuvasti

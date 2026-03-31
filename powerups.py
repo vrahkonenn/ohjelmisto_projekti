@@ -2,7 +2,50 @@
 import pygame
 
 class PowerUp:
+    images = {
+        "jumpboost": None,
+        "jetpack": None,
+        "shoes": None,
+        "umbrella": None, 
+    }
+
+    offsets = {
+        "jumpboost": {
+            "normal": (-6, 22),
+            "breakable": (-6, 34),
+            "trap": (0,0),
+            "broken": (0,0)
+        },
+        "jetpack": {
+            "normal": (-8, 0),
+            "breakable": (-6, 8),
+            "trap": (0,0),
+            "broken": (0,0)
+        },
+        "shoes": {
+            "normal": (-6, 8),
+            "breakable": (-6, 15),
+            "trap": (0,0),
+            "broken": (0,0)
+        },
+        "umbrella": {
+            "normal": (-8, -10),
+            "breakable": (-6, -4),
+            "trap": (0,0),
+            "broken": (0,0)
+        },
+    }
+
+    def load_images():
+        PowerUp.images = {
+            "jumpboost": load_image("Imgs/boostit/boost.png"),
+            "jetpack": load_image("Imgs/boostit/purkkapack.png"),
+            "shoes": load_image("Imgs/boostit/kengat.png"),
+            "umbrella": load_image("Imgs/boostit/varjo.png"),
+        }
+
     def __init__(self, platform, p_type):
+
         self.platform = platform
         self.type = p_type
 
@@ -12,13 +55,20 @@ class PowerUp:
         self.active = True
 
     def get_position(self):
-        x = (
+        base_x = (
             self.platform.x
             + self.platform.width // 2
             + self.platform.visual_offset_x
             - self.width // 2
         )
-        y = self.platform.y + 10 - self.height
+
+        base_y = self.platform.y - self.height
+
+        offset_x, offset_y = PowerUp.offsets[self.type][self.platform.type]
+
+        x = base_x + offset_x
+        y = base_y + offset_y
+
         return x, y
 
     def get_rect(self):
@@ -38,20 +88,20 @@ class PowerUp:
 
         x, y = self.get_position()
 
-        if self.type == "jumpboost":
-            color = (255, 0, 0)
-        elif self.type == "jetpack":
-            color = (0, 255, 0)
-        elif self.type == "shoes":
-            color = (0, 0, 255)
-        elif self.type == "umbrella":
-            color = (255, 255, 0)
+        # piirrä kuva
+        if self.type in PowerUp.images:
+            image = PowerUp.images[self.type]
+            screen.blit(image, (x, y))
         else:
-            color = (255, 255, 255)
+            # fallback jos kuva puuttuu
+            pygame.draw.rect(screen, (255, 255, 255), (x, y, self.width, self.height), 2)
 
+        # DEBUG: hitbox (voit poistaa myöhemmin)
+        # pygame.draw.rect(screen, (255, 0, 0), (x, y, self.width, self.height), 1)
 
-        # POWERUP HITBOX
-        pygame.draw.rect(screen, color, (x, y, self.width, self.height), 2)
+def load_image(path):
+    img = pygame.image.load(path).convert_alpha()
+    return pygame.transform.scale(img, (60, 64))
 
 
 
@@ -59,11 +109,11 @@ class PowerUpManager:
     def __init__(self):
         self.powerups = []
         self.spawn_chances = {
-        "jumpboost": 2.5,
-        "jetpack": 2.5,
-        "shoes": 2.5,
-        "umbrella": 2.5,
-        None: 90
+        "jumpboost": 2,
+        "jetpack": 2,
+        "shoes": 2,
+        "umbrella": 2,
+        None: 92
 }
 
     def spawn_on_platform(self, platform):

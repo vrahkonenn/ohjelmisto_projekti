@@ -22,6 +22,9 @@ pause_screen = PauseScreen()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Rise of The Bubblegum")
 
+from powerups import PowerUp
+PowerUp.load_images()
+
 menu_bg = pygame.image.load("Imgs/mMenu_bg.png").convert()
 gameover_bg_norm = pygame.image.load("Imgs/gameover_norm.png").convert()
 

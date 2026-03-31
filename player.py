@@ -35,8 +35,32 @@ class Player:
         shoot_sprite = pygame.image.load("Imgs/shooting_frames.png").convert_alpha()
         shoot_sheet = SpriteSheet(shoot_sprite)
 
+        jumpshoes_sprite = pygame.image.load("Imgs/boostit/purkkakengät_frame.png").convert_alpha()
+        jumpshoes_sheet = SpriteSheet(jumpshoes_sprite)
+
+        jumpshoes_shoot_sprite = pygame.image.load("Imgs/boostit/purkkakengät_shooting.png").convert_alpha()
+        jumpshoes_shoot_sheet = SpriteSheet(jumpshoes_shoot_sprite)
+
+        umbrella_sprite = pygame.image.load("Imgs/boostit/purkkavarjo_framet.png").convert_alpha()
+        umbrella_sheet = SpriteSheet(umbrella_sprite)
+
+        umbrella_shoot_sprite = pygame.image.load("Imgs/boostit/purkkavarjo_shooting.png").convert_alpha()
+        umbrella_shoot_sheet = SpriteSheet(umbrella_shoot_sprite)
+
+        jetpack_sprite = pygame.image.load("Imgs/boostit/jetpack_uudet_framet.png").convert_alpha()
+        jetpack_sheet = SpriteSheet(jetpack_sprite)
+
+        jetpack_shoot_sprite = pygame.image.load("Imgs/boostit/jetpack_shooting_frames2.png").convert_alpha()
+        jetpack_shoot_sheet = SpriteSheet(jetpack_shoot_sprite)
+
         self.animation_list = []
         self.shoot_animation_list = []
+        self.jumpshoes_animation_list = []
+        self.jumpshoes_shoot_animation_list = []
+        self.umbrella_animation_list = []
+        self.umbrella_shoot_animation_list = []
+        self.jetpack_animation_list = []
+        self.jetpack_shoot_animation_list = []
         self.animation_steps = 6
         self.animation_cooldown = 75
         self.last_update = pygame.time.get_ticks()
@@ -49,6 +73,24 @@ class Player:
             )
             self.shoot_animation_list.append(
                 shoot_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.jumpshoes_animation_list.append(
+                jumpshoes_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.jumpshoes_shoot_animation_list.append(
+                jumpshoes_shoot_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.umbrella_animation_list.append(
+                umbrella_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.umbrella_shoot_animation_list.append(
+                umbrella_shoot_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.jetpack_animation_list.append(
+                jetpack_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.jetpack_shoot_animation_list.append(
+                jetpack_shoot_sheet.get_image(x, 80, 80, 1, (0,0,0))
             )
 
     def shoot_animation(self):
@@ -129,11 +171,24 @@ class Player:
             self.last_update = pygame.time.get_ticks()
 
     def draw(self, screen):
-
         if self.shooting:
-            screen.blit(self.shoot_animation_list[self.frame], (self.x, self.y))
+            if self.jetpack_active:
+                screen.blit(self.jetpack_shoot_animation_list[self.frame], (self.x, self.y))
+            elif self.umbrella_active:
+                screen.blit(self.umbrella_shoot_animation_list[self.frame], (self.x, self.y))
+            elif self.shoes_charges > 0:
+                screen.blit(self.jumpshoes_shoot_animation_list[self.frame], (self.x, self.y))
+            else:
+                screen.blit(self.shoot_animation_list[self.frame], (self.x, self.y))
         else:
-            screen.blit(self.animation_list[self.frame], (self.x, self.y))
+            if self.jetpack_active:
+                screen.blit(self.jetpack_animation_list[self.frame], (self.x, self.y))
+            elif self.umbrella_active:
+                screen.blit(self.umbrella_animation_list[self.frame], (self.x, self.y))
+            elif self.shoes_charges > 0:
+                screen.blit(self.jumpshoes_animation_list[self.frame], (self.x, self.y))
+            else:
+                screen.blit(self.animation_list[self.frame], (self.x, self.y))
 
     def get_collision_rect(self):
         return pygame.Rect(self.x + 20, self.y + 60, 35, 5)

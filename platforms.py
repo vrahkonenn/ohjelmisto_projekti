@@ -6,7 +6,7 @@ from coin import Coin
 
 class Platform:
     def __init__(self, x, y, width=70, height=10, platform_type="normal", moving=False):
-
+            
         self.x = x
         self.y = y
         self.width = width

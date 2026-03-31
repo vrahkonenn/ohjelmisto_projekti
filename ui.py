@@ -1,9 +1,13 @@
 # ui.py
 from settings import *
 
-def draw_text(screen, text, font, text_col, x, y):
+def draw_text(screen, text, font, text_col, x, y, center=False):
     img = font.render(text, True, text_col)
-    screen.blit(img, (x, y))
+    if center:
+        rect = img.get_rect(center=(x, y))
+    else:
+        rect = img.get_rect(topleft=(x, y))
+    screen.blit(img, rect)
 
 def draw_text_outline(screen, text, font, text_col, x, y, center=False, outline_col=BLACK):
     # render base to get rect

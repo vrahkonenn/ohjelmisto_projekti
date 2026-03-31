@@ -4,6 +4,7 @@ from saves import *
 from settings import *
 from player import Player
 from platforms import PlatformManager
+from slider import Slider
 from ui import draw_text
 from button import Button
 from bullet import BulletManager
@@ -11,6 +12,7 @@ from camera import Camera
 from background import Background
 from pause import PauseScreen
 from powerups import PowerUpManager
+from monster import MonsterManager
 import sound
 
 pygame.init()
@@ -39,12 +41,28 @@ menu_player = Player(9)
 menu_player.y = 320
 menu_player.jump = True
 powerups = PowerUpManager()
+birds = MonsterManager()
 
+# napit
 restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
                         "RESTART", font_big, GRAY, BLACK)
 start_button =      Button(WIDTH//2 - 175, 250, 200, 50,
                         "START", font_big, GRAY, BLACK)
+settings_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
+                        "SETTINGS", font_big, GRAY, BLACK)
 
+sound_button = Button(WIDTH//2 - 100, HEIGHT//2 - 60, 200, 50,
+                        "TOGGLE SOUND", font_big, GRAY, BLACK)
+music_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
+                        "TOGGLE MUSIC", font_big, GRAY, BLACK)
+
+# sliderit
+music_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 1.0)
+sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 0.0, 1.0, 1.0)
+#draw_text(screen, "SETTINGS", font_large, WHITE, WIDTH//2, HEIGHT//2 - 140, center=True)
+#draw_text(screen, "sound (sfx): on/off", font_big, WHITE, WIDTH//2, HEIGHT//2 - 60, center=True)
+#draw_text(screen, "music: on/off", font_big, WHITE, WIDTH//2, HEIGHT//2, center=True)
+#draw_text(screen, "Paina ESC palataksesi", font_small, WHITE, WIDTH//2, HEIGHT//2 + 60, center=True)
 
 score = 0
 
@@ -54,6 +72,7 @@ GAME_PLAYING="playing"
 GAME_OVER="game_over"
 GAME_PAUSED="paused"
 GAME_RESUME="resume"
+GAME_SETTINGS="settings"
 
 game_state=GAME_MENU
 previous_state = None
@@ -134,6 +153,8 @@ while running:
         bullets.draw(screen)
         powerups.update()
         powerups.draw(screen)
+        birds.update(player, score)
+        birds.draw(screen)
 
         korkeusvari=BLACK if score < 900 else WHITE
 
@@ -153,6 +174,18 @@ while running:
         bullets.draw(screen)
 
         pause_screen.draw(screen)
+        settings_button.draw(screen)
+
+    # settings-valikko
+    elif game_state == GAME_SETTINGS:
+        screen.fill(BLACK)
+        draw_text(screen, "SETTINGS", font_large, WHITE, WIDTH//2, HEIGHT//2 - 140, center=True)
+        draw_text(screen, "sound (sfx): on/off", font_big, WHITE, WIDTH//2, HEIGHT//2 - 60, center=True)
+        draw_text(screen, "music: on/off", font_big, WHITE, WIDTH//2, HEIGHT//2, center=True)
+        draw_text(screen, "Paina ESC palataksesi", font_small, WHITE, WIDTH//2, HEIGHT//2 + 60, center=True)
+
+        sound_slider.draw(screen)
+        music_slider.draw(screen)
 
     # peli jatkuu
     elif game_state == GAME_RESUME:
@@ -186,11 +219,18 @@ while running:
         coins = 0
     
     if game_state != previous_state:
-        if game_state not in (GAME_PAUSED, GAME_RESUME):
+        if game_state not in (GAME_PAUSED, GAME_RESUME, GAME_SETTINGS):
             sound.play_music(game_state)
         previous_state = game_state
 
     for event in pygame.event.get():
+        
+        if game_state == GAME_SETTINGS:
+            music_slider.handle_event(event)
+            sound_slider.handle_event(event)
+            pygame.mixer.music.set_volume(music_slider.get_value())
+            pygame.mixer.music.set_volume(sound_slider.get_value())
+
         if event.type == pygame.QUIT:
             running = False
             save(data, total_coins, coins)
@@ -213,6 +253,9 @@ while running:
                     game_state = GAME_RESUME
                     resume_timer = pygame.time.get_ticks()
                     sound.unpause_music(game_state)
+
+                elif game_state == GAME_SETTINGS:
+                    game_state = GAME_PAUSED
 
             if game_state == GAME_OVER and event.key == pygame.K_SPACE  or game_state == GAME_MENU and event.key == pygame.K_SPACE:
                 player.reset()
@@ -242,6 +285,13 @@ while running:
                 powerups.reset()
                 score = 0
                 game_state = GAME_PLAYING
+
+            if game_state == GAME_PAUSED and settings_button.is_clicked(event.pos):
+                game_state = GAME_SETTINGS
+            if game_state == GAME_SETTINGS and sound_button.is_clicked(event.pos):
+                sound.toggle_sound()
+            if game_state == GAME_SETTINGS and music_button.is_clicked(event.pos):
+                sound.toggle_music()
 
     pygame.display.flip()
 

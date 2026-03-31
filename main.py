@@ -12,6 +12,7 @@ from camera import Camera
 from background import Background
 from pause import PauseScreen
 from powerups import PowerUpManager
+from monster import MonsterManager
 import sound
 
 pygame.init()
@@ -37,6 +38,7 @@ menu_player = Player(9)
 menu_player.y = 320
 menu_player.jump = True
 powerups = PowerUpManager()
+birds = MonsterManager()
 
 # napit
 restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
@@ -148,6 +150,8 @@ while running:
         bullets.draw(screen)
         powerups.update()
         powerups.draw(screen)
+        birds.update(player, score)
+        birds.draw(screen)
 
         korkeusvari=BLACK if score < 900 else WHITE
 

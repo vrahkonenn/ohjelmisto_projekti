@@ -94,11 +94,8 @@ class PowerUp:
             image = PowerUp.images[self.type]
             screen.blit(image, (x, y))
         else:
-            # fallback jos kuva puuttuu
             pygame.draw.rect(screen, (255, 255, 255), (x, y, self.width, self.height), 2)
 
-        # DEBUG: hitbox (voit poistaa myöhemmin)
-        # pygame.draw.rect(screen, (255, 0, 0), (x, y, self.width, self.height), 1)
 
 def load_image(path):
     img = pygame.image.load(path).convert_alpha()
@@ -112,21 +109,13 @@ class PowerUpManager:
         self.nothing = 90 - (upgrades["jumpboost"] + upgrades["jetpack"] + upgrades["shoes"] + upgrades["umbrella"])
         self.powerups = []
         self.spawn_chances = {
-<<<<<<<<< Temporary merge branch 1
-        "jumpboost": 5,
-        "jetpack": 5,
-        "shoes": 5,
-        "umbrella": 5,
-        None: 80
-=========
-        "jumpboost": 2.5 + upgrades["jumpboost"],
-        "jetpack": 2.5 + upgrades["jetpack"],
-        "shoes": 2.5 + upgrades["shoes"],
-        "umbrella": 2.5 + upgrades["umbrella"],
-        None: self.nothing
->>>>>>>>> Temporary merge branch 2
-}
-
+            "jumpboost": 2.5 + upgrades["jumpboost"],
+            "jetpack": 2.5 + upgrades["jetpack"],
+            "shoes": 2.5 + upgrades["shoes"],
+            "umbrella": 2.5 + upgrades["umbrella"],
+            None: self.nothing
+        }
+    
     def spawn_on_platform(self, platform):
         import random
 

@@ -84,3 +84,6 @@ class MonsterManager:
     def draw(self, screen):
         for monster in self.monsters:
             monster.draw(screen)
+    
+    def reset(self):
+        self.monsters = []

@@ -19,6 +19,10 @@ pygame.init()
 icon = pygame.image.load("Imgs/player.png")
 pygame.display.set_icon(icon)
 
+settings_screen_fade = pygame.Surface((WIDTH, HEIGHT))
+settings_screen_fade.fill((0, 0, 0))
+settings_screen_fade.set_alpha(50)
+
 pause_screen = PauseScreen()
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -61,10 +65,6 @@ music_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
 # sliderit
 music_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 1.0)
 sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 0.0, 1.0, 1.0)
-#draw_text(screen, "SETTINGS", font_large, WHITE, WIDTH//2, HEIGHT//2 - 140, center=True)
-#draw_text(screen, "sound (sfx): on/off", font_big, WHITE, WIDTH//2, HEIGHT//2 - 60, center=True)
-#draw_text(screen, "music: on/off", font_big, WHITE, WIDTH//2, HEIGHT//2, center=True)
-#draw_text(screen, "Paina ESC palataksesi", font_small, WHITE, WIDTH//2, HEIGHT//2 + 60, center=True)
 
 score = 0
 
@@ -167,13 +167,9 @@ while running:
 
         # piirrä numero
         draw_text_with_outline(screen, font_big, f"{total_coins+coins}", (coin_x-4, coin_y+2), WHITE, BLACK)
-        #draw_text(screen, f"{total_coins+coins}",
-         #       font_big, korkeusvari, coin_x-4, coin_y+2)
 
         # piirrä kolikon kuva numeron jälkeen
         screen.blit(coin_img, (coin_x + 34, coin_y))
-        #draw_text(screen, f"Kolikot: {total_coins+coins}",
-        #        font_small, korkeusvari, WIDTH-120, 0)
         
         if player.y > HEIGHT:
             game_state = GAME_OVER
@@ -190,7 +186,7 @@ while running:
 
     # settings-valikko
     elif game_state == GAME_SETTINGS:
-        screen.fill(BLACK)
+        screen.blit(settings_screen_fade, (0, 0))
         draw_text(screen, "SETTINGS", font_large, WHITE, WIDTH//2, HEIGHT//2 - 140, center=True)
         draw_text(screen, "sound (sfx): on/off", font_big, WHITE, WIDTH//2, HEIGHT//2 - 60, center=True)
         draw_text(screen, "music: on/off", font_big, WHITE, WIDTH//2, HEIGHT//2, center=True)
@@ -241,7 +237,7 @@ while running:
             music_slider.handle_event(event)
             sound_slider.handle_event(event)
             pygame.mixer.music.set_volume(music_slider.get_value())
-            pygame.mixer.music.set_volume(sound_slider.get_value())
+            #pygame.mixer.sound.set_volume(sound_slider.get_value())
 
         if event.type == pygame.QUIT:
             running = False

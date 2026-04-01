@@ -21,6 +21,10 @@ pygame.display.set_icon(icon)
 
 pause_screen = PauseScreen()
 
+settings_screen = pygame.Surface((WIDTH, HEIGHT))
+settings_screen.fill(BLACK)
+settings_screen.set_alpha(50)
+
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Rise of The Bubblegum")
 
@@ -61,10 +65,6 @@ music_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
 # sliderit
 music_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 1.0)
 sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 0.0, 1.0, 1.0)
-#draw_text(screen, "SETTINGS", font_large, WHITE, WIDTH//2, HEIGHT//2 - 140, center=True)
-#draw_text(screen, "sound (sfx): on/off", font_big, WHITE, WIDTH//2, HEIGHT//2 - 60, center=True)
-#draw_text(screen, "music: on/off", font_big, WHITE, WIDTH//2, HEIGHT//2, center=True)
-#draw_text(screen, "Paina ESC palataksesi", font_small, WHITE, WIDTH//2, HEIGHT//2 + 60, center=True)
 
 score = 0
 
@@ -190,7 +190,7 @@ while running:
 
     # settings-valikko
     elif game_state == GAME_SETTINGS:
-        screen.fill(BLACK)
+        screen.blit(settings_screen, (0,0))
         draw_text(screen, "SETTINGS", font_large, WHITE, WIDTH//2, HEIGHT//2 - 140, center=True)
         draw_text(screen, "sound (sfx): on/off", font_big, WHITE, WIDTH//2, HEIGHT//2 - 60, center=True)
         draw_text(screen, "music: on/off", font_big, WHITE, WIDTH//2, HEIGHT//2, center=True)

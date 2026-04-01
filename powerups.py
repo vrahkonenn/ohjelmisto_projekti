@@ -109,11 +109,11 @@ class PowerUpManager:
     def __init__(self):
         self.powerups = []
         self.spawn_chances = {
-        "jumpboost": 0,
-        "jetpack": 0,
-        "shoes": 20,
-        "umbrella": 0,
-        None: 80
+        "jumpboost": 2.5,
+        "jetpack": 2.5,
+        "shoes": 2.5,
+        "umbrella": 2.5,
+        None: 90
 }
 
     def spawn_on_platform(self, platform):

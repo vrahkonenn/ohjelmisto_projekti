@@ -63,8 +63,8 @@ music_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
                         "TOGGLE MUSIC", font_big, GRAY, BLACK)
 
 # sliderit
-music_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 1.0)
-sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 0.0, 1.0, 1.0)
+sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 1.0)
+music_slider = Slider(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 0.0, 1.0, 1.0)
 
 score = 0
 
@@ -188,8 +188,8 @@ while running:
     elif game_state == GAME_SETTINGS:
         screen.blit(settings_screen_fade, (0, 0))
         draw_text(screen, "SETTINGS", font_large, WHITE, WIDTH//2, HEIGHT//2 - 140, center=True)
-        draw_text(screen, "sound (sfx): on/off", font_big, WHITE, WIDTH//2, HEIGHT//2 - 60, center=True)
-        draw_text(screen, "music: on/off", font_big, WHITE, WIDTH//2, HEIGHT//2, center=True)
+        draw_text(screen, "sound (sfx) volume:", font_big, WHITE, WIDTH//2, HEIGHT//2 - 60, center=True)
+        draw_text(screen, "music volume:", font_big, WHITE, WIDTH//2, HEIGHT//2, center=True)
         draw_text(screen, "Paina ESC palataksesi", font_small, WHITE, WIDTH//2, HEIGHT//2 + 60, center=True)
 
         sound_slider.draw(screen)
@@ -229,6 +229,8 @@ while running:
     if game_state != previous_state:
         if game_state not in (GAME_PAUSED, GAME_RESUME, GAME_SETTINGS):
             sound.play_music(game_state)
+            pygame.mixer.music.set_volume(music_slider.get_value())
+            #pygame.mixer.sound.set_volume(sound_slider.get_value())
         previous_state = game_state
 
     for event in pygame.event.get():
@@ -236,8 +238,6 @@ while running:
         if game_state == GAME_SETTINGS:
             music_slider.handle_event(event)
             sound_slider.handle_event(event)
-            pygame.mixer.music.set_volume(music_slider.get_value())
-            #pygame.mixer.sound.set_volume(sound_slider.get_value())
 
         if event.type == pygame.QUIT:
             running = False

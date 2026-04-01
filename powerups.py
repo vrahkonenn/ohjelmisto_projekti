@@ -117,6 +117,9 @@ class PowerUpManager:
         }
     
     def spawn_on_platform(self, platform):
+        if platform.type == "trap":
+            return
+        
         import random
 
         if hasattr(platform, "has_powerup"):

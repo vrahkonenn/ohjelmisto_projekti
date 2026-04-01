@@ -1,5 +1,6 @@
 # powerups.py
 import pygame
+import saves
 
 class PowerUp:
     images = {
@@ -107,13 +108,15 @@ def load_image(path):
 
 class PowerUpManager:
     def __init__(self):
+        upgrades = saves.get_data()
+        self.nothing = 90 - (upgrades["jumpboost"] + upgrades["jetpack"] + upgrades["shoes"] + upgrades["umbrella"])
         self.powerups = []
         self.spawn_chances = {
-        "jumpboost": 5,
-        "jetpack": 5,
-        "shoes": 5,
-        "umbrella": 5,
-        None: 80
+        "jumpboost": 2.5 + upgrades["jumpboost"],
+        "jetpack": 2.5 + upgrades["jetpack"],
+        "shoes": 2.5 + upgrades["shoes"],
+        "umbrella": 2.5 + upgrades["umbrella"],
+        None: self.nothing
 }
 
     def spawn_on_platform(self, platform):

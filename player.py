@@ -53,14 +53,37 @@ class Player:
         jetpack_shoot_sprite = pygame.image.load("Imgs/boostit/jetpack_shooting_frames.png").convert_alpha()
         jetpack_shoot_sheet = SpriteSheet(jetpack_shoot_sprite)
 
+        jumpshoes_jetpack_sprite = pygame.image.load("Imgs/boostit/purkkakengät_jetpack_frame.png").convert_alpha()
+        jumpshoes_jetpack_sheet = SpriteSheet(jumpshoes_jetpack_sprite)
+
+        jumpshoes_jetpack_shoot_sprite = pygame.image.load("Imgs/boostit/purkkakengät_jetpack_shooting_frame.png").convert_alpha()
+        jumpshoes_jetpack_shoot_sheet = SpriteSheet(jumpshoes_jetpack_shoot_sprite)
+
+        jumpshoes_umbrella_sprite = pygame.image.load("Imgs/boostit/purkkakengät_purkkavarjo_frame.png").convert_alpha()
+        jumpshoes_umbrella_sheet = SpriteSheet(jumpshoes_umbrella_sprite)
+
+        jumpshoes_umbrella_shoot_sprite = pygame.image.load("Imgs/boostit/purkkakengät_purkkavarjo_shooting_frame.png").convert_alpha()
+        jumpshoes_umbrella_shoot_sheet = SpriteSheet(jumpshoes_umbrella_shoot_sprite)
+
+
         self.animation_list = []
         self.shoot_animation_list = []
+
         self.jumpshoes_animation_list = []
         self.jumpshoes_shoot_animation_list = []
+
         self.umbrella_animation_list = []
         self.umbrella_shoot_animation_list = []
+
         self.jetpack_animation_list = []
         self.jetpack_shoot_animation_list = []
+
+        self.jumpshoes_jetpack_animation_list = []
+        self.jumpshoes_jetpack_shoot_animation_list = []
+
+        self.jumpshoes_umbrella_animation_list = []
+        self.jumpshoes_umbrella_shoot_animation_list = []
+
         self.animation_steps = 6
         self.animation_cooldown = 75
         self.last_update = pygame.time.get_ticks()
@@ -91,6 +114,18 @@ class Player:
             )
             self.jetpack_shoot_animation_list.append(
                 jetpack_shoot_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.jumpshoes_jetpack_animation_list.append(
+                jumpshoes_jetpack_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.jumpshoes_jetpack_shoot_animation_list.append(
+                jumpshoes_jetpack_shoot_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.jumpshoes_umbrella_animation_list.append(
+                jumpshoes_umbrella_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.jumpshoes_umbrella_shoot_animation_list.append(
+                jumpshoes_umbrella_shoot_sheet.get_image(x, 80, 80, 1, (0,0,0))
             )
 
     def shoot_animation(self):
@@ -172,8 +207,12 @@ class Player:
 
     def draw(self, screen):
         if self.shooting:
-            if self.jetpack_active:
+            if self.jetpack_active and self.shoes_charges > 0:
+                screen.blit(self.jumpshoes_jetpack_shoot_animation_list[self.frame], (self.x, self.y))
+            elif self.jetpack_active:
                 screen.blit(self.jetpack_shoot_animation_list[self.frame], (self.x, self.y))
+            elif self.umbrella_active and self.shoes_charges > 0:
+                screen.blit(self.jumpshoes_umbrella_shoot_animation_list[self.frame], (self.x, self.y))
             elif self.umbrella_active:
                 screen.blit(self.umbrella_shoot_animation_list[self.frame], (self.x, self.y))
             elif self.shoes_charges > 0:
@@ -181,8 +220,12 @@ class Player:
             else:
                 screen.blit(self.shoot_animation_list[self.frame], (self.x, self.y))
         else:
-            if self.jetpack_active:
+            if self.jetpack_active and self.shoes_charges > 0:
+                screen.blit(self.jumpshoes_jetpack_animation_list[self.frame], (self.x, self.y))
+            elif self.jetpack_active:
                 screen.blit(self.jetpack_animation_list[self.frame], (self.x, self.y))
+            elif self.umbrella_active and self.shoes_charges > 0:
+                screen.blit(self.jumpshoes_umbrella_animation_list[self.frame], (self.x, self.y))
             elif self.umbrella_active:
                 screen.blit(self.umbrella_animation_list[self.frame], (self.x, self.y))
             elif self.shoes_charges > 0:

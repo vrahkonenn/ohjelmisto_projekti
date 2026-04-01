@@ -35,16 +35,16 @@ class Player:
         shoot_sprite = pygame.image.load("Imgs/shooting_frames.png").convert_alpha()
         shoot_sheet = SpriteSheet(shoot_sprite)
 
-        jumpshoes_sprite = pygame.image.load("Imgs/boostit/jetpack_framet.png").convert_alpha()
+        jumpshoes_sprite = pygame.image.load("Imgs/boostit/purkkakengät_frame.png").convert_alpha()
         jumpshoes_sheet = SpriteSheet(jumpshoes_sprite)
 
-        jumpshoes_shoot_sprite = pygame.image.load("Imgs/boostit/jetpack_shooting_frames.png").convert_alpha()
+        jumpshoes_shoot_sprite = pygame.image.load("Imgs/boostit/purkkakengät_shooting_frame.png").convert_alpha()
         jumpshoes_shoot_sheet = SpriteSheet(jumpshoes_shoot_sprite)
 
-        umbrella_sprite = pygame.image.load("Imgs/boostit/jetpack_framet.png").convert_alpha()
+        umbrella_sprite = pygame.image.load("Imgs/boostit/purkkavarjo_frame.png").convert_alpha()
         umbrella_sheet = SpriteSheet(umbrella_sprite)
 
-        umbrella_shoot_sprite = pygame.image.load("Imgs/boostit/jetpack_shooting_frames.png").convert_alpha()
+        umbrella_shoot_sprite = pygame.image.load("Imgs/boostit/purkkavarjo_shooting_frame.png").convert_alpha()
         umbrella_shoot_sheet = SpriteSheet(umbrella_shoot_sprite)
 
         jetpack_sprite = pygame.image.load("Imgs/boostit/jetpack_framet.png").convert_alpha()

@@ -300,6 +300,7 @@ while running:
                 platforms.reset()
                 camera.reset()
                 powerups.reset()
+                birds.reset()
                 score = 0
                 game_state = GAME_PLAYING
 
@@ -313,6 +314,7 @@ while running:
                 platforms.reset()
                 camera.reset()
                 powerups.reset()
+                birds.reset()
                 score = 0
                 game_state = GAME_PLAYING
 
@@ -338,6 +340,7 @@ while running:
                 platforms.reset()
                 camera.reset()
                 powerups.reset()
+                birds.reset()
                 score = 0
                 game_state = GAME_PLAYING
             if game_state == GAME_OVER and restart_menu_button.is_clicked(event.pos):

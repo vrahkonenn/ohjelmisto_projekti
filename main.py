@@ -166,7 +166,15 @@ while running:
         coin_y = 5
 
         # piirrä numero
-        draw_text_with_outline(screen, font_big, f"{total_coins+coins}", (coin_x-4, coin_y+2), WHITE, BLACK)
+        if total_coins + coins >= 1000:
+            coin_padding = 40
+        elif total_coins + coins >= 100:
+            coin_padding = 25
+        elif total_coins + coins >= 10:
+            coin_padding = 9
+        elif total_coins + coins >= 0:
+            coin_padding = -10
+        draw_text_with_outline(screen, font_big, f"{total_coins+coins}", (coin_x-coin_padding, coin_y+2), WHITE, BLACK)
 
         # piirrä kolikon kuva numeron jälkeen
         screen.blit(coin_img, (coin_x + 34, coin_y))

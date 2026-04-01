@@ -18,7 +18,7 @@ class Slider:
         handle_x = self.rect.x + int((self.value - self.min_val) / (self.max_val - self.min_val) * self.rect.width)
         handle_y = self.rect.y + self.rect.height // 2
 
-        pygame.draw.circle(screen, WHITE, (handle_x, handle_y), self.handle_radius)
+        pygame.draw.circle(screen, PURKKA, (handle_x, handle_y), self.handle_radius)
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:

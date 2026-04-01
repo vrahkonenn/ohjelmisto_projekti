@@ -112,11 +112,19 @@ class PowerUpManager:
         self.nothing = 90 - (upgrades["jumpboost"] + upgrades["jetpack"] + upgrades["shoes"] + upgrades["umbrella"])
         self.powerups = []
         self.spawn_chances = {
-        "jumpboost": 2.5,
-        "jetpack": 2.5,
-        "shoes": 2.5,
-        "umbrella": 2.5,
-        None: 90
+<<<<<<<<< Temporary merge branch 1
+        "jumpboost": 5,
+        "jetpack": 5,
+        "shoes": 5,
+        "umbrella": 5,
+        None: 80
+=========
+        "jumpboost": 2.5 + upgrades["jumpboost"],
+        "jetpack": 2.5 + upgrades["jetpack"],
+        "shoes": 2.5 + upgrades["shoes"],
+        "umbrella": 2.5 + upgrades["umbrella"],
+        None: self.nothing
+>>>>>>>>> Temporary merge branch 2
 }
 
     def spawn_on_platform(self, platform):

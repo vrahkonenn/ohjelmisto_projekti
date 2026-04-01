@@ -6,6 +6,7 @@ from player import Player
 from platforms import PlatformManager
 from slider import Slider
 from ui import draw_text
+from ui import draw_text_outline
 from button import Button
 from bullet import BulletManager
 from camera import Camera
@@ -20,9 +21,8 @@ pygame.init()
 icon = pygame.image.load("Imgs/player.png")
 pygame.display.set_icon(icon)
 
-settings_screen_fade = pygame.Surface((WIDTH, HEIGHT))
-settings_screen_fade.fill((0, 0, 0))
-settings_screen_fade.set_alpha(50)
+settings_screen_fade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+settings_screen_fade.fill((0, 0, 0, 80))
 
 pause_screen = PauseScreen()
 
@@ -72,6 +72,8 @@ music_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
 # sliderit
 sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 1.0)
 music_slider = Slider(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 0.0, 1.0, 1.0)
+sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 1.0)
+music_slider = Slider(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 0.0, 1.0, 1.0)
 
 score = 0
 
@@ -92,6 +94,13 @@ data = get_data()
 
 sound.play_music(game_state)
 
+def draw_game(screen):
+    background.draw(screen, camera.scroll)
+    platforms.draw(screen)
+    player.draw(screen)
+    bullets.draw(screen)
+    powerups.draw(screen)
+    birds.draw(screen)
 
 while running:
     clock.tick(FPS)
@@ -157,14 +166,10 @@ while running:
             player.umbrella_active = True
             player.umbrella_timer = pygame.time.get_ticks()
 
-        platforms.draw(screen)
-        player.draw(screen)
+        draw_game(screen)
         bullets.update()
-        bullets.draw(screen)
         powerups.update()
-        powerups.draw(screen)
         birds.update(player, score)
-        birds.draw(screen)
 
         korkeusvari=BLACK if score < 900 else WHITE
 
@@ -192,20 +197,21 @@ while running:
 
     # peli pausella
     elif game_state == GAME_PAUSED:
-        background.draw(screen, camera.scroll)
-        platforms.draw(screen)
-        player.draw(screen)
-        bullets.draw(screen)
+        draw_game(screen)
+        
+        screen.blit(settings_screen_fade, (0, 0))
 
         pause_screen.draw(screen)
         settings_button.draw(screen)
 
     # settings-valikko
     elif game_state == GAME_SETTINGS:
+        draw_game(screen)
+
         screen.blit(settings_screen_fade, (0, 0))
         draw_text(screen, "SETTINGS", font_large, WHITE, WIDTH//2, HEIGHT//2 - 140, center=True)
-        draw_text(screen, "sound (sfx) volume:", font_big, WHITE, WIDTH//2, HEIGHT//2 - 60, center=True)
-        draw_text(screen, "music volume:", font_big, WHITE, WIDTH//2, HEIGHT//2, center=True)
+        draw_text(screen, "sound (sfx): on/off", font_big, WHITE, WIDTH//2, HEIGHT//2 - 60, center=True)
+        draw_text(screen, "music: on/off", font_big, WHITE, WIDTH//2, HEIGHT//2, center=True)
         draw_text(screen, "Paina ESC palataksesi", font_small, WHITE, WIDTH//2, HEIGHT//2 + 60, center=True)
 
         sound_slider.draw(screen)
@@ -217,10 +223,7 @@ while running:
         elapsed = current_time - resume_timer
         remaining = max(0, (resume_wait - elapsed) // 1000 + 1)
 
-        background.draw(screen, camera.scroll)
-        platforms.draw(screen)
-        player.draw(screen)
-        bullets.draw(screen)
+        draw_game(screen)
 
         pause_screen.draw_countdown(screen, remaining)
 

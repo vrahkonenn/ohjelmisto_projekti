@@ -29,6 +29,8 @@ PowerUp.load_images()
 
 menu_bg = pygame.image.load("Imgs/mMenu_bg.png").convert()
 gameover_bg_norm = pygame.image.load("Imgs/gameover_norm.png").convert()
+coin_img = pygame.image.load("Imgs/kolikkokuva.png").convert_alpha()
+coin_img = pygame.transform.scale(coin_img, (32, 32))
 
 clock = pygame.time.Clock()
 
@@ -158,11 +160,21 @@ while running:
 
         korkeusvari=BLACK if score < 900 else WHITE
 
-        draw_text(screen, f"Korkeus: {score:.2f}",
-                  font_small, korkeusvari, 0, 0)
-        draw_text(screen, f"Kolikot: {total_coins+coins}",
-                font_small, korkeusvari, WIDTH-120, 0)
+        draw_text_with_outline(screen, font_small, f"KORKEUS: {score:.2f}", (4, 8), PURKKA, TUMMA_PURKKA)
 
+        coin_x = WIDTH - 70
+        coin_y = 5
+
+        # piirrä numero
+        draw_text_with_outline(screen, font_big, f"{total_coins+coins}", (coin_x-4, coin_y+2), WHITE, BLACK)
+        #draw_text(screen, f"{total_coins+coins}",
+         #       font_big, korkeusvari, coin_x-4, coin_y+2)
+
+        # piirrä kolikon kuva numeron jälkeen
+        screen.blit(coin_img, (coin_x + 34, coin_y))
+        #draw_text(screen, f"Kolikot: {total_coins+coins}",
+        #        font_small, korkeusvari, WIDTH-120, 0)
+        
         if player.y > HEIGHT:
             game_state = GAME_OVER
 

@@ -12,6 +12,7 @@ from camera import Camera
 from background import Background
 from pause import PauseScreen
 from powerups import PowerUpManager
+from shop import Shop
 from monster import MonsterManager
 import sound
 
@@ -32,6 +33,7 @@ from powerups import PowerUp
 PowerUp.load_images()
 
 menu_bg = pygame.image.load("Imgs/mMenu_bg.png").convert()
+shop_bg = pygame.image.load("Imgs/ground.png").convert()
 gameover_bg_norm = pygame.image.load("Imgs/gameover_norm.png").convert()
 coin_img = pygame.image.load("Imgs/kolikkokuva.png").convert_alpha()
 coin_img = pygame.transform.scale(coin_img, (32, 32))
@@ -47,6 +49,7 @@ menu_player = Player(9)
 menu_player.y = 320
 menu_player.jump = True
 powerups = PowerUpManager()
+shop = Shop()
 birds = MonsterManager()
 
 # napit
@@ -54,6 +57,10 @@ restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
                         "RESTART", font_big, GRAY, BLACK)
 start_button =      Button(WIDTH//2 - 175, 250, 200, 50,
                         "START", font_big, GRAY, BLACK)
+shop_button =    Button(WIDTH//2 - 175, HEIGHT//2+100, 200, 50,
+                        "SHOP", font_big, GRAY, BLACK)
+menu_button =    Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
+                        "MENU", font_big, GRAY, BLACK)
 settings_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
                         "SETTINGS", font_big, GRAY, BLACK)
 
@@ -74,6 +81,7 @@ GAME_PLAYING="playing"
 GAME_OVER="game_over"
 GAME_PAUSED="paused"
 GAME_RESUME="resume"
+GAME_SHOP="shop"
 GAME_SETTINGS="settings"
 
 game_state=GAME_MENU
@@ -101,7 +109,7 @@ while running:
             menu_player.start_animation()
 
         menu_player.draw(screen)
-        
+        shop_button.draw(screen)
         start_button.draw(screen)
 
     # Peli käynnissä
@@ -231,9 +239,16 @@ while running:
         restart_button.draw(screen)
         if score > highscore:
             data["highscore"] = score
-        save(data, total_coins, coins)
+        currency = total_coins + coins
+        save(data, currency)
         coins = 0
-    
+
+    # Shopping
+    elif game_state == GAME_SHOP:
+        screen.blit(shop_bg, (0, 0))
+        menu_button.draw(screen)
+        shop.draw_shop(screen)
+        
     if game_state != previous_state:
         if game_state not in (GAME_PAUSED, GAME_RESUME, GAME_SETTINGS):
             sound.play_music(game_state)
@@ -249,7 +264,8 @@ while running:
 
         if event.type == pygame.QUIT:
             running = False
-            save(data, total_coins, coins)
+            currency = total_coins + coins
+            save(data, currency)
             coins = 0
 
         if event.type == pygame.KEYDOWN:
@@ -293,6 +309,23 @@ while running:
                 powerups.reset()
                 score = 0
                 game_state = GAME_PLAYING
+
+            if game_state == GAME_MENU and shop_button.is_clicked(event.pos):
+                game_state = GAME_SHOP
+
+            if game_state == GAME_SHOP:
+                if menu_button.is_clicked(event.pos):
+                    game_state = GAME_MENU
+                elif shop.jumpboost_button.is_clicked(event.pos):
+                    shop.transaction(data, "jumpboost")
+                elif shop.jetpack_button.is_clicked(event.pos):
+                    shop.transaction(data, "jetpack")
+                elif shop.shoe_button.is_clicked(event.pos):
+                    shop.transaction(data, "shoes")
+                elif shop.umbrella_button.is_clicked(event.pos):
+                    shop.transaction(data, "umbrella")
+                else:
+                    pass
 
             if game_state == GAME_OVER and restart_button.is_clicked(event.pos):
                 player.reset()

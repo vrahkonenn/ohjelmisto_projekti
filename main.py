@@ -61,6 +61,8 @@ shop_button =    Button(WIDTH//2 - 175, HEIGHT//2+100, 200, 50,
                         "SHOP", font_big, GRAY, BLACK)
 menu_button =    Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
                         "MENU", font_big, GRAY, BLACK)
+restart_menu_button =    Button(WIDTH//2 - 100, HEIGHT-75, 200, 50,
+                        "MENU", font_big, GRAY, BLACK)
 settings_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
                         "SETTINGS", font_big, GRAY, BLACK)
 
@@ -129,13 +131,6 @@ while running:
         background.draw(screen, camera.scroll)
 
         player.animate()
-        if platforms.coin is not None:
-            platforms.coin.start_animation()
-            platforms.coin.animate()
-            platforms.coin.draw(screen)
-            if player.get_collision_rect().colliderect(platforms.coin.get_collision_rect()):
-                coins += 1
-                platforms.coin = None
 
         score += platforms.update(player)
 
@@ -167,6 +162,13 @@ while running:
             player.umbrella_timer = pygame.time.get_ticks()
 
         draw_game(screen)
+        if platforms.coin is not None:
+            platforms.coin.start_animation()
+            platforms.coin.animate()
+            platforms.coin.draw(screen)
+            if player.get_collision_rect().colliderect(platforms.coin.get_collision_rect()):
+                coins += 1
+                platforms.coin = None
         bullets.update()
         powerups.update()
         birds.update(player, score)
@@ -240,6 +242,7 @@ while running:
         #draw_text(screen, f"SCORE: {score:.2f}",
         #          font_big, BLACK, WIDTH//2 - 80, HEIGHT//2 - 20)
         restart_button.draw(screen)
+        restart_menu_button.draw(screen)
         if score > highscore:
             data["highscore"] = score
         currency = total_coins + coins
@@ -337,6 +340,8 @@ while running:
                 powerups.reset()
                 score = 0
                 game_state = GAME_PLAYING
+            if game_state == GAME_OVER and restart_menu_button.is_clicked(event.pos):
+                game_state = GAME_MENU
 
             if game_state == GAME_PAUSED and settings_button.is_clicked(event.pos):
                 game_state = GAME_SETTINGS

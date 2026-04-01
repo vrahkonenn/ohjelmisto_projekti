@@ -9,10 +9,10 @@ class Shop:
         self.shoes = 0
         self.umbrella = 0
 
-        self.jumpboost_button = Button(10, 20, 200, 50, "JUMPBOOST", font_big, GRAY, BLACK)
-        self.jetpack_button = Button(10, 80, 200, 50, "JETPACK", font_big, GRAY, BLACK)
-        self.shoe_button = Button(10, 140, 200, 50, "SHOE", font_big, GRAY, BLACK)
-        self.umbrella_button = Button(10, 200, 200, 50, "UBMBRELLA", font_big, GRAY, BLACK)
+        self.jumpboost_button = Button(WIDTH//2 - 175, 20, 200, 50, "JUMPBOOST", font_big, GRAY, BLACK)
+        self.jetpack_button = Button(WIDTH//2 - 175, 80, 200, 50, "JETPACK", font_big, GRAY, BLACK)
+        self.shoe_button = Button(WIDTH//2 - 175, 140, 200, 50, "SHOE", font_big, GRAY, BLACK)
+        self.umbrella_button = Button(WIDTH//2 - 175, 200, 200, 50, "UBMBRELLA", font_big, GRAY, BLACK)
 
         self.limit = 4    
         self.cost = 10

@@ -6,18 +6,23 @@ from player import Player
 from platforms import PlatformManager
 from slider import Slider
 from ui import draw_text
+from ui import draw_text_outline
 from button import Button
 from bullet import BulletManager
 from camera import Camera
 from background import Background
 from pause import PauseScreen
 from powerups import PowerUpManager
+from shop import Shop
 from monster import MonsterManager
 import sound
 
 pygame.init()
 icon = pygame.image.load("Imgs/player.png")
 pygame.display.set_icon(icon)
+
+settings_screen_fade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+settings_screen_fade.fill((0, 0, 0, 80))
 
 pause_screen = PauseScreen()
 
@@ -32,6 +37,7 @@ from powerups import PowerUp
 PowerUp.load_images()
 
 menu_bg = pygame.image.load("Imgs/mMenu_bg.png").convert()
+shop_bg = pygame.image.load("Imgs/ground.png").convert()
 gameover_bg_norm = pygame.image.load("Imgs/gameover_norm.png").convert()
 coin_img = pygame.image.load("Imgs/kolikkokuva.png").convert_alpha()
 coin_img = pygame.transform.scale(coin_img, (32, 32))
@@ -47,6 +53,7 @@ menu_player = Player(9)
 menu_player.y = 320
 menu_player.jump = True
 powerups = PowerUpManager()
+shop = Shop()
 birds = MonsterManager()
 
 # napit
@@ -54,6 +61,12 @@ restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
                         "RESTART", font_big, GRAY, BLACK)
 start_button =      Button(WIDTH//2 - 175, 250, 200, 50,
                         "START", font_big, GRAY, BLACK)
+shop_button =    Button(WIDTH//2 - 175, HEIGHT//2+100, 200, 50,
+                        "SHOP", font_big, GRAY, BLACK)
+menu_button =    Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
+                        "MENU", font_big, GRAY, BLACK)
+restart_menu_button =    Button(WIDTH//2 - 100, HEIGHT-75, 200, 50,
+                        "MENU", font_big, GRAY, BLACK)
 settings_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
                         "SETTINGS", font_big, GRAY, BLACK)
 
@@ -63,8 +76,10 @@ music_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
                         "TOGGLE MUSIC", font_big, GRAY, BLACK)
 
 # sliderit
-music_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 1.0)
-sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 0.0, 1.0, 1.0)
+sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 1.0)
+music_slider = Slider(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 0.0, 1.0, 1.0)
+sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 1.0)
+music_slider = Slider(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 0.0, 1.0, 1.0)
 
 score = 0
 
@@ -74,6 +89,7 @@ GAME_PLAYING="playing"
 GAME_OVER="game_over"
 GAME_PAUSED="paused"
 GAME_RESUME="resume"
+GAME_SHOP="shop"
 GAME_SETTINGS="settings"
 
 game_state=GAME_MENU
@@ -84,6 +100,13 @@ data = get_data()
 
 sound.play_music(game_state)
 
+def draw_game(screen):
+    background.draw(screen, camera.scroll)
+    platforms.draw(screen)
+    player.draw(screen)
+    bullets.draw(screen)
+    powerups.draw(screen)
+    birds.draw(screen)
 
 while running:
     clock.tick(FPS)
@@ -101,7 +124,7 @@ while running:
             menu_player.start_animation()
 
         menu_player.draw(screen)
-        
+        shop_button.draw(screen)
         start_button.draw(screen)
 
     # Peli käynnissä
@@ -112,13 +135,6 @@ while running:
         background.draw(screen, camera.scroll)
 
         player.animate()
-        if platforms.coin is not None:
-            platforms.coin.start_animation()
-            platforms.coin.animate()
-            platforms.coin.draw(screen)
-            if player.get_collision_rect().colliderect(platforms.coin.get_collision_rect()):
-                coins += 1
-                platforms.coin = None
 
         score += platforms.update(player)
 
@@ -149,14 +165,17 @@ while running:
             player.umbrella_active = True
             player.umbrella_timer = pygame.time.get_ticks()
 
-        platforms.draw(screen)
-        player.draw(screen)
+        draw_game(screen)
+        if platforms.coin is not None:
+            platforms.coin.start_animation()
+            platforms.coin.animate()
+            platforms.coin.draw(screen)
+            if player.get_collision_rect().colliderect(platforms.coin.get_collision_rect()):
+                coins += 1
+                platforms.coin = None
         bullets.update()
-        bullets.draw(screen)
         powerups.update()
-        powerups.draw(screen)
         birds.update(player, score)
-        birds.draw(screen)
 
         korkeusvari=BLACK if score < 900 else WHITE
 
@@ -166,31 +185,34 @@ while running:
         coin_y = 5
 
         # piirrä numero
-        draw_text_with_outline(screen, font_big, f"{total_coins+coins}", (coin_x-4, coin_y+2), WHITE, BLACK)
-        #draw_text(screen, f"{total_coins+coins}",
-         #       font_big, korkeusvari, coin_x-4, coin_y+2)
+        if total_coins + coins >= 1000:
+            coin_padding = 40
+        elif total_coins + coins >= 100:
+            coin_padding = 25
+        elif total_coins + coins >= 10:
+            coin_padding = 9
+        elif total_coins + coins >= 0:
+            coin_padding = -10
+        draw_text_with_outline(screen, font_big, f"{total_coins+coins}", (coin_x-coin_padding, coin_y+2), WHITE, BLACK)
 
         # piirrä kolikon kuva numeron jälkeen
         screen.blit(coin_img, (coin_x + 34, coin_y))
-        #draw_text(screen, f"Kolikot: {total_coins+coins}",
-        #        font_small, korkeusvari, WIDTH-120, 0)
         
         if player.y > HEIGHT:
             game_state = GAME_OVER
 
     # peli pausella
     elif game_state == GAME_PAUSED:
-        background.draw(screen, camera.scroll)
-        platforms.draw(screen)
-        player.draw(screen)
-        bullets.draw(screen)
+        draw_game(screen)
+        
+        screen.blit(settings_screen_fade, (0, 0))
 
         pause_screen.draw(screen)
         settings_button.draw(screen)
 
     # settings-valikko
     elif game_state == GAME_SETTINGS:
-        screen.blit(settings_screen, (0,0))
+        screen.fill(BLACK)
         draw_text(screen, "SETTINGS", font_large, WHITE, WIDTH//2, HEIGHT//2 - 140, center=True)
         draw_text(screen, "sound (sfx): on/off", font_big, WHITE, WIDTH//2, HEIGHT//2 - 60, center=True)
         draw_text(screen, "music: on/off", font_big, WHITE, WIDTH//2, HEIGHT//2, center=True)
@@ -205,10 +227,7 @@ while running:
         elapsed = current_time - resume_timer
         remaining = max(0, (resume_wait - elapsed) // 1000 + 1)
 
-        background.draw(screen, camera.scroll)
-        platforms.draw(screen)
-        player.draw(screen)
-        bullets.draw(screen)
+        draw_game(screen)
 
         pause_screen.draw_countdown(screen, remaining)
 
@@ -225,14 +244,24 @@ while running:
         #draw_text(screen, f"SCORE: {score:.2f}",
         #          font_big, BLACK, WIDTH//2 - 80, HEIGHT//2 - 20)
         restart_button.draw(screen)
+        restart_menu_button.draw(screen)
         if score > highscore:
             data["highscore"] = score
-        save(data, total_coins, coins)
+        currency = total_coins + coins
+        save(data, currency)
         coins = 0
-    
+
+    # Shopping
+    elif game_state == GAME_SHOP:
+        screen.blit(shop_bg, (0, 0))
+        menu_button.draw(screen)
+        shop.draw_shop(screen)
+        
     if game_state != previous_state:
         if game_state not in (GAME_PAUSED, GAME_RESUME, GAME_SETTINGS):
             sound.play_music(game_state)
+            pygame.mixer.music.set_volume(music_slider.get_value())
+            #pygame.mixer.sound.set_volume(sound_slider.get_value())
         previous_state = game_state
 
     for event in pygame.event.get():
@@ -240,12 +269,11 @@ while running:
         if game_state == GAME_SETTINGS:
             music_slider.handle_event(event)
             sound_slider.handle_event(event)
-            pygame.mixer.music.set_volume(music_slider.get_value())
-            pygame.mixer.music.set_volume(sound_slider.get_value())
 
         if event.type == pygame.QUIT:
             running = False
-            save(data, total_coins, coins)
+            currency = total_coins + coins
+            save(data, currency)
             coins = 0
 
         if event.type == pygame.KEYDOWN:
@@ -274,6 +302,7 @@ while running:
                 platforms.reset()
                 camera.reset()
                 powerups.reset()
+                birds.reset()
                 score = 0
                 game_state = GAME_PLAYING
 
@@ -287,16 +316,37 @@ while running:
                 platforms.reset()
                 camera.reset()
                 powerups.reset()
+                birds.reset()
                 score = 0
                 game_state = GAME_PLAYING
+
+            if game_state == GAME_MENU and shop_button.is_clicked(event.pos):
+                game_state = GAME_SHOP
+
+            if game_state == GAME_SHOP:
+                if menu_button.is_clicked(event.pos):
+                    game_state = GAME_MENU
+                elif shop.jumpboost_button.is_clicked(event.pos):
+                    shop.transaction(data, "jumpboost")
+                elif shop.jetpack_button.is_clicked(event.pos):
+                    shop.transaction(data, "jetpack")
+                elif shop.shoe_button.is_clicked(event.pos):
+                    shop.transaction(data, "shoes")
+                elif shop.umbrella_button.is_clicked(event.pos):
+                    shop.transaction(data, "umbrella")
+                else:
+                    pass
 
             if game_state == GAME_OVER and restart_button.is_clicked(event.pos):
                 player.reset()
                 platforms.reset()
                 camera.reset()
                 powerups.reset()
+                birds.reset()
                 score = 0
                 game_state = GAME_PLAYING
+            if game_state == GAME_OVER and restart_menu_button.is_clicked(event.pos):
+                game_state = GAME_MENU
 
             if game_state == GAME_PAUSED and settings_button.is_clicked(event.pos):
                 game_state = GAME_SETTINGS

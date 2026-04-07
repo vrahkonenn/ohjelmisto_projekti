@@ -16,6 +16,7 @@ from powerups import PowerUpManager
 from shop import Shop
 from monster import MonsterManager
 import sound
+from spacemonster import SpaceMonsterManager
 
 pygame.init()
 icon = pygame.image.load("Imgs/player.png")
@@ -55,6 +56,7 @@ menu_player.jump = True
 powerups = PowerUpManager()
 shop = Shop()
 birds = MonsterManager()
+aliens = SpaceMonsterManager()
 
 # napit
 restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
@@ -107,6 +109,7 @@ def draw_game(screen):
     bullets.draw(screen)
     powerups.draw(screen)
     birds.draw(screen)
+    aliens.draw(screen)
 
 while running:
     clock.tick(FPS)
@@ -176,6 +179,7 @@ while running:
         bullets.update()
         powerups.update()
         birds.update(player, score)
+        aliens.update(player, score)
 
         korkeusvari=BLACK if score < 900 else WHITE
 
@@ -303,6 +307,7 @@ while running:
                 camera.reset()
                 powerups.reset()
                 birds.reset()
+                aliens.reset()
                 score = 0
                 game_state = GAME_PLAYING
 
@@ -317,6 +322,7 @@ while running:
                 camera.reset()
                 powerups.reset()
                 birds.reset()
+                aliens.reset()
                 score = 0
                 game_state = GAME_PLAYING
 
@@ -343,6 +349,7 @@ while running:
                 camera.reset()
                 powerups.reset()
                 birds.reset()
+                aliens.reset()
                 score = 0
                 game_state = GAME_PLAYING
             if game_state == GAME_OVER and restart_menu_button.is_clicked(event.pos):

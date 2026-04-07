@@ -3,7 +3,7 @@ import random
 from spritesheet import SpriteSheet
 from settings import *
 
-class Monster:
+class SpaceMonster:
     def __init__(self, x, y, moving):
         self.scale = 90
         self.x = x
@@ -15,12 +15,12 @@ class Monster:
         self.width = self.scale
         self.height = self.scale
 
-        monster_image = pygame.image.load("Imgs/lintu (6).png").convert_alpha()
+        monster_image = pygame.image.load("Imgs/alien.png").convert_alpha()
         sprite_sheet = SpriteSheet(monster_image)
 
         self.animation_list = []
         self.shoot_animation_list = []
-        self.animation_steps = 4
+        self.animation_steps = 5
         self.animation_cooldown = 75
         self.last_update = pygame.time.get_ticks()
         self.frame = 0
@@ -32,7 +32,7 @@ class Monster:
 
         for x in range(self.animation_steps):
             self.animation_list.append(
-                sprite_sheet.get_image(x, 90, 90, 2, (0,0,0))
+                sprite_sheet.get_image(x, 90, 90, 1, (0,0,0))
             )
         
 
@@ -72,25 +72,25 @@ class Monster:
                 self.direction = -1
     
 
-class MonsterManager:
+class SpaceMonsterManager:
     def __init__(self):
         self.monsters = []
         self.last_monster_spawn = 0 #tallentaa ajan jollon vika monsteri spawnattu
         self.monster_spawn_delay = 4000
-        self.min_score = 50
-        self.max_score = 100
+        self.min_score = 100
+        self.max_score = 20000
 
     def update(self, player, score):
         current_time = pygame.time.get_ticks()
 
-        if self.min_score <= score <= self.max_score:
+        if self.min_score <= score:
             if current_time - self.last_monster_spawn > self.monster_spawn_delay:
                 spawn_x = random.randint(50, 250)
                 spawn_y = -100 #reunan ulkopuolella
 
                 moving = random.random() < 0.5
 
-                self.monsters.append(Monster(spawn_x, spawn_y, moving))
+                self.monsters.append(SpaceMonster(spawn_x, spawn_y, moving))
                 self.monsters[-1].start_animation()
                 self.last_monster_spawn = current_time
                 self.monster_spawn_delay = random.randint(6000, 15000)

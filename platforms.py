@@ -55,15 +55,19 @@ class PlatformManager:
 
         self.initial_data = [
             (175, 480, "normal", False),
-            (85 , 370, "breakable", False),
+            (85 , 370, "normal", False),
             (265, 370, "normal", False),   
             (175, 260, "normal", False),
-            (85 , 150, "breakable", False),
+            (85 , 150, "normal", False),
             (265, 150, "normal", False),
             (175, 40 , "normal", False)
         ]
 
         self.last_spawn_type = "normal"
+
+        self.normal_weight = 100
+        self.breakable_weight = 0
+        self.trap_weight = 0
 
         self.platforms = []
         self.create_initial_platforms()
@@ -130,7 +134,7 @@ class PlatformManager:
                 platform_type = random.choices(
                     ["normal", "breakable", "trap"],
                     # Weights = % mahdollisuus alustalle
-                    weights=[70, 20, 10]
+                    weights=[self.normal_weight, self.breakable_weight, self.trap_weight]
                 )[0]
 
                 if self.last_spawn_type == "trap" and platform_type == "trap":
@@ -156,6 +160,16 @@ class PlatformManager:
 
 
         return score_add
+    
+    def update_weights(self):
+        self.normal_weight -= 5
+        self.breakable_weight += 4
+        self.trap_weight += 1
+
+    def reset_weights(self):
+        self.normal_weight = 100
+        self.breakable_weight = 0
+        self.trap_weight = 0
 
     def reset(self):
         self.create_initial_platforms()

@@ -160,3 +160,12 @@ Sprint 6 viikko 13
 - Sivuttain liikkuva hirviö
 - Kolikot näkyviin näytölle
 - Boostien spawnaus
+
+Sprint 7 viikko 14
+- Sivuttain liikkuva hirviö
+- Menu napit 
+- Kolikkokaupan grafiikat
+- Pelin vaikeutuminen
+- Hirviöiden grafiikka
+- Kolikkokauppa
+- Ääniefektit

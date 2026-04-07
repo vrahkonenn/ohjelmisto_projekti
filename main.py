@@ -84,6 +84,7 @@ sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 1.0)
 music_slider = Slider(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 0.0, 1.0, 1.0)
 
 score = 0
+last_updated_score = 0
 
 # game states
 GAME_MENU="menu"
@@ -140,6 +141,10 @@ while running:
         player.animate()
 
         score += platforms.update(player)
+
+        if score - 100 >= last_updated_score:
+            last_updated_score = score
+            platforms.update_weights()
 
         # spawnataan powerupeja platformeille
         for p in platforms.platforms:
@@ -304,6 +309,7 @@ while running:
             if game_state == GAME_OVER and event.key == pygame.K_SPACE  or game_state == GAME_MENU and event.key == pygame.K_SPACE:
                 player.reset()
                 platforms.reset()
+                platforms.reset_weights()
                 camera.reset()
                 powerups.reset()
                 birds.reset()

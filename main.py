@@ -71,7 +71,8 @@ restart_menu_button =    Button(WIDTH//2 - 100, HEIGHT-75, 200, 50,
                         "MENU", font_big, GRAY, BLACK)
 settings_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
                         "SETTINGS", font_big, GRAY, BLACK)
-
+pause_menu_button = Button(WIDTH//2 - 100, HEIGHT//2 + 80, 200, 50,
+                        "MENU", font_big, GRAY, BLACK)
 sound_button = Button(WIDTH//2 - 100, HEIGHT//2 - 60, 200, 50,
                         "TOGGLE SOUND", font_big, GRAY, BLACK)
 music_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
@@ -100,6 +101,8 @@ previous_state = None
 running = True
 coins = 0
 data = get_data()
+coin_x = WIDTH - 70
+coin_y = 5
 
 sound.play_music(game_state)
 
@@ -116,6 +119,11 @@ while running:
     clock.tick(FPS)
     highscore = data["highscore"]
     total_coins = data["currency"]  
+    jumpboost = data["jumpboost"]
+    jetpack = data["jetpack"]
+    shoes = data["shoes"]
+    umbrella = data["umbrella"]
+
     # Päävalikko
     if game_state == GAME_MENU:
         screen.blit(menu_bg, (0, 0))
@@ -190,8 +198,7 @@ while running:
 
         draw_text_with_outline(screen, font_small, f"KORKEUS: {score:.2f}", (4, 8), PURKKA, TUMMA_PURKKA)
 
-        coin_x = WIDTH - 70
-        coin_y = 5
+        
 
         # piirrä numero
         if total_coins + coins >= 1000:
@@ -218,6 +225,7 @@ while running:
 
         pause_screen.draw(screen)
         settings_button.draw(screen)
+        pause_menu_button.draw(screen)
 
     # settings-valikko
     elif game_state == GAME_SETTINGS:
@@ -266,6 +274,22 @@ while running:
         menu_button.draw(screen)
         shop.draw_shop(screen)
         
+        # piirrä numero
+        if total_coins + coins >= 1000:
+            coin_padding = 40
+        elif total_coins + coins >= 100:
+            coin_padding = 25
+        elif total_coins + coins >= 10:
+            coin_padding = 9
+        elif total_coins + coins >= 0:
+            coin_padding = -10  
+        draw_text_with_outline(screen, font_big, f"{total_coins+coins}", (coin_x-coin_padding, coin_y+2), WHITE, BLACK)
+        screen.blit(coin_img, (coin_x + 34, coin_y))
+        draw_text_with_outline(screen, font_small, f"{jumpboost}/{shop.limit}", (coin_x - 120, coin_y + 8), PURKKA, TUMMA_PURKKA)
+        draw_text_with_outline(screen, font_small, f"{jetpack}/{shop.limit}", (coin_x - 120, coin_y + 68), PURKKA, TUMMA_PURKKA)
+        draw_text_with_outline(screen, font_small, f"{shoes}/{shop.limit}", (coin_x - 120, coin_y + 128), PURKKA, TUMMA_PURKKA)
+        draw_text_with_outline(screen, font_small, f"{umbrella}/{shop.limit}", (coin_x - 120, coin_y + 188), PURKKA, TUMMA_PURKKA)
+
     if game_state != previous_state:
         if game_state not in (GAME_PAUSED, GAME_RESUME, GAME_SETTINGS):
             sound.play_music(game_state)
@@ -363,6 +387,8 @@ while running:
 
             if game_state == GAME_PAUSED and settings_button.is_clicked(event.pos):
                 game_state = GAME_SETTINGS
+            if game_state == GAME_PAUSED and pause_menu_button.is_clicked(event.pos):
+                game_state = GAME_MENU
             if game_state == GAME_SETTINGS and sound_button.is_clicked(event.pos):
                 sound.toggle_sound()
             if game_state == GAME_SETTINGS and music_button.is_clicked(event.pos):

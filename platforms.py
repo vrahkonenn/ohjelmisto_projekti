@@ -162,9 +162,12 @@ class PlatformManager:
         return score_add
     
     def update_weights(self):
-        self.normal_weight -= 5
-        self.breakable_weight += 4
-        self.trap_weight += 1
+        if self.normal_weight <= 0:
+            return
+        
+        self.normal_weight -= 2.5
+        self.breakable_weight += 2
+        self.trap_weight += 0.5
 
     def reset_weights(self):
         self.normal_weight = 100

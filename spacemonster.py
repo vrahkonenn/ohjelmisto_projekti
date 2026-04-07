@@ -77,7 +77,7 @@ class SpaceMonsterManager:
         self.monsters = []
         self.last_monster_spawn = 0 #tallentaa ajan jollon vika monsteri spawnattu
         self.monster_spawn_delay = 4000
-        self.min_score = 100
+        self.min_score = 1000
         self.max_score = 20000
 
     def update(self, player, score):

@@ -78,7 +78,7 @@ class MonsterManager:
         self.last_monster_spawn = 0 #tallentaa ajan jollon vika monsteri spawnattu
         self.monster_spawn_delay = 4000
         self.min_score = 50
-        self.max_score = 100
+        self.max_score = 999
 
     def update(self, player, score):
         current_time = pygame.time.get_ticks()

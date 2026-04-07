@@ -1,5 +1,6 @@
 # player.py
 import pygame
+import sound
 from spritesheet import SpriteSheet
 from settings import WIDTH
 
@@ -90,6 +91,8 @@ class Player:
         self.frame = 0
         self.animating = False
 
+        self.umbrella_open = False
+
         for x in range(self.animation_steps):
             self.animation_list.append(
                 sprite_sheet.get_image(x, 80, 80, 1, (0,0,0))
@@ -159,7 +162,12 @@ class Player:
         if self.umbrella_active:
             if current_time - self.umbrella_timer > self.umbrella_duration:
                     self.umbrella_active = False
-
+                    self.umbrella_open = False
+        if self.umbrella_active and self.y_change > 0:
+            if not self.umbrella_open:
+                sound.play_sfx(sound.sfx["umbrella"])
+                self.umbrella_open = True
+            
         gravity = 0.4
 
         if self.jump:

@@ -77,10 +77,13 @@ sound_button = Button(WIDTH//2 - 100, HEIGHT//2 - 60, 200, 50,
 music_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
                         "TOGGLE MUSIC", font_big, GRAY, BLACK)
 
+# sfx
+sound.load_sfx()
+
 # sliderit
-sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 1.0)
+sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 0.8)
 music_slider = Slider(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 0.0, 1.0, 1.0)
-sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 1.0)
+sound_slider = Slider(WIDTH//2 - 100, HEIGHT//2 - 40, 200, 0.0, 1.0, 0.8)
 music_slider = Slider(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 0.0, 1.0, 1.0)
 
 score = 0
@@ -155,6 +158,7 @@ while running:
         player.jump = platforms.check_collisions(player)
 
         if player.jump:
+            sound.play_sfx(sound.sfx["jump"])
             player.start_animation()
 
         power = powerups.check_collision(player)
@@ -179,6 +183,7 @@ while running:
             platforms.coin.animate()
             platforms.coin.draw(screen)
             if player.get_collision_rect().colliderect(platforms.coin.get_collision_rect()):
+                sound.play_sfx(sound.sfx["pickup_coin"])
                 coins += 1
                 platforms.coin = None
         bullets.update()
@@ -209,6 +214,7 @@ while running:
         
         if player.y > HEIGHT:
             game_state = GAME_OVER
+            sound.play_sfx(sound.sfx["game_over"])
 
     # peli pausella
     elif game_state == GAME_PAUSED:
@@ -270,7 +276,12 @@ while running:
         if game_state not in (GAME_PAUSED, GAME_RESUME, GAME_SETTINGS):
             sound.play_music(game_state)
             pygame.mixer.music.set_volume(music_slider.get_value())
-            #pygame.mixer.sound.set_volume(sound_slider.get_value())
+            for s in sound.sfx.values():
+                if isinstance(s, list):
+                    for sound_effect in s:
+                        sound_effect.set_volume(sound_slider.get_value())
+                else:
+                    s.set_volume(sound_slider.get_value())
         previous_state = game_state
 
     for event in pygame.event.get():
@@ -290,6 +301,7 @@ while running:
                 player.move_to_side(event.key)
 
             if event.key == pygame.K_SPACE and game_state == GAME_PLAYING:
+                sound.play_sfx(sound.sfx["shoot"])
                 bullets.shoot(player)
                 player.shoot_animation()
 

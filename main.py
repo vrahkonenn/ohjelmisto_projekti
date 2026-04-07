@@ -112,6 +112,19 @@ def draw_game(screen):
     birds.draw(screen)
     aliens.draw(screen)
 
+def reset_game():
+    global score, last_updated_score, game_state
+    player.reset()
+    platforms.reset()
+    platforms.reset_difficulty()
+    camera.reset()
+    powerups.reset()
+    birds.reset()
+    aliens.reset()
+    score = 0
+    last_updated_score = 0
+    game_state = GAME_PLAYING
+
 while running:
     clock.tick(FPS)
     highscore = data["highscore"]
@@ -144,7 +157,7 @@ while running:
 
         if score - 100 >= last_updated_score:
             last_updated_score = score
-            platforms.update_weights()
+            platforms.update_difficulty()
 
         # spawnataan powerupeja platformeille
         for p in platforms.platforms:
@@ -307,15 +320,7 @@ while running:
                     game_state = GAME_PAUSED
 
             if game_state == GAME_OVER and event.key == pygame.K_SPACE  or game_state == GAME_MENU and event.key == pygame.K_SPACE:
-                player.reset()
-                platforms.reset()
-                platforms.reset_weights()
-                camera.reset()
-                powerups.reset()
-                birds.reset()
-                aliens.reset()
-                score = 0
-                game_state = GAME_PLAYING
+                reset_game()
 
         if event.type == pygame.KEYUP:
             if game_state == GAME_PLAYING:
@@ -323,14 +328,7 @@ while running:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             if game_state == GAME_MENU and start_button.is_clicked(event.pos):
-                player.reset()
-                platforms.reset()
-                camera.reset()
-                powerups.reset()
-                birds.reset()
-                aliens.reset()
-                score = 0
-                game_state = GAME_PLAYING
+                reset_game()
 
             if game_state == GAME_MENU and shop_button.is_clicked(event.pos):
                 game_state = GAME_SHOP
@@ -350,14 +348,8 @@ while running:
                     pass
 
             if game_state == GAME_OVER and restart_button.is_clicked(event.pos):
-                player.reset()
-                platforms.reset()
-                camera.reset()
-                powerups.reset()
-                birds.reset()
-                aliens.reset()
-                score = 0
-                game_state = GAME_PLAYING
+                reset_game()
+
             if game_state == GAME_OVER and restart_menu_button.is_clicked(event.pos):
                 game_state = GAME_MENU
 

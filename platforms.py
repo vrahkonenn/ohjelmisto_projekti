@@ -68,6 +68,7 @@ class PlatformManager:
         self.normal_weight = 100
         self.breakable_weight = 0
         self.trap_weight = 0
+        self.moving_chance = 0
 
         self.platforms = []
         self.create_initial_platforms()
@@ -141,8 +142,7 @@ class PlatformManager:
                     platform_type = "normal"
                 self.last_spawn_type = platform_type
 
-                # 30% mahdollisuus olla liikkuva
-                moving = random.random() < 0.3
+                moving = random.random() < self.moving_chance
 
                 self.platforms[i] = Platform(
                     spawn_x,
@@ -161,18 +161,20 @@ class PlatformManager:
 
         return score_add
     
-    def update_weights(self):
+    def update_difficulty(self):
         if self.normal_weight <= 0:
             return
         
         self.normal_weight -= 2.5
         self.breakable_weight += 2
         self.trap_weight += 0.5
+        self.moving_chance += 0.02
 
-    def reset_weights(self):
+    def reset_difficulty(self):
         self.normal_weight = 100
         self.breakable_weight = 0
         self.trap_weight = 0
+        self.moving_chance = 0.1
 
     def reset(self):
         self.create_initial_platforms()

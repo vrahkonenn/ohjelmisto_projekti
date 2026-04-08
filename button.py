@@ -9,6 +9,9 @@ class Button:
         self.text_color = text_color
         self.outline_color = outline_color
 
+        self.start_button = pygame.image.load("Imgs/valikko_osat/start.png").convert_alpha()
+        self.start_button = pygame.transform.scale(self.start_button, (width, height))
+
     def draw(self, surface):
         #tausta
         pygame.draw.rect(surface, self.bg_color, self.rect)
@@ -21,3 +24,6 @@ class Button:
     
     def is_clicked(self, mouse_pos):
         return self.rect.collidepoint(mouse_pos)
+    
+    def draw_image(self, surface):
+        surface.blit(self.start_button, self.rect)

@@ -61,7 +61,7 @@ aliens = SpaceMonsterManager()
 # napit
 restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
                         "RESTART", font_big, GRAY, BLACK)
-start_button =      Button(WIDTH//2 - 175, 250, 200, 50,
+start_button =      Button(WIDTH//2 - 175, 250, 200, 85,
                         "START", font_big, VAALEAN_PINKKI, KERMA, TUMMAN_PINKKI )
 shop_button =    Button(WIDTH//2 - 175, HEIGHT//2+100, 200, 50,
                         "SHOP", font_big, GRAY, BLACK)
@@ -153,7 +153,7 @@ while running:
 
         menu_player.draw(screen)
         shop_button.draw(screen)
-        start_button.draw(screen)
+        start_button.draw_image(screen)
 
     # Peli käynnissä
     if game_state == GAME_PLAYING:

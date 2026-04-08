@@ -338,7 +338,6 @@ while running:
                 player.move_to_side(event.key)
 
             if event.key == pygame.K_SPACE and game_state == GAME_PLAYING:
-                sound.play_sfx(sound.sfx["shoot"])
                 bullets.shoot(player)
                 player.shoot_animation()
 

@@ -393,10 +393,13 @@ while running:
                 game_state = GAME_SETTINGS
             if game_state == GAME_PAUSED and pause_menu_button.is_clicked(event.pos):
                 game_state = GAME_MENU
-            if game_state == GAME_SETTINGS and sound_button.is_clicked(event.pos):
-                sound.toggle_sound()
-            if game_state == GAME_SETTINGS and music_button.is_clicked(event.pos):
-                sound.toggle_music()
+            if game_state == GAME_SETTINGS:
+                if not (sound_slider._handle_rect().collidepoint(event.pos) or 
+                        music_slider._handle_rect().collidepoint(event.pos)):
+                    if sound_button.is_clicked(event.pos):
+                        sound.toggle_sound()
+                    elif music_button.is_clicked(event.pos):
+                        sound.toggle_music()
 
     pygame.display.flip()
 

@@ -21,5 +21,7 @@ class Button:
         surface.blit(text_surf, text_rect)
     
     def is_clicked(self, mouse_pos):
-        sound.play_sfx(sound.sfx["click"])
-        return self.rect.collidepoint(mouse_pos)
+        if self.rect.collidepoint(mouse_pos):
+            sound.play_sfx(sound.sfx["click"])
+            return True
+        return False

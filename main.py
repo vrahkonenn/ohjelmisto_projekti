@@ -362,7 +362,7 @@ while running:
             if game_state == GAME_PLAYING:
                 player.key_check()
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if game_state == GAME_MENU and start_button.is_clicked(event.pos):
                 reset_game()
 

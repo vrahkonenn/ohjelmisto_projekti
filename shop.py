@@ -5,10 +5,10 @@ import saves
 class Shop:
     def __init__(self):
        
-        self.jumpboost_button = Button(WIDTH//2 - 175, 20, 200, 50, "JUMPBOOST", font_big, GRAY, BLACK)
-        self.jetpack_button = Button(WIDTH//2 - 175, 80, 200, 50, "JETPACK", font_big, GRAY, BLACK)
-        self.shoe_button = Button(WIDTH//2 - 175, 140, 200, 50, "SHOE", font_big, GRAY, BLACK)
-        self.umbrella_button = Button(WIDTH//2 - 175, 200, 200, 50, "UBMBRELLA", font_big, GRAY, BLACK)
+        self.jumpboost_button = Button(WIDTH//2 - 175, 20, 200, 50, "JUMPBOOST", font_big, VAALEAN_RUSKEA, TUMMAN_RUSKEA)
+        self.jetpack_button = Button(WIDTH//2 - 175, 80, 200, 50, "JETPACK", font_big, VAALEAN_RUSKEA, TUMMAN_RUSKEA)
+        self.shoe_button = Button(WIDTH//2 - 175, 140, 200, 50, "SHOE", font_big, VAALEAN_RUSKEA, TUMMAN_RUSKEA)
+        self.umbrella_button = Button(WIDTH//2 - 175, 200, 200, 50, "UMBRELLA", font_big, VAALEAN_RUSKEA, TUMMAN_RUSKEA)
 
         self.limit = 4    
         self.cost = 10
@@ -18,8 +18,8 @@ class Shop:
         self.jetpack_button.draw(screen)
         self.shoe_button.draw(screen)
         self.umbrella_button.draw(screen) 
-        draw_text_with_outline(screen, font_big, f"Upgrades cost {self.cost} coins.", (8, 260), PURKKA, TUMMA_PURKKA)
-        draw_text_with_outline(screen, font_big, f"They increase spawn rate.", (8, 290), PURKKA, TUMMA_PURKKA)
+        draw_text_with_outline(screen, font_big, f"Upgrades cost {self.cost} coins.", (8, 260), WHITE, BLACK)
+        draw_text_with_outline(screen, font_big, f"They increase spawn rate.", (8, 290), WHITE, BLACK)
 
     def transaction(self, data, button):
         if data["currency"] >= self.cost:

@@ -109,10 +109,10 @@ class PowerUpManager:
         self.nothing = 90 - (upgrades["jumpboost"] + upgrades["jetpack"] + upgrades["shoes"] + upgrades["umbrella"])
         self.powerups = []
         self.spawn_chances = {
-            "jumpboost": 1 + upgrades["jumpboost"],
-            "jetpack": 1 + upgrades["jetpack"],
-            "shoes": 1 + upgrades["shoes"],
-            "umbrella": 1 + upgrades["umbrella"],
+            "jumpboost": upgrades["jumpboost"],
+            "jetpack": upgrades["jetpack"],
+            "shoes": upgrades["shoes"],
+            "umbrella": upgrades["umbrella"],
             None: self.nothing
         }
     

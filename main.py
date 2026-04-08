@@ -62,7 +62,7 @@ aliens = SpaceMonsterManager()
 restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
                         "RESTART", font_big, GRAY, BLACK)
 start_button =      Button(WIDTH//2 - 175, 250, 200, 50,
-                        "START", font_big, GRAY, BLACK)
+                        "START", font_big, VAALEAN_PINKKI, KERMA, TUMMAN_PINKKI )
 shop_button =    Button(WIDTH//2 - 175, HEIGHT//2+100, 200, 50,
                         "SHOP", font_big, GRAY, BLACK)
 menu_button =    Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
@@ -304,10 +304,10 @@ while running:
             coin_padding = -10  
         draw_text_with_outline(screen, font_big, f"{total_coins+coins}", (coin_x-coin_padding, coin_y+2), WHITE, BLACK)
         screen.blit(coin_img, (coin_x + 34, coin_y))
-        draw_text_with_outline(screen, font_small, f"{jumpboost}/{shop.limit}", (coin_x - 120, coin_y + 8), PURKKA, TUMMA_PURKKA)
-        draw_text_with_outline(screen, font_small, f"{jetpack}/{shop.limit}", (coin_x - 120, coin_y + 68), PURKKA, TUMMA_PURKKA)
-        draw_text_with_outline(screen, font_small, f"{shoes}/{shop.limit}", (coin_x - 120, coin_y + 128), PURKKA, TUMMA_PURKKA)
-        draw_text_with_outline(screen, font_small, f"{umbrella}/{shop.limit}", (coin_x - 120, coin_y + 188), PURKKA, TUMMA_PURKKA)
+        draw_text_with_outline(screen, font_small, f"{jumpboost}/{shop.limit}", (coin_x - 120, coin_y + 8), WHITE, BLACK)
+        draw_text_with_outline(screen, font_small, f"{jetpack}/{shop.limit}", (coin_x - 120, coin_y + 68), WHITE, BLACK)
+        draw_text_with_outline(screen, font_small, f"{shoes}/{shop.limit}", (coin_x - 120, coin_y + 128), WHITE, BLACK)
+        draw_text_with_outline(screen, font_small, f"{umbrella}/{shop.limit}", (coin_x - 120, coin_y + 188), WHITE, BLACK)
 
     if game_state != previous_state:
         if game_state not in (GAME_PAUSED, GAME_RESUME, GAME_SETTINGS):

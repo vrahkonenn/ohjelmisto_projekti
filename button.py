@@ -1,4 +1,5 @@
 import pygame
+import sound
 
 class Button:
     def __init__(self, x, y, width, height, text, font, bg_color, text_color, outline_color = (0,0,0)):
@@ -23,6 +24,10 @@ class Button:
         surface.blit(text_surf, text_rect)
     
     def is_clicked(self, mouse_pos):
+        if self.rect.collidepoint(mouse_pos):
+            sound.play_sfx(sound.sfx["click"])
+            return True
+        return False
         return self.rect.collidepoint(mouse_pos)
     
     def draw_image(self, surface):

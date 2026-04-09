@@ -61,7 +61,7 @@ aliens = SpaceMonsterManager()
 # napit
 restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
                         "RESTART", font_big, GRAY, BLACK)
-start_button =      Button(WIDTH//2 - 175, 250, 200, 50,
+start_button =      Button(WIDTH//2 - 175, 250, 200, 85,
                         "START", font_big, VAALEAN_PINKKI, KERMA, TUMMAN_PINKKI )
 shop_button =    Button(WIDTH//2 - 175, HEIGHT//2+100, 200, 50,
                         "SHOP", font_big, VAALEAN_RUSKEA, TUMMAN_RUSKEA, TUMMAN_RUSKEA)
@@ -153,7 +153,7 @@ while running:
 
         menu_player.draw(screen)
         shop_button.draw(screen)
-        start_button.draw(screen)
+        start_button.draw_image(screen)
 
     # Peli käynnissä
     if game_state == GAME_PLAYING:
@@ -345,7 +345,6 @@ while running:
                 player.move_to_side(event.key)
 
             if event.key == pygame.K_SPACE and game_state == GAME_PLAYING:
-                sound.play_sfx(sound.sfx["shoot"])
                 bullets.shoot(player)
                 player.shoot_animation()
 
@@ -369,7 +368,7 @@ while running:
             if game_state == GAME_PLAYING:
                 player.key_check()
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if game_state == GAME_MENU and start_button.is_clicked(event.pos):
                 reset_game()
 
@@ -400,10 +399,13 @@ while running:
                 game_state = GAME_SETTINGS
             if game_state == GAME_PAUSED and pause_menu_button.is_clicked(event.pos):
                 game_state = GAME_MENU
-            if game_state == GAME_SETTINGS and sound_button.is_clicked(event.pos):
-                sound.toggle_sound()
-            if game_state == GAME_SETTINGS and music_button.is_clicked(event.pos):
-                sound.toggle_music()
+            if game_state == GAME_SETTINGS:
+                if not (sound_slider._handle_rect().collidepoint(event.pos) or 
+                        music_slider._handle_rect().collidepoint(event.pos)):
+                    if sound_button.is_clicked(event.pos):
+                        sound.toggle_sound()
+                    elif music_button.is_clicked(event.pos):
+                        sound.toggle_music()
 
     pygame.display.flip()
 

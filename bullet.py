@@ -1,5 +1,6 @@
 import pygame
 from settings import HEIGHT
+import sound
 
 class Bullet:
     def __init__(self, x, y, image):
@@ -36,6 +37,8 @@ class BulletManager:
         now = pygame.time.get_ticks()
         if now - self.last_shot < self.cooldown:
             return
+        
+        sound.play_sfx(sound.sfx["shoot"])
         
         self.last_shot = now
         

@@ -19,6 +19,9 @@ class Bullet:
 
     def off_screen(self):
         return self.y < -self.height
+    
+    def get_collision_rect(self):
+        return pygame.Rect(self.x, self.y, self.width, self.height)
 
 
 class BulletManager:
@@ -51,3 +54,11 @@ class BulletManager:
     def draw(self, screen):
         for bullet in self.bullets:
             bullet.draw(screen)
+
+    def check_hits(self, monsters):
+        for bullet in self.bullets[:]:
+            for monster in monsters[:]:
+                if bullet.get_collision_rect().colliderect(monster.get_collision_rect()):
+                    self.bullets.remove(bullet)
+                    monsters.remove(monster)
+                    break

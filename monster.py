@@ -71,6 +71,9 @@ class Monster:
                 self.x = WIDTH - self.width
                 self.direction = -1
     
+    def get_collision_rect(self):
+        return pygame.Rect(self.x, self.y, self.width, self.height)
+    
 
 class MonsterManager:
     def __init__(self):
@@ -105,6 +108,12 @@ class MonsterManager:
     def draw(self, screen):
         for monster in self.monsters:
             monster.draw(screen)
+
+    def check_player_collision(self, player):
+        for monster in self.monsters:
+            if player.get_hitbox().colliderect(monster.get_collision_rect()):
+                return True
+        return False
     
     def reset(self):
         self.monsters = []

@@ -64,7 +64,7 @@ restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
 start_button =      Button(WIDTH//2 - 175, 250, 200, 50,
                         "START", font_big, VAALEAN_PINKKI, KERMA, TUMMAN_PINKKI )
 shop_button =    Button(WIDTH//2 - 175, HEIGHT//2+100, 200, 50,
-                        "SHOP", font_big, GRAY, BLACK)
+                        "SHOP", font_big, VAALEAN_RUSKEA, TUMMAN_RUSKEA, TUMMAN_RUSKEA)
 menu_button =    Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
                         "MENU", font_big, GRAY, BLACK)
 restart_menu_button =    Button(WIDTH//2 - 100, HEIGHT-75, 200, 50,
@@ -211,6 +211,13 @@ while running:
         powerups.update()
         birds.update(player, score)
         aliens.update(player, score)
+
+        bullets.check_hits(birds.monsters)
+        bullets.check_hits(aliens.monsters)
+
+        if birds.check_player_collision(player) or aliens.check_player_collision(player):
+            game_state = GAME_OVER
+            sound.play_sfx(sound.sfx["game_over"])
 
         korkeusvari=BLACK if score < 900 else WHITE
 

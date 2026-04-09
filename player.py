@@ -243,6 +243,9 @@ class Player:
 
     def get_collision_rect(self):
         return pygame.Rect(self.x + 20, self.y + 60, 35, 5)
+    
+    def get_hitbox(self):
+        return pygame.Rect(self.x + 10, self.y + 10, 70, 70)
 
     def reset(self):
         self.x = WIDTH/2 - (self.scale/2)

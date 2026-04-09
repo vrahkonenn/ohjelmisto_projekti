@@ -34,6 +34,9 @@ class SpaceMonster:
             self.animation_list.append(
                 sprite_sheet.get_image(x, 90, 90, 1, (0,0,0))
             )
+
+        def get_collision_rect(self):
+            return pygame.Rect(self.x, self.y, self.width, self.height)
         
 
     def animate(self):
@@ -105,6 +108,12 @@ class SpaceMonsterManager:
     def draw(self, screen):
         for monster in self.monsters:
             monster.draw(screen)
+
+    def check_player_collision(self, player):
+        for monster in self.monsters:
+            if player.get_hitbox().colliderect(monster.get_collision_rect()):
+                return True
+        return False
     
     def reset(self):
         self.monsters = []

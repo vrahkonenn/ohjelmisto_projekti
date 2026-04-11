@@ -12,19 +12,31 @@ music_on = True
 
 sfx = {}
 
+current_track = None
+
 def play_music(state):
+    global current_track
+
     if not music_on:
         return
-    
-    pygame.mixer.music.stop()
+
+    track = None
+
     if state == GAME_MENU:
-        pygame.mixer.music.load("./music/Main_menu.wav")
+        track = "./music/Main_menu.wav"
     elif state == GAME_PLAYING:
-        pygame.mixer.music.load("./music/Purkkapallo.wav")
+        track = "./music/Purkkapallo.wav"
     elif state == GAME_OVER:
-        pygame.mixer.music.load("./music/game_over.wav")
-    
-    pygame.mixer.music.play(-1, 0.0)
+        track = "./music/game_over.wav"
+
+    # 🔥 jos sama biisi → älä tee mitään
+    if track == current_track:
+        return
+
+    current_track = track
+
+    pygame.mixer.music.load(track)
+    pygame.mixer.music.play(-1)
 
 def toggle_sound():
     global sound_on
@@ -42,13 +54,11 @@ def toggle_music():
     else:
         pygame.mixer.music.set_volume(1)
 
-def pause_music(state):
-    if state == GAME_PAUSED:
-        pygame.mixer.music.pause()
+def pause_music():
+    pygame.mixer.music.pause()
 
-def unpause_music(state):
-    if state == GAME_RESUME:
-        pygame.mixer.music.unpause()
+def unpause_music():
+    pygame.mixer.music.unpause()
 
 def load_sfx():
     global sfx

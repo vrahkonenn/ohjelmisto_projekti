@@ -105,9 +105,12 @@ def load_image(path):
 
 class PowerUpManager:
     def __init__(self):
+        self.powerups = []
+        self.update_spawn_chances()
+
+    def update_spawn_chances(self):
         upgrades = saves.get_data()
         self.nothing = 90 - (upgrades["jumpboost"] + upgrades["jetpack"] + upgrades["shoes"] + upgrades["umbrella"])
-        self.powerups = []
         self.spawn_chances = {
             "jumpboost": upgrades["jumpboost"],
             "jetpack": upgrades["jetpack"],

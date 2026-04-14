@@ -147,6 +147,7 @@ def reset_game():
     game_state = GAME_PLAYING
 
 while running:
+    data = get_data()
     clock.tick(FPS)
     highscore = data["highscore"]
     total_coins = data["currency"]  
@@ -408,6 +409,7 @@ while running:
                     game_state = HOW_TO_PLAY
             elif game_state == HOW_TO_PLAY:
                 if guide_menu_button.is_clicked(event.pos):
+                    data = get_data()
                     game_state = GAME_MENU
 
             if game_state == GAME_SHOP:
@@ -415,12 +417,16 @@ while running:
                     game_state = GAME_MENU
                 elif shop.jumpboost_button.is_clicked(event.pos):
                     shop.transaction(data, "jumpboost")
+                    powerups.update_spawn_chances()
                 elif shop.jetpack_button.is_clicked(event.pos):
                     shop.transaction(data, "jetpack")
+                    powerups.update_spawn_chances()
                 elif shop.shoe_button.is_clicked(event.pos):
                     shop.transaction(data, "shoes")
+                    powerups.update_spawn_chances()
                 elif shop.umbrella_button.is_clicked(event.pos):
                     shop.transaction(data, "umbrella")
+                    powerups.update_spawn_chances()
                 else:
                     pass
 

@@ -147,7 +147,6 @@ def reset_game():
     game_state = GAME_PLAYING
 
 while running:
-    data = get_data()
     clock.tick(FPS)
     highscore = data["highscore"]
     total_coins = data["currency"]  

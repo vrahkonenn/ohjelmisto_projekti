@@ -94,11 +94,8 @@ class PowerUp:
             image = PowerUp.images[self.type]
             screen.blit(image, (x, y))
         else:
-            # fallback jos kuva puuttuu
             pygame.draw.rect(screen, (255, 255, 255), (x, y, self.width, self.height), 2)
 
-        # DEBUG: hitbox (voit poistaa myöhemmin)
-        # pygame.draw.rect(screen, (255, 0, 0), (x, y, self.width, self.height), 1)
 
 def load_image(path):
     img = pygame.image.load(path).convert_alpha()
@@ -109,17 +106,20 @@ def load_image(path):
 class PowerUpManager:
     def __init__(self):
         upgrades = saves.get_data()
-        self.nothing = 90 - (upgrades["jumpboost"] + upgrades["jetpack"] + upgrades["shoes"] + upgrades["umbrella"])
+        self.nothing = 100 - (upgrades["jumpboost"][0] + upgrades["jetpack"][0] + upgrades["shoes"][0] + upgrades["umbrella"][0])
         self.powerups = []
         self.spawn_chances = {
-        "jumpboost": 2.5 + upgrades["jumpboost"],
-        "jetpack": 2.5 + upgrades["jetpack"],
-        "shoes": 2.5 + upgrades["shoes"],
-        "umbrella": 2.5 + upgrades["umbrella"],
-        None: self.nothing
-}
-
+            "jumpboost": upgrades["jumpboost"][0],
+            "jetpack": upgrades["jetpack"][0],
+            "shoes": upgrades["shoes"][0],
+            "umbrella": upgrades["umbrella"][0],
+            None: self.nothing
+        }
+    
     def spawn_on_platform(self, platform):
+        if platform.type == "trap":
+            return
+        
         import random
 
         if hasattr(platform, "has_powerup"):

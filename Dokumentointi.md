@@ -78,18 +78,16 @@ Ei toiminnallisia vaatimuksia:
 - Hirviöihin kestävyys ominaisuus
 - Panoksien vaikutus hirviöön
 - Pelin häviäminen hirviöön osuessa
-- Pelin vaikeutuminen
 - Kuolemis animaatio (tippuu ja läsähtää maahan)
 
 # Sprintissä
-- Ääniasetuksien säätö
 - Ääniefektit (kuoleminen, hyppää, kerää kolikon, ampuu panoksen)
 - Kolikkokauppa
-- Hirviöiden grafiikka
-- Paikallaan oleva hirviö
-- Sivuttain liikkuva hirviö
-- Kolikot näkyviin näytölle
-- Boostien spawnaus
+- Panoksien vaikutus hirviöön
+- Pelin häviäminen hirviöön osuessa
+- Musiikkien viimeistely
+- How to play menu 
+- Reset ominaisuus
 
 ## Done tehtävälista
 - Hahmo hyppii jatkuvasti
@@ -111,6 +109,13 @@ Ei toiminnallisia vaatimuksia:
 - Pelin Game Over valikko
 - Kolikkojen tallentuminen ja haku jsonista
 - Koodin modulaarisuus
+- Hirviöiden grafiikka
+- Paikallaan oleva hirviö
+- Sivuttain liikkuva hirviö
+- Ääniasetuksien säätö
+- Kolikot näkyviin näytölle
+- Boostien spawnaus
+- Pelin vaikeutuminen
 
 
 Sprint 1 viikko 6:
@@ -160,3 +165,21 @@ Sprint 6 viikko 13
 - Sivuttain liikkuva hirviö
 - Kolikot näkyviin näytölle
 - Boostien spawnaus
+
+Sprint 7 viikko 14
+- Sivuttain liikkuva hirviö
+- Menu napit 
+- Kolikkokaupan grafiikat
+- Pelin vaikeutuminen
+- Hirviöiden grafiikka
+- Kolikkokauppa
+- Ääniefektit
+
+Sprint 8 viikko 15
+- Ääniefektit (kuoleminen, hyppää, kerää kolikon, ampuu panoksen)
+- Kolikkokauppa
+- Panoksien vaikutus hirviöön
+- Pelin häviäminen hirviöön osuessa
+- Musiikkien viimeistely
+- How to play menu 
+- Reset ominaisuus

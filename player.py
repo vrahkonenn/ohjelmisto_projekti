@@ -1,10 +1,15 @@
 # player.py
 import pygame
+import saves
+import sound
 from spritesheet import SpriteSheet
 from settings import WIDTH
 
 class Player:
     def __init__(self, jump_height):
+        self.data = saves.get_data()
+        jetpack_dur = self.data["jetpack_dur"][0]
+        umbrella_dur = self.data["umbrella_dur"][0]
         self.scale = 90
         self.x = WIDTH/2 - (self.scale/2)
         self.y = 400
@@ -23,11 +28,11 @@ class Player:
 
         self.jetpack_active = False
         self.jetpack_timer = 0
-        self.jetpack_duration = 3000  # ms
+        self.jetpack_duration = 3000 + jetpack_dur # ms
 
         self.umbrella_active = False
         self.umbrella_timer = 0
-        self.umbrella_duration = 3000  # 3 sekuntia (ms)
+        self.umbrella_duration = 3000 + umbrella_dur # 3 sekuntia (ms)
 
         sprite_image = pygame.image.load("Imgs/frame1 (9).png").convert_alpha()
         sprite_sheet = SpriteSheet(sprite_image)
@@ -53,19 +58,44 @@ class Player:
         jetpack_shoot_sprite = pygame.image.load("Imgs/boostit/jetpack_shooting_frames.png").convert_alpha()
         jetpack_shoot_sheet = SpriteSheet(jetpack_shoot_sprite)
 
+        jumpshoes_jetpack_sprite = pygame.image.load("Imgs/boostit/purkkakengät_jetpack_frame.png").convert_alpha()
+        jumpshoes_jetpack_sheet = SpriteSheet(jumpshoes_jetpack_sprite)
+
+        jumpshoes_jetpack_shoot_sprite = pygame.image.load("Imgs/boostit/purkkakengät_jetpack_shooting_frame.png").convert_alpha()
+        jumpshoes_jetpack_shoot_sheet = SpriteSheet(jumpshoes_jetpack_shoot_sprite)
+
+        jumpshoes_umbrella_sprite = pygame.image.load("Imgs/boostit/purkkakengät_purkkavarjo_frame.png").convert_alpha()
+        jumpshoes_umbrella_sheet = SpriteSheet(jumpshoes_umbrella_sprite)
+
+        jumpshoes_umbrella_shoot_sprite = pygame.image.load("Imgs/boostit/purkkakengät_purkkavarjo_shooting_frame.png").convert_alpha()
+        jumpshoes_umbrella_shoot_sheet = SpriteSheet(jumpshoes_umbrella_shoot_sprite)
+
+
         self.animation_list = []
         self.shoot_animation_list = []
+
         self.jumpshoes_animation_list = []
         self.jumpshoes_shoot_animation_list = []
+
         self.umbrella_animation_list = []
         self.umbrella_shoot_animation_list = []
+
         self.jetpack_animation_list = []
         self.jetpack_shoot_animation_list = []
+
+        self.jumpshoes_jetpack_animation_list = []
+        self.jumpshoes_jetpack_shoot_animation_list = []
+
+        self.jumpshoes_umbrella_animation_list = []
+        self.jumpshoes_umbrella_shoot_animation_list = []
+
         self.animation_steps = 6
         self.animation_cooldown = 75
         self.last_update = pygame.time.get_ticks()
         self.frame = 0
         self.animating = False
+
+        self.umbrella_open = False
 
         for x in range(self.animation_steps):
             self.animation_list.append(
@@ -91,6 +121,18 @@ class Player:
             )
             self.jetpack_shoot_animation_list.append(
                 jetpack_shoot_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.jumpshoes_jetpack_animation_list.append(
+                jumpshoes_jetpack_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.jumpshoes_jetpack_shoot_animation_list.append(
+                jumpshoes_jetpack_shoot_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.jumpshoes_umbrella_animation_list.append(
+                jumpshoes_umbrella_sheet.get_image(x, 80, 80, 1, (0,0,0))
+            )
+            self.jumpshoes_umbrella_shoot_animation_list.append(
+                jumpshoes_umbrella_shoot_sheet.get_image(x, 80, 80, 1, (0,0,0))
             )
 
     def shoot_animation(self):
@@ -124,7 +166,12 @@ class Player:
         if self.umbrella_active:
             if current_time - self.umbrella_timer > self.umbrella_duration:
                     self.umbrella_active = False
-
+                    self.umbrella_open = False
+        if self.umbrella_active and self.y_change > 0:
+            if not self.umbrella_open:
+                sound.play_sfx(sound.sfx["umbrella"])
+                self.umbrella_open = True
+            
         gravity = 0.4
 
         if self.jump:
@@ -172,8 +219,12 @@ class Player:
 
     def draw(self, screen):
         if self.shooting:
-            if self.jetpack_active:
+            if self.jetpack_active and self.shoes_charges > 0:
+                screen.blit(self.jumpshoes_jetpack_shoot_animation_list[self.frame], (self.x, self.y))
+            elif self.jetpack_active:
                 screen.blit(self.jetpack_shoot_animation_list[self.frame], (self.x, self.y))
+            elif self.umbrella_active and self.shoes_charges > 0:
+                screen.blit(self.jumpshoes_umbrella_shoot_animation_list[self.frame], (self.x, self.y))
             elif self.umbrella_active:
                 screen.blit(self.umbrella_shoot_animation_list[self.frame], (self.x, self.y))
             elif self.shoes_charges > 0:
@@ -181,8 +232,12 @@ class Player:
             else:
                 screen.blit(self.shoot_animation_list[self.frame], (self.x, self.y))
         else:
-            if self.jetpack_active:
+            if self.jetpack_active and self.shoes_charges > 0:
+                screen.blit(self.jumpshoes_jetpack_animation_list[self.frame], (self.x, self.y))
+            elif self.jetpack_active:
                 screen.blit(self.jetpack_animation_list[self.frame], (self.x, self.y))
+            elif self.umbrella_active and self.shoes_charges > 0:
+                screen.blit(self.jumpshoes_umbrella_animation_list[self.frame], (self.x, self.y))
             elif self.umbrella_active:
                 screen.blit(self.umbrella_animation_list[self.frame], (self.x, self.y))
             elif self.shoes_charges > 0:

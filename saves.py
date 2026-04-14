@@ -21,3 +21,17 @@ def get_data():
         data = open_data()
     
     return data
+
+def reset_data():
+    data = {
+            "highscore": 0,
+            "currency": 0,
+            "jumpboost": 0,
+            "jetpack": 0,
+            "shoes": 0,
+            "umbrella": 0
+           }
+    with open("data.json", "w") as f:
+        json.dump(data, f, indent=2)
+        f.close()
+    return data

@@ -82,6 +82,12 @@ guide_button = Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
                         "GUIDE", font_big, GRAY, BLACK)
 guide_menu_button =    Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
                         "MENU", font_big, GRAY, BLACK)
+reset_button = Button(WIDTH//2 - 150, HEIGHT//2 + 100, 300, 50,
+                        "RESET PROGRESS", font_big, RED, WHITE)
+yes_button = Button(WIDTH//2 - 110, HEIGHT//2 + 50, 100, 50,
+                        "YES", font_big, GRAY, BLACK)
+no_button = Button(WIDTH//2 + 10, HEIGHT//2 + 50, 100, 50,
+                        "NO", font_big, GRAY, BLACK)
 
 # sfx
 sound.load_sfx()
@@ -104,6 +110,7 @@ GAME_RESUME="resume"
 GAME_SHOP="shop"
 GAME_SETTINGS="settings"
 HOW_TO_PLAY = "guide"
+GAME_RESET = "reset"
 
 game_state=GAME_MENU
 previous_state = None
@@ -268,6 +275,8 @@ while running:
         sound_slider.draw(screen)
         music_slider.draw(screen)
 
+        reset_button.draw(screen)
+
     # peli jatkuu
     elif game_state == GAME_RESUME:
         current_time = pygame.time.get_ticks()
@@ -297,6 +306,14 @@ while running:
         currency = total_coins + coins
         save(data, currency)
         coins = 0
+
+    # game reset
+    elif game_state == GAME_RESET:
+        screen.fill(BLACK)
+        draw_text_outline(screen, "Are you sure?", font_large, RED, WIDTH//2, HEIGHT//2 - 20, center=True, outline_col=WHITE)
+        draw_text_outline(screen, "This will reset all your progress!", font_small, GRAY, WIDTH//2, HEIGHT//2 + 20, center=True, outline_col=BLACK)
+        yes_button.draw(screen)
+        no_button.draw(screen)
 
     # Shopping
     elif game_state == GAME_SHOP:
@@ -340,6 +357,7 @@ while running:
 
         previous_state = game_state
 
+    # eventit
     for event in pygame.event.get():
         
         if game_state == GAME_SETTINGS:
@@ -423,6 +441,17 @@ while running:
                         sound.toggle_sound()
                     elif music_button.is_clicked(event.pos):
                         sound.toggle_music()
+
+            
+            if game_state == GAME_SETTINGS and reset_button.is_clicked(event.pos) and event.type == pygame.MOUSEBUTTONDOWN:
+                game_state = GAME_RESET
+
+            if game_state == GAME_RESET:
+                if yes_button.is_clicked(event.pos) and event.type == pygame.MOUSEBUTTONDOWN:
+                    data = reset_data()
+                    game_state = GAME_MENU
+                elif no_button.is_clicked(event.pos) and event.type == pygame.MOUSEBUTTONDOWN:
+                    game_state = GAME_MENU
 
     pygame.display.flip()
 

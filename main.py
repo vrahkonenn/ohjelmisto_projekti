@@ -42,6 +42,7 @@ shop_bg = pygame.image.load("Imgs/ground.png").convert()
 gameover_bg_norm = pygame.image.load("Imgs/gameover_norm.png").convert()
 coin_img = pygame.image.load("Imgs/kolikkokuva.png").convert_alpha()
 coin_img = pygame.transform.scale(coin_img, (32, 32))
+guide_bg = pygame.image.load("Imgs/guide_bg.png").convert()
 
 clock = pygame.time.Clock()
 
@@ -77,6 +78,10 @@ sound_button = Button(WIDTH//2 - 100, HEIGHT//2 - 60, 200, 50,
                         "TOGGLE SOUND", font_big, GRAY, BLACK)
 music_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
                         "TOGGLE MUSIC", font_big, GRAY, BLACK)
+guide_button = Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
+                        "GUIDE", font_big, GRAY, BLACK)
+guide_menu_button =    Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
+                        "MENU", font_big, GRAY, BLACK)
 
 # sfx
 sound.load_sfx()
@@ -98,6 +103,7 @@ GAME_PAUSED="paused"
 GAME_RESUME="resume"
 GAME_SHOP="shop"
 GAME_SETTINGS="settings"
+HOW_TO_PLAY = "guide"
 
 game_state=GAME_MENU
 previous_state = None
@@ -156,6 +162,8 @@ while running:
         menu_player.draw(screen)
         shop_button.draw(screen)
         start_button.draw_image(screen)
+        guide_button.draw(screen)
+
 
     # Peli käynnissä
     if game_state == GAME_PLAYING:
@@ -311,6 +319,10 @@ while running:
         draw_text_with_outline(screen, font_small, f"{jetpack}/{shop.limit}", (coin_x - 120, coin_y + 68), WHITE, BLACK)
         draw_text_with_outline(screen, font_small, f"{shoes}/{shop.limit}", (coin_x - 120, coin_y + 128), WHITE, BLACK)
         draw_text_with_outline(screen, font_small, f"{umbrella}/{shop.limit}", (coin_x - 120, coin_y + 188), WHITE, BLACK)
+    
+    elif game_state == HOW_TO_PLAY:
+        screen.blit(guide_bg, (0, 0))
+        guide_menu_button.draw(screen)
 
     if game_state != previous_state:
         if not (previous_state == GAME_RESUME and game_state == GAME_PLAYING):
@@ -369,11 +381,16 @@ while running:
                 player.key_check()
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            if game_state == GAME_MENU and start_button.is_clicked(event.pos):
-                reset_game()
-
-            if game_state == GAME_MENU and shop_button.is_clicked(event.pos):
-                game_state = GAME_SHOP
+            if game_state == GAME_MENU:
+                if start_button.is_clicked(event.pos):
+                    reset_game()
+                elif shop_button.is_clicked(event.pos):
+                    game_state = GAME_SHOP
+                elif guide_button.is_clicked(event.pos):
+                    game_state = HOW_TO_PLAY
+            elif game_state == HOW_TO_PLAY:
+                if guide_menu_button.is_clicked(event.pos):
+                    game_state = GAME_MENU
 
             if game_state == GAME_SHOP:
                 if menu_button.is_clicked(event.pos):

@@ -54,6 +54,7 @@ class Monster:
 
     def draw(self, screen):
         screen.blit(self.animation_list[self.frame], (self.x, self.y))
+        self.draw_hitbox(screen)
 
     def update(self, player):
         # Kamera lock
@@ -70,9 +71,22 @@ class Monster:
             if self.x + self.width >= WIDTH:
                 self.x = WIDTH - self.width
                 self.direction = -1
+
+    def get_center(self):
+        return (self.x + self.width / 2, self.y + self.height / 2)
+
+    def get_radius(self):
+        return self.width / 2
     
     def get_collision_rect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)
+    
+    def draw_hitbox(self, screen):
+        center_x = int(self.x + self.width / 2)
+        center_y = int(self.y + self.height / 2)
+        radius = int(30)
+
+        pygame.draw.circle(screen, (0, 0, 255), (center_x, center_y), radius, 2)
     
 
 class MonsterManager:
@@ -110,9 +124,25 @@ class MonsterManager:
             monster.draw(screen)
 
     def check_player_collision(self, player):
+        player_rect = player.get_hitbox()
+
         for monster in self.monsters:
-            if player.get_hitbox().colliderect(monster.get_collision_rect()):
+            circle_x, circle_y = monster.get_center()
+            radius = monster.get_radius()
+
+            # etsitään lähin piste pelaajan rectistä
+            closest_x = max(player_rect.left, min(circle_x, player_rect.right))
+            closest_y = max(player_rect.top, min(circle_y, player_rect.bottom))
+
+            # etäisyys pisteestä ympyrän keskelle
+            distance_x = circle_x - closest_x
+            distance_y = circle_y - closest_y
+
+            distance_squared = distance_x**2 + distance_y**2
+
+            if distance_squared < radius**2:
                 return True
+
         return False
     
     def reset(self):

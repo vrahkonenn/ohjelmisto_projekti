@@ -10,6 +10,8 @@ class Player:
         self.x = WIDTH/2 - (self.scale/2)
         self.y = 400
         self.spd = 4
+        self.is_immune = False
+        self.death_source = "falling"
 
         self.jump = False
         self.jump_height = jump_height
@@ -154,10 +156,12 @@ class Player:
         current_time = pygame.time.get_ticks()
 
         if self.jetpack_active:
+            self.is_immune = True
             self.y_change = -10  # jatkuva nousu
 
             if current_time - self.jetpack_timer > self.jetpack_duration:
                 self.jetpack_active = False
+                self.is_immune = False
 
         if self.umbrella_active:
             if current_time - self.umbrella_timer > self.umbrella_duration:
@@ -261,3 +265,4 @@ class Player:
         self.umbrella_timer = 0
     
         self.shoes_charges = 0
+        self.death_source = "falling"

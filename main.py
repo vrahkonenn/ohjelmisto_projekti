@@ -40,6 +40,7 @@ PowerUp.load_images()
 menu_bg = pygame.image.load("Imgs/mMenu_bg.png").convert()
 shop_bg = pygame.image.load("Imgs/ground.png").convert()
 gameover_bg_norm = pygame.image.load("Imgs/gameover_norm.png").convert()
+gameover_bg_bitten = pygame.image.load("Imgs/gameover_purtu.png").convert()
 coin_img = pygame.image.load("Imgs/kolikkokuva.png").convert_alpha()
 coin_img = pygame.transform.scale(coin_img, (32, 32))
 
@@ -216,8 +217,10 @@ while running:
         bullets.check_hits(aliens.monsters)
 
         if birds.check_player_collision(player) or aliens.check_player_collision(player):
-            game_state = GAME_OVER
-            sound.play_sfx(sound.sfx["game_over"])
+            if player.is_immune == False:
+                player.death_source = "monster"
+                game_state = GAME_OVER
+                sound.play_sfx(sound.sfx["game_over"])
 
         korkeusvari=BLACK if score < 900 else WHITE
 
@@ -240,6 +243,7 @@ while running:
         screen.blit(coin_img, (coin_x + 34, coin_y))
         
         if player.y > HEIGHT:
+            player.death_source = "falling"
             game_state = GAME_OVER
             sound.play_sfx(sound.sfx["game_over"])
 
@@ -279,7 +283,11 @@ while running:
 
     # game over
     elif game_state == GAME_OVER:
-        screen.blit(gameover_bg_norm, (0, 0))
+        if player.death_source == "monster":
+            screen.blit(gameover_bg_bitten, (0,0))
+        else:
+            screen.blit(gameover_bg_norm, (0, 0))
+
         text_surf = font_large.render(f"{highscore:.2f}", True, RED)
         text_rect = text_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 60))
         screen.blit(text_surf, text_rect)

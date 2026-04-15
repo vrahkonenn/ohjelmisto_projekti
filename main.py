@@ -43,6 +43,7 @@ gameover_bg_norm = pygame.image.load("Imgs/gameover_norm.png").convert()
 gameover_bg_bitten = pygame.image.load("Imgs/gameover_purtu.png").convert()
 coin_img = pygame.image.load("Imgs/kolikkokuva.png").convert_alpha()
 coin_img = pygame.transform.scale(coin_img, (32, 32))
+guide_bg = pygame.image.load("Imgs/guide_bg.png").convert()
 
 clock = pygame.time.Clock()
 
@@ -78,6 +79,16 @@ sound_button = Button(WIDTH//2 - 100, HEIGHT//2 - 60, 200, 50,
                         "TOGGLE SOUND", font_big, GRAY, BLACK)
 music_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
                         "TOGGLE MUSIC", font_big, GRAY, BLACK)
+guide_button = Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
+                        "GUIDE", font_big, GRAY, BLACK)
+guide_menu_button =    Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
+                        "MENU", font_big, GRAY, BLACK)
+reset_button = Button(WIDTH//2 - 150, HEIGHT//2 + 100, 300, 50,
+                        "RESET PROGRESS", font_big, RED, WHITE)
+yes_button = Button(WIDTH//2 - 110, HEIGHT//2 + 50, 100, 50,
+                        "YES", font_big, GRAY, BLACK)
+no_button = Button(WIDTH//2 + 10, HEIGHT//2 + 50, 100, 50,
+                        "NO", font_big, GRAY, BLACK)
 
 # sfx
 sound.load_sfx()
@@ -99,6 +110,8 @@ GAME_PAUSED="paused"
 GAME_RESUME="resume"
 GAME_SHOP="shop"
 GAME_SETTINGS="settings"
+HOW_TO_PLAY = "guide"
+GAME_RESET = "reset"
 
 game_state=GAME_MENU
 previous_state = None
@@ -109,6 +122,8 @@ coin_x = WIDTH - 70
 coin_y = 5
 
 sound.play_music(game_state)
+sound.pause_music()
+sound.unpause_music()
 
 def draw_game(screen):
     background.draw(screen, camera.scroll)
@@ -155,6 +170,8 @@ while running:
         menu_player.draw(screen)
         shop_button.draw(screen)
         start_button.draw_image(screen)
+        guide_button.draw(screen)
+
 
     # Peli käynnissä
     if game_state == GAME_PLAYING:
@@ -252,6 +269,7 @@ while running:
         draw_game(screen)
         
         screen.blit(settings_screen_fade, (0, 0))
+        
 
         pause_screen.draw(screen)
         settings_button.draw(screen)
@@ -267,6 +285,8 @@ while running:
 
         sound_slider.draw(screen)
         music_slider.draw(screen)
+
+        reset_button.draw(screen)
 
     # peli jatkuu
     elif game_state == GAME_RESUME:
@@ -302,6 +322,14 @@ while running:
         save(data, currency)
         coins = 0
 
+    # game reset
+    elif game_state == GAME_RESET:
+        screen.fill(BLACK)
+        draw_text_outline(screen, "Are you sure?", font_large, RED, WIDTH//2, HEIGHT//2 - 20, center=True, outline_col=WHITE)
+        draw_text_outline(screen, "This will reset all your progress!", font_small, GRAY, WIDTH//2, HEIGHT//2 + 20, center=True, outline_col=BLACK)
+        yes_button.draw(screen)
+        no_button.draw(screen)
+
     # Shopping
     elif game_state == GAME_SHOP:
         screen.blit(shop_bg, (0, 0))
@@ -323,19 +351,28 @@ while running:
         draw_text_with_outline(screen, font_small, f"{jetpack}/{shop.limit}", (coin_x - 120, coin_y + 68), WHITE, BLACK)
         draw_text_with_outline(screen, font_small, f"{shoes}/{shop.limit}", (coin_x - 120, coin_y + 128), WHITE, BLACK)
         draw_text_with_outline(screen, font_small, f"{umbrella}/{shop.limit}", (coin_x - 120, coin_y + 188), WHITE, BLACK)
+    
+    elif game_state == HOW_TO_PLAY:
+        screen.blit(guide_bg, (0, 0))
+        guide_menu_button.draw(screen)
 
     if game_state != previous_state:
-        if game_state not in (GAME_PAUSED, GAME_RESUME, GAME_SETTINGS):
-            sound.play_music(game_state)
-            pygame.mixer.music.set_volume(music_slider.get_value())
-            for s in sound.sfx.values():
-                if isinstance(s, list):
-                    for sound_effect in s:
-                        sound_effect.set_volume(sound_slider.get_value())
-                else:
-                    s.set_volume(sound_slider.get_value())
+        if not (previous_state == GAME_RESUME and game_state == GAME_PLAYING):
+            if game_state in (GAME_MENU, GAME_PLAYING, GAME_OVER):
+                sound.play_music(game_state)
+
+        pygame.mixer.music.set_volume(music_slider.get_value())
+
+        for s in sound.sfx.values():
+            if isinstance(s, list):
+                for sound_effect in s:
+                    sound_effect.set_volume(sound_slider.get_value())
+            else:
+                s.set_volume(sound_slider.get_value())
+
         previous_state = game_state
 
+    # eventit
     for event in pygame.event.get():
         
         if game_state == GAME_SETTINGS:
@@ -359,12 +396,12 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 if game_state == GAME_PLAYING:
                     game_state = GAME_PAUSED
-                    sound.pause_music(game_state)
+                    sound.pause_music()
 
                 elif game_state == GAME_PAUSED:
                     game_state = GAME_RESUME
                     resume_timer = pygame.time.get_ticks()
-                    sound.unpause_music(game_state)
+                    sound.unpause_music()
 
                 elif game_state == GAME_SETTINGS:
                     game_state = GAME_PAUSED
@@ -377,23 +414,33 @@ while running:
                 player.key_check()
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            if game_state == GAME_MENU and start_button.is_clicked(event.pos):
-                reset_game()
-
-            if game_state == GAME_MENU and shop_button.is_clicked(event.pos):
-                game_state = GAME_SHOP
+            if game_state == GAME_MENU:
+                if start_button.is_clicked(event.pos):
+                    reset_game()
+                elif shop_button.is_clicked(event.pos):
+                    game_state = GAME_SHOP
+                elif guide_button.is_clicked(event.pos):
+                    game_state = HOW_TO_PLAY
+            elif game_state == HOW_TO_PLAY:
+                if guide_menu_button.is_clicked(event.pos):
+                    data = get_data()
+                    game_state = GAME_MENU
 
             if game_state == GAME_SHOP:
                 if menu_button.is_clicked(event.pos):
                     game_state = GAME_MENU
                 elif shop.jumpboost_button.is_clicked(event.pos):
                     shop.transaction(data, "jumpboost")
+                    powerups.update_spawn_chances()
                 elif shop.jetpack_button.is_clicked(event.pos):
                     shop.transaction(data, "jetpack")
+                    powerups.update_spawn_chances()
                 elif shop.shoe_button.is_clicked(event.pos):
                     shop.transaction(data, "shoes")
+                    powerups.update_spawn_chances()
                 elif shop.umbrella_button.is_clicked(event.pos):
                     shop.transaction(data, "umbrella")
+                    powerups.update_spawn_chances()
                 else:
                     pass
 
@@ -414,6 +461,17 @@ while running:
                         sound.toggle_sound()
                     elif music_button.is_clicked(event.pos):
                         sound.toggle_music()
+
+            
+            if game_state == GAME_SETTINGS and reset_button.is_clicked(event.pos) and event.type == pygame.MOUSEBUTTONDOWN:
+                game_state = GAME_RESET
+
+            if game_state == GAME_RESET:
+                if yes_button.is_clicked(event.pos) and event.type == pygame.MOUSEBUTTONDOWN:
+                    data = reset_data()
+                    game_state = GAME_MENU
+                elif no_button.is_clicked(event.pos) and event.type == pygame.MOUSEBUTTONDOWN:
+                    game_state = GAME_MENU
 
     pygame.display.flip()
 

@@ -53,7 +53,7 @@ bullets = BulletManager()
 camera = Camera()
 background = Background()
 menu_player = Player(9)
-menu_player.y = 320
+menu_player.y = 470
 menu_player.jump = True
 powerups = PowerUpManager()
 shop = Shop()
@@ -163,7 +163,7 @@ while running:
         menu_player.animate()
         menu_player.x = 270
 
-        if menu_player.y > 370:
+        if menu_player.y > 520:
             menu_player.jump = True
             menu_player.start_animation()
 

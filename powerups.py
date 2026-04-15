@@ -80,7 +80,7 @@ class PowerUp:
         self.active = False
 
     def update(self):
-        if self.platform.y > 510:
+        if self.platform.y > 660:
             self.active = False
 
     def draw(self, screen):

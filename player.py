@@ -8,7 +8,7 @@ class Player:
     def __init__(self, jump_height):
         self.scale = 90
         self.x = WIDTH/2 - (self.scale/2)
-        self.y = 400
+        self.y = 550
         self.spd = 4
         self.is_immune = False
         self.death_source = "falling"
@@ -261,7 +261,7 @@ class Player:
 
     def reset(self):
         self.x = WIDTH/2 - (self.scale/2)
-        self.y = 400
+        self.y = 550
         self.x_change = 0
         self.y_change = 0
         self.jump = True

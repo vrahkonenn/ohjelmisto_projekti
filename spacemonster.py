@@ -65,7 +65,7 @@ class SpaceMonster:
 
     def update(self, player):
         # Kamera lock
-        if player.y <= 200 and player.y_change < 0:
+        if player.y <= 350 and player.y_change < 0:
             self.y -= player.y_change
         
         if self.moving:

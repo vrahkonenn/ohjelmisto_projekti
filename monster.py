@@ -57,7 +57,7 @@ class Monster:
 
     def update(self, player):
         # Kamera lock
-        if player.y <= 200 and player.y_change < 0:
+        if player.y <= 350 and player.y_change < 0:
             self.y -= player.y_change
         
         if self.moving:
@@ -70,6 +70,15 @@ class Monster:
             if self.x + self.width >= WIDTH:
                 self.x = WIDTH - self.width
                 self.direction = -1
+
+    def get_center(self):
+        return (self.x + self.width / 2 + 45, self.y + self.height / 2 + 30) 
+
+    def get_radius(self):
+        return self.width / 2
+    
+    def get_collision_rect(self):
+        return pygame.Rect(self.x, self.y, self.width, self.height)
     
 
 class MonsterManager:
@@ -77,8 +86,9 @@ class MonsterManager:
         self.monsters = []
         self.last_monster_spawn = 0 #tallentaa ajan jollon vika monsteri spawnattu
         self.monster_spawn_delay = 4000
+
         self.min_score = 50
-        self.max_score = 999
+        self.max_score = 1150
 
     def update(self, player, score):
         current_time = pygame.time.get_ticks()
@@ -105,6 +115,36 @@ class MonsterManager:
     def draw(self, screen):
         for monster in self.monsters:
             monster.draw(screen)
+
+    def check_player_collision(self, player):
+        player_x, player_y = player.get_center()
+        player_radius = player.get_radius()
+        player_feet = player.get_collision_rect()
+
+        for monster in self.monsters[:]:
+            mx, my = monster.get_center()
+            mr = monster.get_radius()
+
+            dx = mx - player_x
+            dy = my - player_y
+            hit_body = dx*dx + dy*dy < (mr + player_radius)**2
+
+            closest_x = max(player_feet.left, min(mx, player_feet.right))
+            closest_y = max(player_feet.top, min(my, player_feet.bottom))
+
+            dist_x = mx - closest_x
+            dist_y = my - closest_y
+            hit_feet = dist_x**2 + dist_y**2 < mr**2
+
+            if hit_feet and player.y_change > 0:
+                self.monsters.remove(monster)
+                player.y_change = -12
+                player.jump = False
+                return False 
+
+            if hit_body:
+                return True
+        return False
     
     def reset(self):
         self.monsters = []

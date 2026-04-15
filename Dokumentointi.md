@@ -75,19 +75,11 @@ Ei toiminnallisia vaatimuksia:
 ---
 
 # Backlog tehtävälista
-- Hirviöihin kestävyys ominaisuus
-- Panoksien vaikutus hirviöön
-- Pelin häviäminen hirviöön osuessa
-- Kuolemis animaatio (tippuu ja läsähtää maahan)
+- Hirviöihin kestävyys ominaisuus (jätetty)
+- Kuolemis animaatio (tippuu ja läsähtää maahan) (jätetty)
 
 # Sprintissä
-- Ääniefektit (kuoleminen, hyppää, kerää kolikon, ampuu panoksen)
-- Kolikkokauppa
-- Panoksien vaikutus hirviöön
-- Pelin häviäminen hirviöön osuessa
-- Musiikkien viimeistely
-- How to play menu 
-- Reset ominaisuus
+- Tyhjää, valmista tuli :D
 
 ## Done tehtävälista
 - Hahmo hyppii jatkuvasti
@@ -116,6 +108,14 @@ Ei toiminnallisia vaatimuksia:
 - Kolikot näkyviin näytölle
 - Boostien spawnaus
 - Pelin vaikeutuminen
+- Ääniefektit (kuoleminen, hyppää, kerää kolikon, ampuu panoksen)
+- Kolikkokauppa
+- Panoksien vaikutus hirviöön
+- Pelin häviäminen hirviöön osuessa
+- Musiikkien viimeistely
+- How to play menu 
+- Reset ominaisuus
+- Ruudun koon muuttaminen
 
 
 Sprint 1 viikko 6:

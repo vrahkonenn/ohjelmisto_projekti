@@ -8,8 +8,10 @@ class Player:
     def __init__(self, jump_height):
         self.scale = 90
         self.x = WIDTH/2 - (self.scale/2)
-        self.y = 400
+        self.y = 550
         self.spd = 4
+        self.is_immune = False
+        self.death_source = "falling"
 
         self.jump = False
         self.jump_height = jump_height
@@ -154,10 +156,12 @@ class Player:
         current_time = pygame.time.get_ticks()
 
         if self.jetpack_active:
+            self.is_immune = True
             self.y_change = -10  # jatkuva nousu
 
             if current_time - self.jetpack_timer > self.jetpack_duration:
                 self.jetpack_active = False
+                self.is_immune = False
 
         if self.umbrella_active:
             if current_time - self.umbrella_timer > self.umbrella_duration:
@@ -243,10 +247,21 @@ class Player:
 
     def get_collision_rect(self):
         return pygame.Rect(self.x + 20, self.y + 60, 35, 5)
+    
+    def get_hitbox(self):
+        return pygame.Rect(self.x + 10, self.y + 10, 70, 70)
+
+    def get_center(self):
+        center_x = self.x + self.scale / 2 -5
+        center_y = self.y + self.scale / 2 -8
+        return (center_x, center_y)
+
+    def get_radius(self):
+        return 20
 
     def reset(self):
         self.x = WIDTH/2 - (self.scale/2)
-        self.y = 400
+        self.y = 550
         self.x_change = 0
         self.y_change = 0
         self.jump = True
@@ -258,3 +273,4 @@ class Player:
         self.umbrella_timer = 0
     
         self.shoes_charges = 0
+        self.death_source = "falling"

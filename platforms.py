@@ -54,13 +54,15 @@ class PlatformManager:
         }
 
         self.initial_data = [
-            (175, 480, "normal", False),
-            (85 , 370, "normal", False),
-            (265, 370, "normal", False),   
-            (175, 260, "normal", False),
-            (85 , 150, "normal", False),
-            (265, 150, "normal", False),
-            (175, 40 , "normal", False)
+            (175, 630, "normal", False),
+            (85 , 520, "normal", False),
+            (265, 520, "normal", False),   
+            (175, 410, "normal", False),
+            (85 , 300, "normal", False),
+            (265, 300, "normal", False),
+            (175, 190 , "normal", False),
+            (85 , 80, "normal", False),
+            (265, 80, "normal", False)
         ]
 
         self.last_spawn_type = "normal"
@@ -106,8 +108,8 @@ class PlatformManager:
         score_add = 0
 
         # Kamera lock
-        if player.y <= 200 and player.y_change < 0:
-            player.y = 200
+        if player.y <= 350 and player.y_change < 0:
+            player.y = 350
             for p in self.platforms:
                 p.y -= player.y_change
                 if self.coin:
@@ -120,9 +122,9 @@ class PlatformManager:
 
         # Respawn
         for i, p in enumerate(self.platforms):
-            if p.y > 510:
+            if p.y > 660:
 
-                if self.coin and self.coin.y > 430:
+                if self.coin and self.coin.y > 580:
                     self.coin = None
                 highest_y = min(platform.y for platform in self.platforms)
 

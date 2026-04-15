@@ -37,12 +37,13 @@ pygame.display.set_caption("Rise of The Bubblegum")
 from powerups import PowerUp
 PowerUp.load_images()
 
-menu_bg = pygame.image.load("Imgs/mMenu_bg.png").convert()
-shop_bg = pygame.image.load("Imgs/ground.png").convert()
-gameover_bg_norm = pygame.image.load("Imgs/gameover_norm.png").convert()
+menu_bg = pygame.image.load("Imgs/mMenu_bg_new.png").convert()
+shop_bg = pygame.image.load("Imgs/ground_new.png").convert()
+gameover_bg_norm = pygame.image.load("Imgs/gameover_norm_new.png").convert()
+gameover_bg_bitten = pygame.image.load("Imgs/gameover_purtu_new.png").convert()
 coin_img = pygame.image.load("Imgs/kolikkokuva.png").convert_alpha()
 coin_img = pygame.transform.scale(coin_img, (32, 32))
-guide_bg = pygame.image.load("Imgs/guide_bg.png").convert()
+guide_bg = pygame.image.load("Imgs/guide_bg_new.png").convert()
 
 clock = pygame.time.Clock()
 
@@ -52,7 +53,7 @@ bullets = BulletManager()
 camera = Camera()
 background = Background()
 menu_player = Player(9)
-menu_player.y = 320
+menu_player.y = 470
 menu_player.jump = True
 powerups = PowerUpManager()
 shop = Shop()
@@ -65,7 +66,7 @@ restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
 start_button =      Button(WIDTH//2 - 175, 250, 200, 85,
                         "START", font_big, VAALEAN_PINKKI, KERMA, TUMMAN_PINKKI )
 shop_button =    Button(WIDTH//2 - 175, HEIGHT//2+100, 200, 50,
-                        "SHOP", font_big, GRAY, BLACK)
+                        "SHOP", font_big, VAALEAN_RUSKEA, TUMMAN_RUSKEA, TUMMAN_RUSKEA)
 menu_button =    Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
                         "MENU", font_big, GRAY, BLACK)
 restart_menu_button =    Button(WIDTH//2 - 100, HEIGHT-75, 200, 50,
@@ -162,7 +163,7 @@ while running:
         menu_player.animate()
         menu_player.x = 270
 
-        if menu_player.y > 370:
+        if menu_player.y > 520:
             menu_player.jump = True
             menu_player.start_animation()
 
@@ -229,6 +230,15 @@ while running:
         birds.update(player, score)
         aliens.update(player, score)
 
+        bullets.check_hits(birds.monsters)
+        bullets.check_hits(aliens.monsters)
+
+        if birds.check_player_collision(player) or aliens.check_player_collision(player):
+            if player.is_immune == False:
+                player.death_source = "monster"
+                game_state = GAME_OVER
+                sound.play_sfx(sound.sfx["game_over"])
+
         korkeusvari=BLACK if score < 900 else WHITE
 
         draw_text_with_outline(screen, font_small, f"KORKEUS: {score:.2f}", (4, 8), PURKKA, TUMMA_PURKKA)
@@ -250,6 +260,7 @@ while running:
         screen.blit(coin_img, (coin_x + 34, coin_y))
         
         if player.y > HEIGHT:
+            player.death_source = "falling"
             game_state = GAME_OVER
             sound.play_sfx(sound.sfx["game_over"])
 
@@ -292,7 +303,11 @@ while running:
 
     # game over
     elif game_state == GAME_OVER:
-        screen.blit(gameover_bg_norm, (0, 0))
+        if player.death_source == "monster":
+            screen.blit(gameover_bg_bitten, (0,0))
+        else:
+            screen.blit(gameover_bg_norm, (0, 0))
+
         text_surf = font_large.render(f"{highscore:.2f}", True, RED)
         text_rect = text_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 60))
         screen.blit(text_surf, text_rect)

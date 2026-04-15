@@ -54,7 +54,6 @@ class Monster:
 
     def draw(self, screen):
         screen.blit(self.animation_list[self.frame], (self.x, self.y))
-        self.draw_hitbox(screen)
 
     def update(self, player):
         # Kamera lock
@@ -73,7 +72,7 @@ class Monster:
                 self.direction = -1
 
     def get_center(self):
-        return (self.x + self.width / 2, self.y + self.height / 2)
+        return (self.x + self.width / 2 + 45, self.y + self.height / 2 + 30) 
 
     def get_radius(self):
         return self.width / 2
@@ -81,19 +80,13 @@ class Monster:
     def get_collision_rect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)
     
-    def draw_hitbox(self, screen):
-        center_x = int(self.x + self.width / 2)
-        center_y = int(self.y + self.height / 2)
-        radius = int(30)
-
-        pygame.draw.circle(screen, (0, 0, 255), (center_x, center_y), radius, 2)
-    
 
 class MonsterManager:
     def __init__(self):
         self.monsters = []
         self.last_monster_spawn = 0 #tallentaa ajan jollon vika monsteri spawnattu
         self.monster_spawn_delay = 4000
+
         self.min_score = 50
         self.max_score = 999
 
@@ -124,25 +117,33 @@ class MonsterManager:
             monster.draw(screen)
 
     def check_player_collision(self, player):
-        player_rect = player.get_hitbox()
+        player_x, player_y = player.get_center()
+        player_radius = player.get_radius()
+        player_feet = player.get_collision_rect()
 
-        for monster in self.monsters:
-            circle_x, circle_y = monster.get_center()
-            radius = monster.get_radius()
+        for monster in self.monsters[:]:
+            mx, my = monster.get_center()
+            mr = monster.get_radius()
 
-            # etsitään lähin piste pelaajan rectistä
-            closest_x = max(player_rect.left, min(circle_x, player_rect.right))
-            closest_y = max(player_rect.top, min(circle_y, player_rect.bottom))
+            dx = mx - player_x
+            dy = my - player_y
+            hit_body = dx*dx + dy*dy < (mr + player_radius)**2
 
-            # etäisyys pisteestä ympyrän keskelle
-            distance_x = circle_x - closest_x
-            distance_y = circle_y - closest_y
+            closest_x = max(player_feet.left, min(mx, player_feet.right))
+            closest_y = max(player_feet.top, min(my, player_feet.bottom))
 
-            distance_squared = distance_x**2 + distance_y**2
+            dist_x = mx - closest_x
+            dist_y = my - closest_y
+            hit_feet = dist_x**2 + dist_y**2 < mr**2
 
-            if distance_squared < radius**2:
+            if hit_feet and player.y_change > 0:
+                self.monsters.remove(monster)
+                player.y_change = -12
+                player.jump = False
+                return False 
+
+            if hit_body:
                 return True
-
         return False
     
     def reset(self):

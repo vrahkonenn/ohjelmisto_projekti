@@ -23,6 +23,14 @@ class Bullet:
     
     def get_collision_rect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)
+    
+    def get_center(self):
+        center_x = self.x + self.width / 2
+        center_y = self.y + self.height / 2
+        return (center_x, center_y)
+
+    def get_radius(self):
+        return self.width / 2
 
 
 class BulletManager:
@@ -61,7 +69,16 @@ class BulletManager:
     def check_hits(self, monsters):
         for bullet in self.bullets[:]:
             for monster in monsters[:]:
-                if bullet.get_collision_rect().colliderect(monster.get_collision_rect()):
+                bx, by = bullet.get_center()
+                br = bullet.get_radius()
+
+                mx, my = monster.get_center()
+                mr = monster.get_radius() + 10
+
+                dx = mx - bx
+                dy = my - by
+
+                if dx*dx + dy*dy < (mr + br)**2:
                     self.bullets.remove(bullet)
                     monsters.remove(monster)
                     break

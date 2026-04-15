@@ -251,6 +251,14 @@ class Player:
     def get_hitbox(self):
         return pygame.Rect(self.x + 10, self.y + 10, 70, 70)
 
+    def get_center(self):
+        center_x = self.x + self.scale / 2 -5
+        center_y = self.y + self.scale / 2 -8
+        return (center_x, center_y)
+
+    def get_radius(self):
+        return 20
+
     def reset(self):
         self.x = WIDTH/2 - (self.scale/2)
         self.y = 400

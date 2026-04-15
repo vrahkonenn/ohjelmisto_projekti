@@ -88,7 +88,7 @@ class MonsterManager:
         self.monster_spawn_delay = 4000
 
         self.min_score = 50
-        self.max_score = 999
+        self.max_score = 1150
 
     def update(self, player, score):
         current_time = pygame.time.get_ticks()

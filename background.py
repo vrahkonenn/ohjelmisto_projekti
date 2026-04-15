@@ -3,10 +3,10 @@ from settings import HEIGHT
 
 class Background:
     def __init__(self):
-        self.bg_ground = pygame.image.load("Imgs/ground.png").convert()
-        self.bg_sky = pygame.image.load("Imgs/background.png").convert()
-        self.bg_transition = pygame.image.load("Imgs/sky_space.png").convert()
-        self.bg_space = pygame.image.load("Imgs/space.png").convert()
+        self.bg_ground = pygame.image.load("Imgs/ground_new.png").convert()
+        self.bg_sky = pygame.image.load("Imgs/background_new.png").convert()
+        self.bg_transition = pygame.image.load("Imgs/sky_space_new.png").convert()
+        self.bg_space = pygame.image.load("Imgs/space_new.png").convert()
 
         self.backgrounds = [
             self.bg_ground,

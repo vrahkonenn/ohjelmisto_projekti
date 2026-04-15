@@ -37,13 +37,13 @@ pygame.display.set_caption("Rise of The Bubblegum")
 from powerups import PowerUp
 PowerUp.load_images()
 
-menu_bg = pygame.image.load("Imgs/mMenu_bg.png").convert()
-shop_bg = pygame.image.load("Imgs/ground.png").convert()
-gameover_bg_norm = pygame.image.load("Imgs/gameover_norm.png").convert()
-gameover_bg_bitten = pygame.image.load("Imgs/gameover_purtu.png").convert()
+menu_bg = pygame.image.load("Imgs/mMenu_bg_new.png").convert()
+shop_bg = pygame.image.load("Imgs/ground_new.png").convert()
+gameover_bg_norm = pygame.image.load("Imgs/gameover_norm_new.png").convert()
+gameover_bg_bitten = pygame.image.load("Imgs/gameover_purtu_new.png").convert()
 coin_img = pygame.image.load("Imgs/kolikkokuva.png").convert_alpha()
 coin_img = pygame.transform.scale(coin_img, (32, 32))
-guide_bg = pygame.image.load("Imgs/guide_bg.png").convert()
+guide_bg = pygame.image.load("Imgs/guide_bg_new.png").convert()
 
 clock = pygame.time.Clock()
 

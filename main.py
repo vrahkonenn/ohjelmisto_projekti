@@ -63,9 +63,9 @@ aliens = SpaceMonsterManager()
 # napit
 restart_button =    Button(WIDTH//2 - 100, HEIGHT//2+50, 200, 50,
                         "RESTART", font_big, GRAY, BLACK)
-start_button =      Button(WIDTH//2 - 175, 250, 200, 85,
+start_button =      Button(WIDTH//2 - 175, 350, 200, 85,
                         "START", font_big, VAALEAN_PINKKI, KERMA, TUMMAN_PINKKI )
-shop_button =    Button(WIDTH//2 - 175, HEIGHT//2+100, 200, 50,
+shop_button =    Button(WIDTH//2 - 175, 435, 200, 50,
                         "SHOP", font_big, VAALEAN_RUSKEA, TUMMAN_RUSKEA, TUMMAN_RUSKEA)
 menu_button =    Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
                         "MENU", font_big, GRAY, BLACK)
@@ -79,9 +79,9 @@ sound_button = Button(WIDTH//2 - 100, HEIGHT//2 - 60, 200, 50,
                         "TOGGLE SOUND", font_big, GRAY, BLACK)
 music_button = Button(WIDTH//2 - 100, HEIGHT//2 + 20, 200, 50,
                         "TOGGLE MUSIC", font_big, GRAY, BLACK)
-guide_button = Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
+guide_button = Button(WIDTH//2 - 175, HEIGHT-145, 200, 50,
                         "GUIDE", font_big, GRAY, BLACK)
-guide_menu_button =    Button(WIDTH//2 - 175, HEIGHT-75, 200, 50,
+guide_menu_button =    Button(WIDTH//2 - 175, HEIGHT - 75, 200, 50,
                         "MENU", font_big, GRAY, BLACK)
 reset_button = Button(WIDTH//2 - 150, HEIGHT//2 + 100, 300, 50,
                         "RESET PROGRESS", font_big, RED, WHITE)
@@ -89,6 +89,8 @@ yes_button = Button(WIDTH//2 - 110, HEIGHT//2 + 50, 100, 50,
                         "YES", font_big, GRAY, BLACK)
 no_button = Button(WIDTH//2 + 10, HEIGHT//2 + 50, 100, 50,
                         "NO", font_big, GRAY, BLACK)
+quit_button = Button(WIDTH//2 - 175, HEIGHT - 75, 200, 50,
+                        "QUIT", font_big, GRAY, BLACK)
 
 # sfx
 sound.load_sfx()
@@ -171,6 +173,7 @@ while running:
         shop_button.draw(screen)
         start_button.draw_image(screen)
         guide_button.draw(screen)
+        quit_button.draw(screen)
 
 
     # Peli käynnissä
@@ -421,6 +424,8 @@ while running:
                     game_state = GAME_SHOP
                 elif guide_button.is_clicked(event.pos):
                     game_state = HOW_TO_PLAY
+                elif quit_button.is_clicked(event.pos):
+                    running = False
             elif game_state == HOW_TO_PLAY:
                 if guide_menu_button.is_clicked(event.pos):
                     data = get_data()

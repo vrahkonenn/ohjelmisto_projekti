@@ -50,7 +50,7 @@ class Player:
         umbrella_shoot_sprite = pygame.image.load("Imgs/boostit/purkkavarjo_shooting_frame.png").convert_alpha()
         umbrella_shoot_sheet = SpriteSheet(umbrella_shoot_sprite)
 
-        jetpack_sprite = pygame.image.load("Imgs/boostit/jetpack_framet.png").convert_alpha()
+        jetpack_sprite = pygame.image.load("Imgs/boostit/jetpack_framet2.png").convert_alpha()
         jetpack_sheet = SpriteSheet(jetpack_sprite)
 
         jetpack_shoot_sprite = pygame.image.load("Imgs/boostit/jetpack_shooting_frames.png").convert_alpha()
@@ -162,6 +162,7 @@ class Player:
             if current_time - self.jetpack_timer > self.jetpack_duration:
                 self.jetpack_active = False
                 self.is_immune = False
+                self.frame = 0
 
         if self.umbrella_active:
             if current_time - self.umbrella_timer > self.umbrella_duration:
@@ -196,8 +197,19 @@ class Player:
             self.x = 375
 
     def animate(self):
-        if self.animating:
-            current_time = pygame.time.get_ticks()
+        current_time = pygame.time.get_ticks()
+
+        # Jetpack-animaatio pyörii jatkuvasti
+        if self.jetpack_active:
+            if current_time - self.last_update >= self.animation_cooldown:
+                self.frame += 1
+                self.last_update = current_time
+
+                if self.frame >= len(self.animation_list):
+                    self.frame = 0  # loopataan animaatio alusta
+
+        # Normaali hyppyanimaatio
+        elif self.animating:
             if current_time - self.last_update >= self.animation_cooldown:
                 self.frame += 1
                 self.last_update = current_time
@@ -206,9 +218,9 @@ class Player:
                     self.frame = len(self.animation_list) - 1
                     self.animating = False
 
+        # Shooting timeout
         if self.shooting:
-            now = pygame.time.get_ticks()
-            if now - self.shoot_time > self.shoot_duration:
+            if current_time - self.shoot_time > self.shoot_duration:
                 self.shooting = False
 
     def start_animation(self):

@@ -15,6 +15,8 @@ class SpaceMonster:
         self.width = self.scale
         self.height = self.scale
 
+        self.coins_earned = 0
+
         monster_image = pygame.image.load("Imgs/alien.png").convert_alpha()
         sprite_sheet = SpriteSheet(monster_image)
 
@@ -30,6 +32,13 @@ class SpaceMonster:
         self.direction = random.choice([-1,1])
         self.speed = random.uniform(1.0, 3.0)
 
+        self.dead = False
+        self.death_time = 0
+
+        self.dead_image = pygame.image.load("Imgs/dead_alien.png").convert_alpha()
+        self.dead_image = pygame.transform.scale(self.dead_image, (self.width, self.height))
+
+
         for x in range(self.animation_steps):
             self.animation_list.append(
                 sprite_sheet.get_image(x, 90, 90, 1, (0,0,0))
@@ -37,6 +46,12 @@ class SpaceMonster:
 
     def get_collision_rect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)
+    
+    def die(self):
+        self.dead = True
+        self.death_time = pygame.time.get_ticks()
+        self.coins_earned = 2
+        
     
     def get_center(self):
         return (self.x + self.width / 2, self.y + self.height / 2)
@@ -61,7 +76,10 @@ class SpaceMonster:
             self.last_update = pygame.time.get_ticks()
 
     def draw(self, screen):
-        screen.blit(self.animation_list[self.frame], (self.x, self.y))
+        if self.dead:
+            screen.blit(self.dead_image, (self.x, self.y))
+        else:
+            screen.blit(self.animation_list[self.frame], (self.x, self.y))
 
     def update(self, player):
         # Kamera lock
@@ -83,6 +101,7 @@ class SpaceMonster:
 class SpaceMonsterManager:
     def __init__(self):
         self.monsters = []
+        self.coins_earned = 0
         self.last_monster_spawn = 0 #tallentaa ajan jollon vika monsteri spawnattu
         self.monster_spawn_delay = 4000
         self.min_score = 1200
@@ -107,8 +126,12 @@ class SpaceMonsterManager:
             monster.update(player)
             monster.animate()
 
-        # poistaa monsterit, jotka ovat ruudun ulkopuolella
-        self.monsters = [m for m in self.monsters if m.y < HEIGHT + 100]
+        current_time = pygame.time.get_ticks()
+
+        self.monsters = [
+            m for m in self.monsters
+            if m.y < HEIGHT + 100 and (not m.dead or current_time - m.death_time < 300)
+        ]
 
     def draw(self, screen):
         for monster in self.monsters:
@@ -135,12 +158,13 @@ class SpaceMonsterManager:
             hit_feet = dist_x**2 + dist_y**2 < mr**2
 
             if hit_feet and player.y_change > 0:
-                self.monsters.remove(monster)
+                monster.die()
+                self.coins_earned = 2
                 player.y_change = -12
                 player.jump = False
                 return False 
 
-            if hit_body:
+            if hit_body and monster.dead == False:
                 return True
         return False
     

@@ -232,6 +232,11 @@ while running:
         powerups.update()
         birds.update(player, score)
         aliens.update(player, score)
+        
+        coins += birds.coins_earned + aliens.coins_earned + bullets.coins_earned 
+        bullets.coins_earned = 0
+        birds.coins_earned = 0
+        aliens.coins_earned = 0
 
         bullets.check_hits(birds.monsters)
         bullets.check_hits(aliens.monsters)

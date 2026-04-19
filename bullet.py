@@ -39,6 +39,7 @@ class BulletManager:
         self.image = pygame.image.load("Imgs/ammus.png").convert_alpha()
         self.cooldown = 250  # millisekuntia
         self.last_shot = 0
+        self.coins_earned = 0
 
     def shoot(self, player):
         # cooldown tarkistus
@@ -80,5 +81,6 @@ class BulletManager:
 
                 if dx*dx + dy*dy < (mr + br)**2:
                     self.bullets.remove(bullet)
-                    monsters.remove(monster)
+                    monster.die()
+                    self.coins_earned = 2
                     break

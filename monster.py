@@ -30,11 +30,23 @@ class Monster:
         self.direction = random.choice([-1,1])
         self.speed = random.uniform(1.0, 3.0)
 
+        self.dead = False
+        self.death_time = 0
+        
+        self.dead_offset_x = 28
+        self.dead_offset_y = 20
+
+        self.dead_image = pygame.image.load("Imgs/dead_bird.png").convert_alpha()
+        self.dead_image = pygame.transform.scale(self.dead_image, (self.width + 40, self.height + 40))
+
         for x in range(self.animation_steps):
             self.animation_list.append(
                 sprite_sheet.get_image(x, 90, 90, 2, (0,0,0))
             )
-        
+
+    def die(self):
+        self.dead = True
+        self.death_time = pygame.time.get_ticks()  
 
     def animate(self):
         if self.animating:
@@ -53,7 +65,10 @@ class Monster:
             self.last_update = pygame.time.get_ticks()
 
     def draw(self, screen):
-        screen.blit(self.animation_list[self.frame], (self.x, self.y))
+        if self.dead:
+            screen.blit(self.dead_image, (self.x + self.dead_offset_x, self.y + self.dead_offset_y))
+        else:
+            screen.blit(self.animation_list[self.frame], (self.x, self.y))
 
     def update(self, player):
         # Kamera lock
@@ -84,6 +99,7 @@ class Monster:
 class MonsterManager:
     def __init__(self):
         self.monsters = []
+        self.coins_earned = 0
         self.last_monster_spawn = 0 #tallentaa ajan jollon vika monsteri spawnattu
         self.monster_spawn_delay = 4000
 
@@ -109,8 +125,13 @@ class MonsterManager:
             monster.update(player)
             monster.animate()
 
-        # poistaa monsterit, jotka ovat ruudun ulkopuolella
-        self.monsters = [m for m in self.monsters if m.y < HEIGHT + 100]
+        # poistaa monsterit ruudun ulkopuolelta ja kuolemis delayn jälkeen
+        current_time = pygame.time.get_ticks()
+
+        self.monsters = [
+            m for m in self.monsters
+            if m.y < HEIGHT + 100 and (not m.dead or current_time - m.death_time < 300)
+        ]
 
     def draw(self, screen):
         for monster in self.monsters:
@@ -137,12 +158,13 @@ class MonsterManager:
             hit_feet = dist_x**2 + dist_y**2 < mr**2
 
             if hit_feet and player.y_change > 0:
-                self.monsters.remove(monster)
+                monster.die()
+                self.coins_earned = 2
                 player.y_change = -12
                 player.jump = False
                 return False 
 
-            if hit_body:
+            if hit_body and monster.dead == False:
                 return True
         return False
     

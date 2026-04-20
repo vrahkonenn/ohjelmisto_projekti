@@ -124,8 +124,6 @@ coin_x = WIDTH - 70
 coin_y = 5
 
 sound.play_music(game_state)
-sound.pause_music()
-sound.unpause_music()
 
 def draw_game(screen):
     background.draw(screen, camera.scroll)

@@ -29,7 +29,7 @@ def play_music(state):
     elif state == GAME_OVER:
         track = "./music/game_over.wav"
 
-    # 🔥 jos sama biisi → älä tee mitään
+    # jos sama älä tee mitään
     if track == current_track:
         return
 

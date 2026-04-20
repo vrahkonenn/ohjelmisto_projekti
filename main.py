@@ -437,6 +437,9 @@ while running:
                     game_state = GAME_MENU
 
             if game_state == GAME_SHOP:
+                currency = total_coins + coins
+                save(data, currency)
+                coins = 0
                 if menu_button.is_clicked(event.pos):
                     game_state = GAME_MENU
                 elif shop.jumpboost_button.is_clicked(event.pos):

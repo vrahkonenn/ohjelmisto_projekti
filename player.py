@@ -1,11 +1,14 @@
 # player.py
 import pygame
+import saves
 import sound
 from spritesheet import SpriteSheet
 from settings import WIDTH
 
 class Player:
     def __init__(self, jump_height):
+        data = saves.get_data()
+        
         self.scale = 90
         self.x = WIDTH/2 - (self.scale/2)
         self.y = 550
@@ -26,11 +29,11 @@ class Player:
 
         self.jetpack_active = False
         self.jetpack_timer = 0
-        self.jetpack_duration = 3000  # ms
+        self.jetpack_duration = 3000 + data["jetpack_dur"][0]  # ms
 
         self.umbrella_active = False
         self.umbrella_timer = 0
-        self.umbrella_duration = 3000  # 3 sekuntia (ms)
+        self.umbrella_duration = 3000 + data["umbrella_dur"][0]  # ms
 
         sprite_image = pygame.image.load("Imgs/frame1 (9).png").convert_alpha()
         sprite_sheet = SpriteSheet(sprite_image)

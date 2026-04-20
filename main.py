@@ -154,9 +154,13 @@ while running:
     highscore = data["highscore"]
     total_coins = data["currency"]  
     jumpboost = data["jumpboost"]
+    jumpboost_str = data["jumpboost_str"]
     jetpack = data["jetpack"]
+    jetpack_dur = data["jetpack_dur"]
     shoes = data["shoes"]
+    extra_jumps = data["extra_jumps"]
     umbrella = data["umbrella"]
+    umbrella_dur = data["umbrella_dur"]
 
     # Päävalikko
     if game_state == GAME_MENU:
@@ -206,14 +210,14 @@ while running:
         power = powerups.check_collision(player)
 
         if power == "jumpboost":
-            player.y_change = -20
+            player.y_change = -20 - jumpboost_str[0]
 
         if power == "jetpack":
             player.jetpack_active = True
             player.jetpack_timer = pygame.time.get_ticks()
 
         if power == "shoes":
-            player.shoes_charges = 5
+            player.shoes_charges = 5 + extra_jumps[0]
 
         if power == "umbrella":
             player.umbrella_active = True
@@ -355,11 +359,19 @@ while running:
             coin_padding = -10  
         draw_text_with_outline(screen, font_big, f"{total_coins+coins}", (coin_x-coin_padding, coin_y+2), WHITE, BLACK)
         screen.blit(coin_img, (coin_x + 34, coin_y))
-        draw_text_with_outline(screen, font_small, f"{jumpboost}/{shop.limit}", (coin_x - 120, coin_y + 8), WHITE, BLACK)
-        draw_text_with_outline(screen, font_small, f"{jetpack}/{shop.limit}", (coin_x - 120, coin_y + 68), WHITE, BLACK)
-        draw_text_with_outline(screen, font_small, f"{shoes}/{shop.limit}", (coin_x - 120, coin_y + 128), WHITE, BLACK)
-        draw_text_with_outline(screen, font_small, f"{umbrella}/{shop.limit}", (coin_x - 120, coin_y + 188), WHITE, BLACK)
-    
+     
+             #Left
+        draw_text_with_outline(screen, font_small, f"{jumpboost[1]}/{shop.limit}", (10 + 175//2 , coin_y + 48), WHITE, BLACK)
+        draw_text_with_outline(screen, font_small, f"{jetpack[1]}/{shop.limit}", (10 + 175//2 , coin_y + 108), WHITE, BLACK)
+        draw_text_with_outline(screen, font_small, f"{shoes[1]}/{shop.limit}", (10 + 175//2 , coin_y + 168), WHITE, BLACK)
+        draw_text_with_outline(screen, font_small, f"{umbrella[1]}/{shop.limit}", (10 + 175//2 , coin_y + 228), WHITE, BLACK)
+
+        #Right
+        draw_text_with_outline(screen, font_small, f"{jumpboost_str[1]}/{shop.limit}", (10 +WIDTH//2 + 175//2, coin_y + 48), WHITE, BLACK)
+        draw_text_with_outline(screen, font_small, f"{jetpack_dur[1]}/{shop.limit}", (10 + WIDTH//2 + 175//2, coin_y + 108), WHITE, BLACK)
+        draw_text_with_outline(screen, font_small, f"{extra_jumps[1]}/{shop.limit}", (10 +WIDTH//2 + 175//2, coin_y + 168), WHITE, BLACK)
+        draw_text_with_outline(screen, font_small, f"{umbrella_dur[1]}/{shop.limit}", (10 +WIDTH//2 + 175//2, coin_y + 228), WHITE, BLACK)
+
     elif game_state == HOW_TO_PLAY:
         screen.blit(guide_bg, (0, 0))
         guide_menu_button.draw(screen)
@@ -442,18 +454,34 @@ while running:
                 coins = 0
                 if menu_button.is_clicked(event.pos):
                     game_state = GAME_MENU
+                    player = Player(13)
+                # Left side
                 elif shop.jumpboost_button.is_clicked(event.pos):
-                    shop.transaction(data, "jumpboost")
+                    shop.transaction(data, "jumpboost", 0.5)
                     powerups.update_spawn_chances()
                 elif shop.jetpack_button.is_clicked(event.pos):
-                    shop.transaction(data, "jetpack")
+                    shop.transaction(data, "jetpack", 0.5)
                     powerups.update_spawn_chances()
                 elif shop.shoe_button.is_clicked(event.pos):
-                    shop.transaction(data, "shoes")
+                    shop.transaction(data, "shoes", 0.5)
                     powerups.update_spawn_chances()
                 elif shop.umbrella_button.is_clicked(event.pos):
-                    shop.transaction(data, "umbrella")
+                    shop.transaction(data, "umbrella", 0.5)
                     powerups.update_spawn_chances()
+                # Right side
+                elif shop.jumpboost_button_r.is_clicked(event.pos):
+                    shop.transaction(data, "jumpboost_str", 2)
+                    powerups.update_spawn_chances()
+                elif shop.jetpack_button_r.is_clicked(event.pos):
+                    shop.transaction(data, "jetpack_dur", 250)
+                    powerups.update_spawn_chances()
+                elif shop.shoe_button_r.is_clicked(event.pos):
+                    shop.transaction(data, "extra_jumps", 1)
+                    powerups.update_spawn_chances()
+                elif shop.umbrella_button_r.is_clicked(event.pos):
+                    shop.transaction(data, "umbrella_dur", 250)
+                    powerups.update_spawn_chances()
+                
                 else:
                     pass
 

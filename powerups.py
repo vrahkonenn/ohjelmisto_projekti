@@ -110,12 +110,12 @@ class PowerUpManager:
 
     def update_spawn_chances(self):
         upgrades = saves.get_data()
-        self.nothing = 90 - (upgrades["jumpboost"] + upgrades["jetpack"] + upgrades["shoes"] + upgrades["umbrella"])
+        self.nothing = 100 - (upgrades["jumpboost"][0] + upgrades["jetpack"][0] + upgrades["shoes"][0] + upgrades["umbrella"][0])
         self.spawn_chances = {
-            "jumpboost": upgrades["jumpboost"],
-            "jetpack": upgrades["jetpack"],
-            "shoes": upgrades["shoes"],
-            "umbrella": upgrades["umbrella"],
+            "jumpboost": upgrades["jumpboost"][0],
+            "jetpack": upgrades["jetpack"][0],
+            "shoes": upgrades["shoes"][0],
+            "umbrella": upgrades["umbrella"][0],
             None: self.nothing
         }
     

@@ -195,17 +195,16 @@ while running:
             last_updated_score = score
             platforms.update_difficulty()
 
-        # spawnataan powerupeja platformeille
-        for p in platforms.platforms:
-            if hasattr(p, "has_powerup") is False:
-                powerups.spawn_on_platform(p)
-                p.has_powerup = True
-
         player.jump = platforms.check_collisions(player)
 
         if player.jump:
             sound.play_sfx(sound.sfx["jump"])
             player.start_animation()
+
+        # spawnataan powerupeja platformeille
+        for p in platforms.platforms:
+            if hasattr(p, "has_powerup") is False:
+                powerups.spawn_on_platform(p)
 
         power = powerups.check_collision(player)
 
@@ -224,6 +223,7 @@ while running:
             player.umbrella_timer = pygame.time.get_ticks()
 
         draw_game(screen)
+
         if platforms.coin is not None:
             platforms.coin.start_animation()
             platforms.coin.animate()
@@ -232,6 +232,7 @@ while running:
                 sound.play_sfx(sound.sfx["pickup_coin"])
                 coins += 1
                 platforms.coin = None
+
         bullets.update()
         powerups.update()
         birds.update(player, score)
@@ -266,6 +267,7 @@ while running:
             coin_padding = 9
         elif total_coins + coins >= 0:
             coin_padding = -10
+            
         draw_text_with_outline(screen, font_big, f"{total_coins+coins}", (coin_x-coin_padding, coin_y+2), WHITE, BLACK)
 
         # piirrä kolikon kuva numeron jälkeen

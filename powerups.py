@@ -1,6 +1,7 @@
 # powerups.py
 import pygame
 import saves
+import random
 
 class PowerUp:
     images = {
@@ -101,8 +102,6 @@ def load_image(path):
     img = pygame.image.load(path).convert_alpha()
     return pygame.transform.scale(img, (60, 64))
 
-
-
 class PowerUpManager:
     def __init__(self):
         self.powerups = []
@@ -122,16 +121,9 @@ class PowerUpManager:
     def spawn_on_platform(self, platform):
         if platform.type == "trap":
             return
-        
-        import random
-
-        if hasattr(platform, "has_powerup"):
-            return
 
         total_weight = sum(self.spawn_chances.values())
-
         roll = random.uniform(0, total_weight)
-
         current = 0
 
         for p_type, weight in self.spawn_chances.items():
@@ -151,6 +143,7 @@ class PowerUpManager:
         for p in self.powerups:
             p.update()
 
+        # Powerup filteröidään pois, jos alustaa ei enää ole
         self.powerups = [p for p in self.powerups if p.active]
 
     def reset(self):

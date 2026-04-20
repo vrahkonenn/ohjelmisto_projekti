@@ -123,7 +123,6 @@ class PlatformManager:
         # Respawn
         for i, p in enumerate(self.platforms):
             if p.y > 660:
-
                 if self.coin and self.coin.y > 580:
                     self.coin = None
                 highest_y = min(platform.y for platform in self.platforms)
@@ -136,7 +135,6 @@ class PlatformManager:
 
                 platform_type = random.choices(
                     ["normal", "breakable", "trap"],
-                    # Weights = % mahdollisuus alustalle
                     weights=[self.normal_weight, self.breakable_weight, self.trap_weight]
                 )[0]
 
@@ -154,7 +152,7 @@ class PlatformManager:
                     platform_type,
                     moving
                 )
-                if platform_type == "normal" and random.random()<0.1 and not self.coin:
+                if random.random() <0.1 and not self.coin:
                     coin_x = spawn_x + (p.width // 2) - (80 // 2)
                     coin_y = spawn_y
                     self.coin = Coin(coin_x, coin_y)

@@ -117,6 +117,7 @@ GAME_SETTINGS="settings"
 HOW_TO_PLAY = "guide"
 GAME_RESET = "reset"
 
+settings_from = None
 game_state=GAME_MENU
 previous_state = None
 running = True
@@ -427,7 +428,10 @@ while running:
                     sound.unpause_music()
 
                 elif game_state == GAME_SETTINGS:
-                    game_state = GAME_PAUSED
+                    if settings_from == GAME_PAUSED:
+                        game_state = GAME_PAUSED
+                    else:
+                        game_state = GAME_MENU
 
             if game_state == GAME_OVER and event.key == pygame.K_SPACE  or game_state == GAME_MENU and event.key == pygame.K_SPACE:
                 reset_game()
@@ -444,6 +448,10 @@ while running:
                     game_state = GAME_SHOP
                 elif guide_button.is_clicked(event.pos):
                     game_state = HOW_TO_PLAY
+                elif settings_menu_btn.is_clicked(event.pos):
+                    settings_from = game_state
+                    game_state = GAME_SETTINGS
+
                 elif quit_button.is_clicked(event.pos):
                     running = False
             elif game_state == HOW_TO_PLAY:
@@ -495,6 +503,7 @@ while running:
                 game_state = GAME_MENU
 
             if game_state == GAME_PAUSED and settings_button.is_clicked(event.pos):
+                settings_from = game_state
                 game_state = GAME_SETTINGS
             if game_state == GAME_PAUSED and pause_menu_button.is_clicked(event.pos):
                 game_state = GAME_MENU

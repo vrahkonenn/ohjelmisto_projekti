@@ -94,14 +94,8 @@ def play_sfx(sound):
         sound.play()
 
 jetpack_channel = None
-
-def play_jetpack():
-    global jetpack_channel
-    if jetpack_channel is None or not jetpack_channel.get_busy():
-        jetpack_channel = sfx["jetpack"].play(loops=-1)  # loop forever
+def jetpack_playing():
+    sfx["jetpack"].play(loops=-1)
 
 def stop_jetpack():
-    global jetpack_channel
-    if jetpack_channel:
-        jetpack_channel.stop()
-        jetpack_channel = None
+    sfx["jetpack"].stop()

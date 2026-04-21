@@ -189,13 +189,6 @@ while running:
         camera.update(player)
         background.draw(screen, camera.scroll)
 
-        if player.jetpack_active:
-            elapsed = pygame.time.get_ticks() - player.jetpack_timer
-
-            if elapsed > jetpack_dur[0] * 10:
-                player.jetpack_active = False
-                sound.stop_jetpack()
-
         player.animate()
 
         score += platforms.update(player)
@@ -224,7 +217,6 @@ while running:
         if power == "jetpack":
             player.jetpack_active = True
             player.jetpack_timer = pygame.time.get_ticks()
-            sound.play_jetpack()
 
         if power == "shoes":
             player.shoes_charges = 5 + extra_jumps[0]

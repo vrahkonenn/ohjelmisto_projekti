@@ -28,6 +28,7 @@ class Player:
         self.shoes_charges = 0
 
         self.jetpack_active = False
+        self.jetpack_was_active = False
         self.jetpack_timer = 0
         self.jetpack_duration = 3000 + data["jetpack_dur"][0]  # ms
 
@@ -158,7 +159,12 @@ class Player:
     def update(self):
         current_time = pygame.time.get_ticks()
 
+        if self.jetpack_active and not self.jetpack_was_active:
+            sound.jetpack_playing()
+            self.jetpack_was_active = True
+
         if self.jetpack_active:
+            self.jetpack_was_active = True
             self.is_immune = True
             self.y_change = -10  # jatkuva nousu
 
@@ -166,6 +172,8 @@ class Player:
                 self.jetpack_active = False
                 self.is_immune = False
                 self.frame = 0
+                sound.stop_jetpack()
+                self.jetpack_was_active = False
 
         if self.umbrella_active:
             if current_time - self.umbrella_timer > self.umbrella_duration:

@@ -74,6 +74,7 @@ def load_sfx():
         "game_over": pygame.mixer.Sound("./sfx/ded_norm.wav"),
         "pickup_coin": pygame.mixer.Sound("./sfx/pickupCoin.wav"),
         "umbrella": pygame.mixer.Sound("./sfx/chute.wav"),
+        "jetpack": pygame.mixer.Sound("./sfx/jetpack_3s.wav"),
     }
     for sounds in sfx.values():
         if isinstance(sounds, list):
@@ -92,3 +93,15 @@ def play_sfx(sound):
     else:
         sound.play()
 
+jetpack_channel = None
+
+def play_jetpack():
+    global jetpack_channel
+    if jetpack_channel is None or not jetpack_channel.get_busy():
+        jetpack_channel = sfx["jetpack"].play(loops=-1)  # loop forever
+
+def stop_jetpack():
+    global jetpack_channel
+    if jetpack_channel:
+        jetpack_channel.stop()
+        jetpack_channel = None

@@ -207,6 +207,7 @@ while running:
         for p in platforms.platforms:
             if hasattr(p, "has_powerup") is False:
                 powerups.spawn_on_platform(p)
+                p.has_powerup = True
 
         power = powerups.check_collision(player)
 

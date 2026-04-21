@@ -137,7 +137,6 @@ class PowerUpManager:
 
         p = PowerUp(platform, chosen_type)
         self.powerups.append(p)
-        platform.has_powerup = True
 
     def update(self):
         for p in self.powerups:

@@ -1,5 +1,6 @@
 from settings import *
 from button import Button
+import sound
 import saves
 
 class Shop:
@@ -41,6 +42,7 @@ class Shop:
     def transaction(self, data, button, value):
         if data["currency"] >= self.cost:
             if data[button][1] < self.limit:
+                sound.play_sfx(sound.sfx["buy"])
                 data["currency"] -= self.cost
                 data[button][1] += 1
                 data[button][0] += value
